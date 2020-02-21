@@ -10,10 +10,14 @@ contract Exchange {
 	uint256 public feePercent;
 	address constant ETHER = address(0); // allows storage of ether in blank address in token mapping
 
+	// mapping(uint256 => address) public erc20s;
+	// uint256 public erc20Count;
 	mapping(address => mapping(address => uint256)) public tokens;
 
 	event Deposit(address indexed token, address indexed user, uint256 amount, uint256 balance);
 	event Withdraw(address indexed token, address indexed user, uint256 amount, uint256 balance);
+	event ERC20Added(address indexed erc20);
+	event ERC20Removed(address indexed erc20);
 	
 	constructor (address _feeAccount, uint256 _feePercent) public {
 		feeAccount = _feeAccount;
@@ -23,6 +27,20 @@ contract Exchange {
 	// reverts if ether is sent directly to exchange
 	function() external {
 		revert();
+	}
+
+	function addERC20(address _erc20) public {
+		// erc20Count = erc20Count.add(1);
+		// erc20s[erc20Count] = _erc20;
+
+		emit ERC20Added(_erc20);//, erc20Count);
+	}
+
+	function removeERC20(address _erc20) public {
+		// erc20Count = erc20Count.add(1);
+		// erc20s[erc20Count] = _erc20;
+
+		emit ERC20Removed(_erc20);//, erc20Count);
 	}
 
 	function depositEther() payable public {
