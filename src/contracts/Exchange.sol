@@ -1,6 +1,7 @@
 pragma solidity ^0.5.0;
 
 import "@openzeppelin/contracts/math/SafeMath.sol";
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 contract Exchange {
 	using SafeMath for uint;
@@ -34,5 +35,19 @@ contract Exchange {
 		tokens[ETHER][msg.sender] = tokens[ETHER][msg.sender].sub(_amount);
 		msg.sender.transfer(_amount);
 		emit Withdraw(ETHER, msg.sender, _amount, tokens[ETHER][msg.sender]);
+	}
+
+	function depositToken(address _token, uint256 _amount) public {
+		require(_token != ETHER);
+		require(ERC20(_token).transferFrom(msg.sender, address(this), _amount));
+		tokens[_token][msg.sender] = tokens[_token][msg.sender].add(_amount);
+		emit Deposit(_token, msg.sender, _amount, tokens[_token][msg.sender]);
+	}
+
+	function withdrawToken(address _token, uint256 _amount) public {
+		require(_token != ETHER);
+		require(tokens[_token][msg.sender] >= _amount);
+		tokens[_token][msg.sender] = tokens[_token][msg.sender].sub(_amount);
+		emit Withdraw(_token, msg.sender, _amount, tokens[_token][msg.sender]);
 	}
 }
