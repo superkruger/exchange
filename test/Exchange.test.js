@@ -212,4 +212,27 @@ contract('Exchange', ([deployer, feeAccount, user1]) => {
 			})
 		})
 	})
+
+	describe('checking balances', () => {
+
+		let result
+		let amount
+
+		beforeEach(async () => {
+			amount = ether(1)
+		})
+
+		describe('success', () => {
+
+			beforeEach(async () => {
+				await exchange.depositEther({from: user1, value: amount})
+				result = await exchange.balanceOf(ETHER_ADDRESS, user1)
+			})
+
+			it('tracks ether balance', async () => {
+				// check exchange ether balance
+				result.toString().should.eq(amount.toString())
+			})
+		})
+	})
 })
