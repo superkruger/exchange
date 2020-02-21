@@ -10,8 +10,6 @@ contract Exchange {
 	uint256 public feePercent;
 	address constant ETHER = address(0); // allows storage of ether in blank address in token mapping
 
-	// mapping(uint256 => address) public erc20s;
-	// uint256 public erc20Count;
 	mapping(address => mapping(address => uint256)) public tokens;
 	mapping(uint256 => _Order) public orders;
 	uint256 public orderCount;
@@ -28,8 +26,8 @@ contract Exchange {
 		uint256 timestamp;
 	}
 	
-	event ERC20Added(address indexed erc20);
-	event ERC20Removed(address indexed erc20);
+	event TokenAdded(address indexed _token);
+	event TokenRemoved(address indexed _token);
 	event Deposit(address indexed token, address indexed user, uint256 amount, uint256 balance);
 	event Withdraw(address indexed token, address indexed user, uint256 amount, uint256 balance);
 	event Order(uint256 id, address user, address tokenGet, uint256 amountGet, address tokenGive, uint256 amountGive, uint256 timestamp);
@@ -46,18 +44,12 @@ contract Exchange {
 		revert();
 	}
 
-	function addERC20(address _erc20) public {
-		// erc20Count = erc20Count.add(1);
-		// erc20s[erc20Count] = _erc20;
-
-		emit ERC20Added(_erc20);//, erc20Count);
+	function addToken(address _token) public {
+		emit TokenAdded(_token);
 	}
 
-	function removeERC20(address _erc20) public {
-		// erc20Count = erc20Count.add(1);
-		// erc20s[erc20Count] = _erc20;
-
-		emit ERC20Removed(_erc20);//, erc20Count);
+	function removeToken(address _token) public {
+		emit TokenRemoved(_token);
 	}
 
 	function depositEther() payable public {
