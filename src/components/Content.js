@@ -1,5 +1,11 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import Balance from './Balance'
+import NewOrder from './NewOrder'
+import OrderBook from './OrderBook'
+import PriceChart from './PriceChart'
+import MyTransactions from './MyTransactions'
+import Trades from './Trades'
 
 class Content extends Component {
 
@@ -13,14 +19,16 @@ class Content extends Component {
     return (
       <div className="content">
         <div className="vertical-split">
-          Bla
+          <Balance />
+          <NewOrder />
         </div>
-        Foo
+        <MyTransactions/>
         <div className="vertical-split">
-          Bar
+          <PriceChart/>
+          <OrderBook/>
         </div>
         <div className="vertical">
-          Boo 
+          <Trades/> 
         </div>
       </div>
     )
