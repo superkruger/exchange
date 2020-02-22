@@ -13,7 +13,7 @@ class MyTransactions extends Component {
 
   render() {
     return (
-      <div className="card bg-light text-grey">
+      <div className="card bg-light text-dark">
         <div className="card-header">
           MyTransactions
         </div>

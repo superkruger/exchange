@@ -9,7 +9,7 @@ import Trades from './Trades'
 
 class Content extends Component {
 
-  componentWillMount() {
+  componentDidMount() {
   }
 
   async loadBlockchainData(dispatch) {
@@ -22,7 +22,9 @@ class Content extends Component {
           <Balance />
           <NewOrder />
         </div>
-        <MyTransactions/>
+        <div className="vertical">
+          <MyTransactions/>
+        </div>
         <div className="vertical-split">
           <PriceChart/>
           <OrderBook/>

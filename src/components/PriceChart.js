@@ -4,7 +4,7 @@ import Spinner from './Spinner'
 import { Tabs, Tab } from 'react-bootstrap'
 
 class PriceChart extends Component {
-	componentWillMount() {
+	componentDidMount() {
 		this.loadBlockchainData(this.props)
 	}
 

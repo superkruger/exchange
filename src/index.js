@@ -1,7 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux'
-import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap/dist/css/bootstrap.min.css'
+import $ from 'jquery';
+import Popper from '@popperjs/core';
+import 'bootstrap/dist/js/bootstrap.bundle.min';
 import App from './components/App'
 import configureStore from './store/configureStore'
 import * as serviceWorker from './serviceWorker';
