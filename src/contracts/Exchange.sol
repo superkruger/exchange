@@ -26,8 +26,8 @@ contract Exchange {
 		uint256 timestamp;
 	}
 	
-	event TokenAdded(address indexed _token);
-	event TokenRemoved(address indexed _token);
+	event TokenAdded(address indexed tokenAddress, string name, string symbol, uint8 decimals);
+	event TokenRemoved(address indexed tokenAddress);
 	event Deposit(address indexed token, address indexed user, uint256 amount, uint256 balance);
 	event Withdraw(address indexed token, address indexed user, uint256 amount, uint256 balance);
 	event Order(uint256 id, address user, address tokenGet, uint256 amountGet, address tokenGive, uint256 amountGive, uint256 timestamp);
@@ -44,12 +44,12 @@ contract Exchange {
 		revert();
 	}
 
-	function addToken(address _token) public {
-		emit TokenAdded(_token);
+	function addToken(address _tokenAddress, string memory _name, string memory _symbol, uint8 _decimals) public {
+		emit TokenAdded(_tokenAddress, _name, _symbol, _decimals);
 	}
 
-	function removeToken(address _token) public {
-		emit TokenRemoved(_token);
+	function removeToken(address _tokenAddress) public {
+		emit TokenRemoved(_tokenAddress);
 	}
 
 	function depositEther() payable public {

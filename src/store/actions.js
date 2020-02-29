@@ -18,3 +18,17 @@ export function exchangeLoaded(contract) {
 		contract
 	}
 }
+
+export function tokenAddressChanged(address) {
+	return {
+		type: 'TOKEN_ADDRESS_CHANGED',
+		address
+	}
+}
+
+export function tokenAdded(token) {
+	return {
+		type: 'TOKEN_ADDED',
+		token
+	}
+}

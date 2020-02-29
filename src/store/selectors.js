@@ -17,3 +17,10 @@ export const contractsLoadedSelector = createSelector(
 	exchangeLoaded,
 	(el) => (el)
 )
+
+const newTokenAddress = state => get(state, 'exchange.newTokenAddress', {})
+export const newTokenAddressSelector = createSelector(newTokenAddress, n => n)
+
+const tokens = state => get(state, 'exchange.tokens.data', [])
+export const tokensSelector = createSelector(tokens, t => t)
+
