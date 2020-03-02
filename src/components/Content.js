@@ -6,13 +6,17 @@ import OrderBook from './OrderBook'
 import PriceChart from './PriceChart'
 import MyTransactions from './MyTransactions'
 import Trades from './Trades'
+import { loadAllOrders } from '../store/interactions'
+import { exchangeSelector } from '../store/selectors'
 
 class Content extends Component {
 
   componentDidMount() {
+    this.loadBlockchainData(this.props.dispatch)
   }
 
   async loadBlockchainData(dispatch) {
+    loadAllOrders(this.props.exchange, dispatch)
   }
 
   render() {
@@ -39,6 +43,7 @@ class Content extends Component {
 
 function mapStateToProps(state) {
   return {
+    exchange: exchangeSelector(state)
   }
 }
 

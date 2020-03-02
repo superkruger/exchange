@@ -2,37 +2,28 @@ import React, { Component } from 'react'
 import { Nav, Dropdown, Form, FormControl, Button } from 'react-bootstrap'
 import { connect } from 'react-redux'
 import { 
-  addToken
+  addToken,
+  selectToken
 } from '../store/interactions'
 import {
   accountSelector, 
   exchangeSelector,
   web3Selector,
-  newTokenAddressSelector,
-  tokensSelector
+  tokenListSelector,
+  tokenSelector
 } from '../store/selectors'
-import { 
-  tokenAddressChanged
-} from '../store/actions'
 
 class Navbar extends Component {
-
-  constructor() {
-    super();
-    // this.tokenAddressInput = React.createRef(); 
-  }
 
   render() {
     const {
       web3,
       exchange,
       account,
-      newTokenAddress,
-      tokens,
+      tokenList,
+      token,
       dispatch
     } = this.props
-
-    // let tokenAddressInput = React.createRef();
 
     const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
       <a
@@ -68,15 +59,9 @@ class Navbar extends Component {
               <FormControl
                 autoFocus
                 className="mx-3 my-2 w-auto"
-                // ref={tokenAddressInput}
                 name="tokenAddress"
                 placeholder="token address"
                 id="newTokenAddressInput"
-                // onChange={e => {
-                //   //dispatch(tokenAddressChanged(e.target.value))
-                //   setValue(e.target.value)
-                // }}
-                // value={value}
               />
               <Button variant="primary" type="submit">
                 Add Token
@@ -98,10 +83,10 @@ class Navbar extends Component {
       <Nav className="navbar navbar-expand-lg navbar-light bg-light">
         <Dropdown>
           <Dropdown.Toggle as={CustomToggle} id="dropdown-custom-components">
-            select token
+            {token ? token.symbol : "select token"}
           </Dropdown.Toggle>
           <Dropdown.Menu as={CustomMenu}>
-            { tokens.map((token) => renderTokenSelect(token)) }
+            { tokenList.map((token) => renderTokenSelect(token, this.props)) }
           </Dropdown.Menu>
         </Dropdown>
         <a className="navbar-brand" href="#/">ERC20 Token Exchange</a>
@@ -124,21 +109,21 @@ class Navbar extends Component {
   }
 }
 
-function renderTokenSelect(token) {
-  return (
-    <Dropdown.Item key="{token.tokenAddress}" eventKey="{token.tokenAddress}">{token.symbol}</Dropdown.Item>
-  )
-}
-
-function handleTokenAdd(event) {
-  event.preventDefault()
+function renderTokenSelect(token, props) {
   const {
+    tokenList,
     web3,
     exchange,
+    account, 
     dispatch
-  } = this.props
+  } = props
 
-  addToken(event.target.elements.tokenAddress.value, web3, exchange, dispatch)
+  return (
+    <Dropdown.Item 
+      key={token.tokenAddress} 
+      eventKey={token.tokenAddress} 
+      onSelect={eKey => selectToken(eKey, tokenList, account, exchange, web3, dispatch)}>{token.symbol}</Dropdown.Item>
+  )
 }
 
 function mapStateToProps(state) {
@@ -146,8 +131,8 @@ function mapStateToProps(state) {
     account: accountSelector(state),
     web3: web3Selector(state),
     exchange: exchangeSelector(state),
-    newTokenAddress: newTokenAddressSelector(state),
-    tokens: tokensSelector(state)
+    tokenList: tokenListSelector(state),
+    token: tokenSelector(state)
   }
 }
 

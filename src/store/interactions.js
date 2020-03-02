@@ -6,7 +6,24 @@ import {
 	web3AccountLoaded,
 	exchangeLoaded,
 	networkIdSet,
-	tokenAdded
+	tokenAdded,
+	tokenSelected,
+	etherBalanceLoaded,
+	tokenBalanceLoaded,
+	exchangeEtherBalanceLoaded,
+	exchangeTokenBalanceLoaded,
+	balancesLoading,
+	balancesLoaded,
+	buyOrderMaking,
+	sellOrderMaking,
+	orderMade,
+	cancelledOrdersLoaded,
+	filledOrdersLoaded,
+	allOrdersLoaded,
+	orderCancelling,
+	orderCancelled,
+	orderFilling,
+	orderFilled
 } from './actions.js'
 import { stringify } from 'json-stringify-safe';
 import { ETHER_ADDRESS } from '../helpers'
@@ -52,6 +69,40 @@ export const subscribeToEvents = async (exchange, dispatch) => {
 	exchange.events.TokenAdded({}, (error, event) => {
 		dispatch(tokenAdded(event.returnValues))
 	})
+	exchange.events.Cancel({}, (error, event) => {
+		dispatch(orderCancelled(event.returnValues))
+	})
+	exchange.events.Trade({}, (error, event) => {
+		dispatch(orderFilled(event.returnValues))
+	})
+	exchange.events.Deposit({}, (error, event) => {
+		dispatch(balancesLoaded())
+	})
+	exchange.events.Withdraw({}, (error, event) => {
+		dispatch(balancesLoaded())
+	})
+	exchange.events.Order({}, (error, event) => {
+		dispatch(orderMade(event.returnValues))
+	})
+}
+
+export const loadAllOrders = async (exchange, dispatch) => {
+	try {
+		const cancelStream = await exchange.getPastEvents('Cancel', {fromBlock: 0})
+		const cancelledOrders = cancelStream.map((event) => event.returnValues)
+		dispatch(cancelledOrdersLoaded(cancelledOrders))
+
+		const tradeStream = await exchange.getPastEvents('Trade', {fromBlock: 0})
+		const filledOrders = tradeStream.map((event) => event.returnValues)
+		dispatch(filledOrdersLoaded(filledOrders))
+
+		const orderStream = await exchange.getPastEvents('Order', {fromBlock: 0})
+		const allOrders = orderStream.map((event) => event.returnValues)
+		dispatch(allOrdersLoaded(allOrders))
+	} catch (error) {
+		console.log('Could not get order streams')
+		return null
+	}
 }
 
 export const addToken = async (tokenAddress, web3, account, exchange, dispatch) => {
@@ -66,4 +117,140 @@ export const addToken = async (tokenAddress, web3, account, exchange, dispatch) 
 	} catch (error) {
 		console.log('Could not add new token', error)
 	}
+}
+
+export const selectToken = async (tokenAddress, tokens, account, exchange, web3, dispatch) => {
+	try {
+		console.log(tokens)
+		const index = tokens.findIndex(token => token.tokenAddress === tokenAddress)
+		let token = tokens[index]
+		const tokenContract = await new web3.eth.Contract(Token.abi, token.tokenAddress)
+		token.contract = tokenContract
+
+		loadBalances(account, exchange, token, web3, dispatch)
+
+		dispatch(tokenSelected(token))
+	} catch (error) {
+		console.log('Could not add new token', error)
+	}
+}
+
+export const loadBalances = async (account, exchange, token, web3, dispatch) => {
+	
+	const etherBalance = await web3.eth.getBalance(account)
+	dispatch(etherBalanceLoaded(etherBalance))
+
+	const tokenBalance = await token.contract.methods.balanceOf(account).call()
+	dispatch(tokenBalanceLoaded(tokenBalance))
+
+	const exchangeEtherBalance = await exchange.methods.balanceOf(ETHER_ADDRESS, account).call()
+	dispatch(exchangeEtherBalanceLoaded(exchangeEtherBalance))
+
+	const exchangeTokenBalance = await exchange.methods.balanceOf(token.contract.options.address, account).call()
+	dispatch(exchangeTokenBalanceLoaded(exchangeTokenBalance))
+
+	dispatch(balancesLoaded())
+}
+
+export const depositEther = (amount, account, web3, exchange, dispatch) => {
+	exchange.methods.depositEther.send({from: account, value: web3.utils.toWei(amount, 'ether')})
+	.on('transactionHash', (hash) => {
+		dispatch(balancesLoading())
+	})
+	.on('error', (error) => {
+		console.log('Could not deposit ether', error)
+		window.alert('Could not deposit ether')
+	})
+}
+
+export const withdrawEther = (amount, account, web3, exchange, dispatch) => {
+	exchange.methods.withdrawEther(web3.utils.toWei(amount, 'ether')).send({from: account})
+	.on('transactionHash', (hash) => {
+		dispatch(balancesLoading())
+	})
+	.on('error', (error) => {
+		console.log('Could not withdraw ether', error)
+		window.alert('Could not withdraw ether')
+	})
+}
+
+export const depositToken = (amount, account, web3, token, exchange, dispatch) => {
+	amount = web3.utils.toWei(amount, 'ether')
+
+	token.methods.approve(exchange.options.address, amount).send({from: account})
+	.on('transactionHash', (hash) => {
+		exchange.methods.depositToken(token.options.address, amount).send({from: account})
+		.on('transactionHash', (hash) => {
+			dispatch(balancesLoading())
+		})
+	})
+	.on('error', (error) => {
+		console.log('Could not approve token deposit', error)
+		window.alert('Could not approve token deposit')
+	})
+}
+
+export const withdrawToken = (amount, account, web3, token, exchange, dispatch) => {
+	exchange.methods.withdrawToken(token.options.address, web3.utils.toWei(amount, 'ether')).send({from: account})
+	.on('transactionHash', (hash) => {
+		dispatch(balancesLoading())
+	})
+	.on('error', (error) => {
+		console.log('Could not withdraw token', error)
+		window.alert('Could not withdraw token')
+	})
+}
+
+export const makeBuyOrder = (order, account, web3, token, exchange, dispatch) => {
+	const tokenGet = token.contract.options.address
+	const amountGet = web3.utils.toWei(order.amount, 'ether')
+	const tokenGive = ETHER_ADDRESS
+	const amountGive = web3.utils.toWei((order.amount * order.price).toString(), 'ether')
+
+	exchange.methods.makeOrder(tokenGet, amountGet, tokenGive, amountGive).send({from: account})
+	.on('transactionHash', (hash) => {
+		dispatch(buyOrderMaking())
+	})
+	.on('error', (error) => {
+		console.log('Could not make buy order', error)
+		window.alert('Could not make buy order')
+	})
+}
+
+export const makeSellOrder = (order, account, web3, token, exchange, dispatch) => {
+	const tokenGet = ETHER_ADDRESS
+	const amountGet = web3.utils.toWei((order.amount * order.price).toString(), 'ether')
+	const tokenGive = token.contract.options.address
+	const amountGive = web3.utils.toWei(order.amount, 'ether')
+
+	exchange.methods.makeOrder(tokenGet, amountGet, tokenGive, amountGive).send({from: account})
+	.on('transactionHash', (hash) => {
+		dispatch(sellOrderMaking())
+	})
+	.on('error', (error) => {
+		console.log('Could not make sell order', error)
+		window.alert('Could not make sell order')
+	})
+}
+
+export const cancelOrder = (order, account, exchange, dispatch) => {
+	exchange.methods.cancelOrder(order.id).send({from: account})
+	.on('transactionHash', (hash) => {
+		dispatch(orderCancelling())
+	})
+	.on('error', (error) => {
+		console.log('Could not cancel order', error)
+		window.alert('Could not cancel order')
+	})
+}
+
+export const fillOrder = (order, account, exchange, dispatch) => {
+	exchange.methods.fillOrder(order.id).send({from: account})
+	.on('transactionHash', (hash) => {
+		dispatch(orderFilling())
+	})
+	.on('error', (error) => {
+		console.log('Could not fill order', error)
+		window.alert('Could not fill order')
+	})
 }
