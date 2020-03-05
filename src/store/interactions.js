@@ -144,7 +144,7 @@ export const addToken = async (tokenAddress, tokens, web3, account, exchange, di
 		checkContractFunction(tokenContract, 'transfer(address,uint256)')
 		checkContractFunction(tokenContract, 'transferFrom(address,address,uint256)')
 		checkContractFunction(tokenContract, 'approve(address,uint256)')
-		checkContractFunction(tokenContract, 'allowance(address,address,uint256)')
+		checkContractFunction(tokenContract, 'allowance(address,address)')
 
 		const decimals = await tokenContract.methods.decimals().call()
 		const name = await tokenContract.methods.name().call()
@@ -158,7 +158,7 @@ export const addToken = async (tokenAddress, tokens, web3, account, exchange, di
 
 const checkContractFunction = (contract, functionSignature) => {
 	if (contract.methods[functionSignature] === undefined) {
-		throw "Not an ERC20 token"
+		throw "Not an ERC20 token: " + functionSignature
 	}
 }
 
