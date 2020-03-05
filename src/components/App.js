@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import './App.css';
-import Navbar from './Navbar'
-import Content from './Content'
+import './App.css'
+import Navigation from './Navigation'
+import Routes from "./Routes"
 import { 
   loadWeb3, 
   loadAccount,
@@ -38,8 +38,8 @@ class App extends Component {
   render() {
     return (
       <div>
-        <Navbar/>
-        { this.props.contractsLoaded ? <Content/> : <div className="content"/>}
+        <Navigation/>
+        { this.props.contractsLoaded ? <Routes /> : <h3 className="content">Please select a token</h3>}
       </div>
     );
   }

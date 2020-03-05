@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import Spinner from './Spinner'
+import Spinner from '../Spinner'
 import { Tabs, Tab } from 'react-bootstrap'
 import { 
   makeBuyOrder,
   makeSellOrder 
-} from '../store/interactions'
+} from '../../store/interactions'
 import {
   accountSelector, 
   exchangeSelector, 
@@ -13,13 +13,13 @@ import {
   web3Selector,
   buyOrderSelector,
   sellOrderSelector
-} from '../store/selectors'
+} from '../../store/selectors'
 import { 
   buyOrderAmountChanged,
   buyOrderPriceChanged,
   sellOrderAmountChanged,
   sellOrderPriceChanged
-} from '../store/actions'
+} from '../../store/actions'
 
 class NewOrder extends Component {
 	

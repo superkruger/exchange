@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import Spinner from './Spinner'
+import Spinner from '../Spinner'
 import { Tabs, Tab } from 'react-bootstrap'
 import { 
   myFilledOrdersSelector,
@@ -10,8 +10,8 @@ import {
   exchangeSelector,
   accountSelector,
   orderCancellingSelector
-} from '../store/selectors'
-import { cancelOrder } from '../store/interactions'
+} from '../../store/selectors'
+import { cancelOrder } from '../../store/interactions'
 
 class MyTransactions extends Component {
 

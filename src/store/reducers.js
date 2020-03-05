@@ -15,13 +15,15 @@ function web3 (state = {}, action ) {
 }
 
 function exchange (state = {}, action ) {
+	let index
+	let data
 	switch (action.type) {
 		case 'EXCHANGE_LOADED':
 			return { ...state, loaded: true, contract: action.contract, tokens: {data: []}, token: null }
 		case 'TOKEN_ADDED':
 			// prevent duplicates
-			let index = state.tokens.data.findIndex(token => token.tokenAddress === action.token.tokenAddress)
-			let data
+			index = state.tokens.data.findIndex(token => token.tokenAddress === action.token.tokenAddress)
+		
 			if (index === -1) {
 				data = [...state.tokens.data, action.token]
 			} else {
@@ -69,7 +71,7 @@ function exchange (state = {}, action ) {
 		case 'ORDER_MADE':
 			// prevent duplicates
 			index = state.allOrders.data.findIndex(order => order.id === action.order.id)
-			
+		
 			if (index === -1) {
 				data = [...state.allOrders.data, action.order]
 			} else {

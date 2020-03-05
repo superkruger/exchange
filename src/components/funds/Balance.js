@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import Spinner from './Spinner'
+import Spinner from '../Spinner'
 import { Tabs, Tab } from 'react-bootstrap'
 import { 
   loadBalances,
@@ -8,7 +8,7 @@ import {
   withdrawEther,
   depositToken,
   withdrawToken 
-} from '../store/interactions'
+} from '../../store/interactions'
 import {
   accountSelector, 
   exchangeSelector, 
@@ -23,13 +23,13 @@ import {
   etherWithdrawAmountSelector,
   tokenDepositAmountSelector,
   tokenWithdrawAmountSelector
-} from '../store/selectors'
+} from '../../store/selectors'
 import { 
   etherDepositAmountChanged,
   etherWithdrawAmountChanged,
   tokenDepositAmountChanged,
   tokenWithdrawAmountChanged
-} from '../store/actions'
+} from '../../store/actions'
 
 class Balance extends Component {
 	componentWillMount() {
@@ -140,8 +140,8 @@ function showForm(props) {
         
 
       </Tab>
-      <Tab eventKey="withdraw" title="Withdraw" className="bg-dark">
-        <table className="table table-dark table-sm small">
+      <Tab eventKey="withdraw" title="Withdraw" className="bg-light">
+        <table className="table table-light table-sm small">
           <thead>
             <tr>
               <th>Token</th>
@@ -169,7 +169,7 @@ function showForm(props) {
               onChange={(e) => {
                 console.log('etherWithdrawAmountChanged', e.target.value)
                 dispatch(etherWithdrawAmountChanged(e.target.value))}}
-              className="form-control form-control-sm bg-dark text-white"
+              className="form-control form-control-sm bg-light text-dark"
               required
             />
           </div>
@@ -178,7 +178,7 @@ function showForm(props) {
           </div>
         </form>
 
-        <table className="table table-dark table-sm small">
+        <table className="table table-light table-sm small">
           <tbody>
             <tr>
               <td>DAPP</td>
@@ -199,7 +199,7 @@ function showForm(props) {
               onChange={(e) => {
                 console.log('etherWithdrawAmountChanged', e.target.value)
                 dispatch(tokenWithdrawAmountChanged(e.target.value))}}
-              className="form-control form-control-sm bg-dark text-white"
+              className="form-control form-control-sm bg-light text-dark"
               required
             />
           </div>

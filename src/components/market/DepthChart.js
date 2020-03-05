@@ -19,13 +19,13 @@ class DepthChart extends Component {
     xAxis.dataFields.category = "value";
     xAxis.renderer.minGridDistance = 50;
     xAxis.title.text = `Price (${this.props.priceTitle})`;
-    xAxis.renderer.labels.template.fill = am4core.color("#fff");
-    xAxis.title.fill = am4core.color("#fff");
+    xAxis.renderer.labels.template.fill = am4core.color("#111");
+    xAxis.title.fill = am4core.color("#111");
 
     let yAxis = chart.yAxes.push(new am4charts.ValueAxis());
     yAxis.title.text = `${this.props.volumeTitle} Volume`;
-    yAxis.renderer.labels.template.fill = am4core.color("#fff");
-    yAxis.title.fill = am4core.color("#fff");
+    yAxis.renderer.labels.template.fill = am4core.color("#111");
+    yAxis.title.fill = am4core.color("#111");
 
     // Create bid value series
     let bidValueSeries = chart.series.push(new am4charts.StepLineSeries());
@@ -52,7 +52,7 @@ class DepthChart extends Component {
     bidVolumeSeries.dataFields.categoryX = "value";
     bidVolumeSeries.dataFields.valueY = "bidvolume";
     bidVolumeSeries.strokeWidth = 0;
-    bidVolumeSeries.fill = am4core.color("#ddd");
+    bidVolumeSeries.fill = am4core.color("#aaa");
     bidVolumeSeries.fillOpacity = 0.2;
 
     // Create ask volume series
@@ -60,7 +60,7 @@ class DepthChart extends Component {
     askVolumeSeries.dataFields.categoryX = "value";
     askVolumeSeries.dataFields.valueY = "askvolume";
     askVolumeSeries.strokeWidth = 0;
-    askVolumeSeries.fill = am4core.color("#ddd");
+    askVolumeSeries.fill = am4core.color("#aaa");
     askVolumeSeries.fillOpacity = 0.2;
 
     // Add cursor
@@ -83,7 +83,7 @@ class DepthChart extends Component {
 
   render() {
     return (
-      <div id="chartdiv" style={{ width: "450px", height: "250px" }}></div>
+      <div id="chartdiv" style={{ width: "100%", height: "300px" }}></div>
     )
   }
 }

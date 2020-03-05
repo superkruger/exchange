@@ -15,16 +15,17 @@ export const exchangeLoadedSelector = createSelector(exchangeLoaded, el => el)
 const exchange = state => get(state, 'exchange.contract')
 export const exchangeSelector = createSelector(exchange, e => e)
 
-export const contractsLoadedSelector = createSelector(
-	exchangeLoaded,
-	(el) => (el)
-)
-
 const tokenList = state => get(state, 'exchange.tokens.data', [])
 export const tokenListSelector = createSelector(tokenList, t => t)
 
 const token = state => get(state, 'exchange.token', null)
 export const tokenSelector = createSelector(token, t => t)
+
+export const contractsLoadedSelector = createSelector(
+	exchangeLoaded,
+	token,
+	(el, t) => (el && t !== null)
+)
 
 const balancesLoading = state => get(state, 'exchange.balancesLoading', true)
 export const balancesLoadingSelector = createSelector(balancesLoading, l => l)
@@ -241,6 +242,7 @@ export const depthChartSelector = createSelector(
 		orders = {
 			orders: buyOrders.concat(sellOrders).sort((a,b) => a.value - b.value)
 		}
+
 		return orders
 	}
 )

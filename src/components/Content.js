@@ -11,14 +11,6 @@ import { exchangeSelector } from '../store/selectors'
 
 class Content extends Component {
 
-  componentDidMount() {
-    this.loadBlockchainData(this.props.dispatch)
-  }
-
-  async loadBlockchainData(dispatch) {
-    loadAllOrders(this.props.exchange, dispatch)
-  }
-
   render() {
     return (
       <div className="content">

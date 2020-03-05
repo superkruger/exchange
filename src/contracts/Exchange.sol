@@ -30,9 +30,9 @@ contract Exchange {
 	event TokenRemoved(address indexed tokenAddress);
 	event Deposit(address indexed token, address indexed user, uint256 amount, uint256 balance);
 	event Withdraw(address indexed token, address indexed user, uint256 amount, uint256 balance);
-	event Order(uint256 id, address user, address tokenGet, uint256 amountGet, address tokenGive, uint256 amountGive, uint256 timestamp);
-	event Cancel(uint256 id, address user, address tokenGet, uint256 amountGet, address tokenGive, uint256 amountGive, uint256 timestamp);
-	event Trade(uint256 id, address user, address tokenGet, uint256 amountGet, address tokenGive, uint256 amountGive, address userFill, uint256 timestamp);
+	event Order(uint256 id, address user, address indexed tokenGet, uint256 amountGet, address indexed tokenGive, uint256 amountGive, uint256 timestamp);
+	event Cancel(uint256 id, address user, address indexed tokenGet, uint256 amountGet, address indexed tokenGive, uint256 amountGive, uint256 timestamp);
+	event Trade(uint256 id, address user, address indexed tokenGet, uint256 amountGet, address indexed tokenGive, uint256 amountGive, address userFill, uint256 timestamp);
 	
 	constructor (address _feeAccount, uint256 _feePercent) public {
 		feeAccount = _feeAccount;

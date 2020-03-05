@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Tabs, Tab } from 'react-bootstrap'
+import { Container, Row, Col } from 'react-bootstrap'
 import { OverlayTrigger, Tooltip } from 'react-bootstrap'
-import Spinner from './Spinner'
+import Spinner from '../Spinner'
 import DepthChart from './DepthChart'
 import { 
   orderBookSelector,
@@ -11,8 +11,8 @@ import {
   accountSelector,
   orderFillingSelector,
   depthChartSelector 
-} from '../store/selectors'
-import { fillOrder } from '../store/interactions'
+} from '../../store/selectors'
+import { fillOrder } from '../../store/interactions'
 
 class OrderBook extends Component {
 	componentDidMount() {
@@ -24,27 +24,8 @@ class OrderBook extends Component {
 
   render() {
     return (
-      <div className="card bg-light text-dark">
-        <div className="card-header">
-          OrderBook
-        </div>
-        <div className="card-body">
-          <Tabs defaultActiveKey="chart" className="bg-light text-dark">
-                <Tab eventKey="chart" title="Depth Chart" className="bg-light">
-                    { this.props.orderBookLoaded ? showDepthChart(this.props.depthChart) : <Spinner type='div'/> }
-                </Tab>
-                <Tab eventKey="buys" title="Buys" className="bg-light">
-                  <table className="table table-light table-sm small">
-                    { this.props.orderBookLoaded ? showOrderBook(this.props, true) : <Spinner type='table'/> }
-                  </table>
-                </Tab>
-                <Tab eventKey="sells" title="Sells" className="bg-light">
-                  <table className="table table-light table-sm small">
-                    { this.props.orderBookLoaded ? showOrderBook(this.props, false) : <Spinner type='table'/> }
-                  </table>
-                </Tab>
-              </Tabs>
-        </div>
+      <div>
+      { this.props.orderBookLoaded ? showOrderBook(this.props) : <Spinner type='div'/> }
       </div>
     )
   }
@@ -55,14 +36,59 @@ function showOrderBook(props, buys) {
   const orders = (buys ? orderBook.buyOrders : orderBook.sellOrders)
 
   return (
-    <tbody>
-      <tr>
-        <th>DAPP</th>
-        <th>ETH/DAPP</th>
-        <th>ETH</th>
-      </tr>
-      { orders.map((order) => renderOrder(order, props)) }
-    </tbody>
+      <Container>
+        <Row>
+          <Col sm={12}>
+            <div className="card bg-light text-dark">
+              <div className="card-body">
+                { showDepthChart(props.depthChart) }
+              </div>
+            </div>
+          </Col>
+        </Row>
+        <Row>
+          <Col sm={6}>
+            <div className="card bg-light text-dark">
+              <div className="card-header">
+                Buy Orders
+              </div>
+              <div className="card-body">
+                { showOrders(props, true) }
+              </div>
+            </div>
+          </Col>
+          <Col sm={6}>
+            <div className="card bg-light text-dark">
+              <div className="card-header">
+                Sell Orders
+              </div>
+              <div className="card-body">
+                { showOrders(props, false) }
+              </div>
+            </div>
+          </Col>
+        </Row>
+      </Container>
+  )
+}
+
+function showOrders(props, buys) {
+  const { orderBook } = props
+  const orders = (buys ? orderBook.buyOrders : orderBook.sellOrders)
+
+  return (
+    <table>
+      <thead>
+        <tr>
+          <th>DAPP</th>
+          <th>ETH/DAPP</th>
+          <th>ETH</th>
+        </tr>
+      </thead>
+      <tbody>
+        { orders.map((order) => renderOrder(order, props)) }
+      </tbody>
+    </table>
   )
 }
 

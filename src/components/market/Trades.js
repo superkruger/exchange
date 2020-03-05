@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import Spinner from './Spinner'
-import { Tabs, Tab } from 'react-bootstrap'
+import { Container, Row, Col } from 'react-bootstrap'
+import Spinner from '../Spinner'
+import PriceChart from './PriceChart'
 import { 
   filledOrdersLoadedSelector,
   filledOrdersSelector 
-} from '../store/selectors'
+} from '../../store/selectors'
 
 class Trades extends Component {
 	componentDidMount() {
@@ -17,23 +18,33 @@ class Trades extends Component {
 
   render() {
     return (
-      <div className="card bg-light text-dark">
-        <div className="card-header">
-          Trades
-        </div>
-        <div className="card-body">
-          <table className="table table-light table-sm small">
-              <thead>
-                <tr>
-                  <th>Time</th>
-                  <th>DAPP</th>
-                  <th>ETH/DAPP</th>
-                </tr>
-              </thead>
-              { this.props.filledOrdersLoaded ? showFilledOrders(this.props.filledOrders) : <Spinner type="table" /> }
-            </table>
-        </div>
-      </div>
+      <Container>
+        <Row>
+          <Col sm={12}>
+            <PriceChart />
+          </Col>
+        </Row>
+        <Row>
+          <Col sm={12}>
+            <div className="card bg-light text-dark">
+              <div className="card-body">
+                <table className="table table-light table-sm small">
+                    <thead>
+                      <tr>
+                        <th>Time</th>
+                        <th>DAPP</th>
+                        <th>ETH/DAPP</th>
+                      </tr>
+                    </thead>
+                    { this.props.filledOrdersLoaded ? showFilledOrders(this.props.filledOrders) : <Spinner type="table" /> }
+                  </table>
+              </div>
+            </div>
+          </Col>
+        </Row>
+      </Container>
+
+      
     )
   }
 }

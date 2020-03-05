@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import { Nav, Dropdown, Form, FormControl, Button } from 'react-bootstrap'
+import { Navbar, Nav, Dropdown, Form, FormControl, Button } from 'react-bootstrap'
+import { Link } from "react-router-dom";
 import { connect } from 'react-redux'
 import { 
   addToken,
@@ -13,7 +14,7 @@ import {
   tokenSelector
 } from '../store/selectors'
 
-class Navbar extends Component {
+class Navigation extends Component {
 
   render() {
     const {
@@ -27,7 +28,7 @@ class Navbar extends Component {
 
     const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
       <a
-        href=""
+        href="/#"
         ref={ref}
         onClick={e => {
           e.preventDefault();
@@ -78,33 +79,45 @@ class Navbar extends Component {
       },
     );
 
-    
     return (
-      <Nav className="navbar navbar-expand-lg navbar-light bg-light">
-        <Dropdown>
-          <Dropdown.Toggle as={CustomToggle} id="dropdown-custom-components">
-            {token ? token.symbol : "select token"}
-          </Dropdown.Toggle>
-          <Dropdown.Menu as={CustomMenu}>
-            { tokenList.map((token) => renderTokenSelect(token, this.props)) }
-          </Dropdown.Menu>
-        </Dropdown>
-        <a className="navbar-brand" href="#/">ERC20 Token Exchange</a>
-        <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-          <span className="navbar-toggler-icon"></span>
-        </button>
-        <ul className="navbar-nav ml-auto">
-          <li className="nav-item">
-            <a
-              className="nav-link small"
-              href={`https://etherscan.io/address/${this.props.account}`}
-              target="_blank"
-              rel="noopener noreferrer">
-              {this.props.account}
-            </a>
-          </li>
-        </ul>
-      </Nav>
+      <div>
+      <Navbar bg="light" expand="lg">
+        <Navbar.Brand><Link to="/">Kouga Exchange</Link></Navbar.Brand>
+          <Nav variant="tabs" className="navbar navbar-expand-lg navbar-light bg-light" defaultActiveKey="market">
+            <Nav.Item>
+              <Dropdown>
+                <Dropdown.Toggle as={CustomToggle} id="dropdown-custom-components">
+                  {token ? token.symbol : "select token"}
+                </Dropdown.Toggle>
+                <Dropdown.Menu as={CustomMenu}>
+                  { tokenList.map((token) => renderTokenSelect(token, this.props)) }
+                </Dropdown.Menu>
+              </Dropdown>
+            </Nav.Item>
+            <Nav.Link as={Link} eventKey="market" to="/market">Market</Nav.Link>
+            <Nav.Link as={Link} eventKey="buy" to="/buy">Buy</Nav.Link>
+            <Nav.Link as={Link} eventKey="sell" to="/sell">Sell</Nav.Link>
+            <Nav.Link as={Link} eventKey="portfolio" to="/portfolio">Portfolio</Nav.Link>
+            <Nav.Link as={Link} eventKey="funds" to="/funds">Funds</Nav.Link>
+            <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+              <span className="navbar-toggler-icon"></span>
+            </button>
+            <ul className="navbar-nav ml-auto">
+              <li className="nav-item">
+                <a
+                  className="nav-link small"
+                  href={`https://etherscan.io/address/${this.props.account}`}
+                  target="_blank"
+                  rel="noopener noreferrer">
+                  {this.props.account}
+                </a>
+              </li>
+            </ul>
+          </Nav>
+      </Navbar>
+      
+      </div>
+      
     )
   }
 }
@@ -136,4 +149,4 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps)(Navbar)
+export default connect(mapStateToProps)(Navigation)

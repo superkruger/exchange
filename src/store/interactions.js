@@ -47,7 +47,6 @@ export const loadExchange = async (web3, networkId, dispatch) => {
 		dispatch(exchangeLoaded(exchange))
 
 		await loadAllTokens(exchange, dispatch)
-		subscribeToEvents(exchange, dispatch)
 		return exchange
 	} catch (error) {
 		console.log('Contract not deployed to the current network', error)
@@ -65,38 +64,56 @@ export const loadAllTokens = async (exchange, dispatch) => {
 	}
 }
 
-export const subscribeToEvents = async (exchange, dispatch) => {
+export const subscribeToEvents = async (tokenAddress, exchange, dispatch) => {
 	exchange.events.TokenAdded({}, (error, event) => {
 		dispatch(tokenAdded(event.returnValues))
 	})
-	exchange.events.Cancel({}, (error, event) => {
+	exchange.events.Cancel({filter: {tokenGet: [tokenAddress, ETHER_ADDRESS], tokenGive: [tokenAddress, ETHER_ADDRESS]}}, (error, event) => {
 		dispatch(orderCancelled(event.returnValues))
 	})
-	exchange.events.Trade({}, (error, event) => {
+	exchange.events.Trade({filter: {tokenGet: [tokenAddress, ETHER_ADDRESS], tokenGive: [tokenAddress, ETHER_ADDRESS]}}, (error, event) => {
 		dispatch(orderFilled(event.returnValues))
 	})
-	exchange.events.Deposit({}, (error, event) => {
+	exchange.events.Deposit({filter: {token: [tokenAddress, ETHER_ADDRESS]}}, (error, event) => {
 		dispatch(balancesLoaded())
 	})
-	exchange.events.Withdraw({}, (error, event) => {
+	exchange.events.Withdraw({filter: {token: [tokenAddress, ETHER_ADDRESS]}}, (error, event) => {
 		dispatch(balancesLoaded())
 	})
-	exchange.events.Order({}, (error, event) => {
+	exchange.events.Order({filter: {tokenGet: [tokenAddress, ETHER_ADDRESS], tokenGive: [tokenAddress, ETHER_ADDRESS]}}, (error, event) => {
 		dispatch(orderMade(event.returnValues))
 	})
 }
 
-export const loadAllOrders = async (exchange, dispatch) => {
+export const loadAllOrders = async (tokenAddress, exchange, dispatch) => {
 	try {
-		const cancelStream = await exchange.getPastEvents('Cancel', {fromBlock: 0})
+		const cancelStream = await exchange.getPastEvents(
+			'Cancel', 
+			{
+				filter: {tokenGet: [tokenAddress, ETHER_ADDRESS], tokenGive: [tokenAddress, ETHER_ADDRESS]},
+				fromBlock: 0
+			}
+		)
 		const cancelledOrders = cancelStream.map((event) => event.returnValues)
 		dispatch(cancelledOrdersLoaded(cancelledOrders))
 
-		const tradeStream = await exchange.getPastEvents('Trade', {fromBlock: 0})
+		const tradeStream = await exchange.getPastEvents(
+			'Trade', 
+			{
+				filter: {tokenGet: [tokenAddress, ETHER_ADDRESS], tokenGive: [tokenAddress, ETHER_ADDRESS]},
+				fromBlock: 0
+			}
+		)
 		const filledOrders = tradeStream.map((event) => event.returnValues)
 		dispatch(filledOrdersLoaded(filledOrders))
 
-		const orderStream = await exchange.getPastEvents('Order', {fromBlock: 0})
+		const orderStream = await exchange.getPastEvents(
+			'Order', 
+			{
+				filter: {tokenGet: [tokenAddress, ETHER_ADDRESS], tokenGive: [tokenAddress, ETHER_ADDRESS]},
+				fromBlock: 0
+			}
+		)
 		const allOrders = orderStream.map((event) => event.returnValues)
 		dispatch(allOrdersLoaded(allOrders))
 	} catch (error) {
@@ -128,6 +145,8 @@ export const selectToken = async (tokenAddress, tokens, account, exchange, web3,
 		token.contract = tokenContract
 
 		loadBalances(account, exchange, token, web3, dispatch)
+		loadAllOrders(tokenAddress, exchange, dispatch)
+		subscribeToEvents(tokenAddress, exchange, dispatch)
 
 		dispatch(tokenSelected(token))
 	} catch (error) {
