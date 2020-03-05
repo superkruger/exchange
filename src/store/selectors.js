@@ -1,7 +1,7 @@
 import { get, reject, groupBy, minBy, maxBy } from 'lodash'
 import { createSelector } from 'reselect'
 import moment from 'moment'
-import { ETHER_ADDRESS, tokens, ether, GREEN, RED, formatBalance } from '../helpers'
+import { ETHER_ADDRESS, GREEN, RED, formatBalance, weiToEther, weiToTokens } from '../helpers'
 
 const account = (state) => get(state, 'web3.account')
 export const accountSelector = createSelector(account, a => a)
@@ -99,10 +99,11 @@ export const filledOrdersLoadedSelector = createSelector(filledOrdersLoaded, fol
 const filledOrders = state => get(state, 'exchange.filledOrders.data', [])
 export const filledOrdersSelector = createSelector(
 	filledOrders,
-	(orders) => {
+	token,
+	(orders, token) => {
 		// sort ascending for price comparison
 		orders = orders.sort((a, b) => a.timestamp - b.timestamp)
-		orders = decorateFilledOrders(orders)
+		orders = decorateFilledOrders(orders, token)
 
 		// sort descending for display
 		orders = orders.sort((a, b) => b.timestamp - a.timestamp)
@@ -110,17 +111,17 @@ export const filledOrdersSelector = createSelector(
 	}
 )
 
-const decorateFilledOrders = (orders) => {
+const decorateFilledOrders = (orders, token) => {
 	let previousOrder = orders[0]
 	return orders.map((order) => {
-		order = decorateOrder(order)
+		order = decorateOrder(order, token)
 		order = decorateFilledOrder(order, previousOrder)
 		previousOrder = order
 		return order
 	})
 }
 
-const decorateOrder = (order) => {
+const decorateOrder = (order, token) => {
 	let etherAmount
 	let tokenAmount
 
@@ -138,8 +139,8 @@ const decorateOrder = (order) => {
 
 	return ({
 		...order,
-		etherAmount: ether(etherAmount),
-		tokenAmount: tokens(tokenAmount),
+		etherAmount: weiToEther(etherAmount),
+		tokenAmount: weiToTokens(tokenAmount, token.decimals),
 		tokenPrice,
 		formattedTimestamp: moment.unix(order.timestamp).format('hh:mm:ss D/M/Y')
 	})
@@ -188,8 +189,9 @@ export const orderBookLoadedSelector = createSelector(orderBookLoaded, obl => ob
 
 export const orderBookSelector = createSelector(
 	openOrders,
-	(orders) => {
-		orders = decorateOrderBookOrders(orders)
+	token,
+	(orders, token) => {
+		orders = decorateOrderBookOrders(orders, token)
 		// group by order type
 		orders = groupBy(orders, 'orderType')
 
@@ -209,9 +211,9 @@ export const orderBookSelector = createSelector(
 	}
 )
 
-const decorateOrderBookOrders = (orders) => {
+const decorateOrderBookOrders = (orders, token) => {
 	return orders.map((order) => {
-		order = decorateOrder(order)
+		order = decorateOrder(order, token)
 		order = decorateOrderBookOrder(order)
 		return order
 	})
@@ -229,8 +231,9 @@ const decorateOrderBookOrder = (order) => {
 
 export const depthChartSelector = createSelector(
 	openOrders,
-	(orders) => {
-		orders = decorateOrderBookOrders(orders)
+	token,
+	(orders, token) => {
+		orders = decorateOrderBookOrders(orders, token)
 		// group by order type
 		orders = groupBy(orders, 'orderType')
 
@@ -273,17 +276,18 @@ export const myFilledOrdersLoadedSelector = createSelector(filledOrdersLoaded, f
 export const myFilledOrdersSelector = createSelector(
 	account,
 	filledOrders,
-	(account, orders) => {
+	token,
+	(account, orders, token) => {
 		orders = orders.filter((o) => o.user === account || o.userFill === account)
-		orders = decorateMyFilledOrders(orders, account)
+		orders = decorateMyFilledOrders(orders, account, token)
 		return orders
 	}
 )
 
-const decorateMyFilledOrders = (orders, account) => {
+const decorateMyFilledOrders = (orders, account, token) => {
 	return (
 		orders.map((order) => {
-			order = decorateOrder(order)
+			order = decorateOrder(order, token)
 			order = decorateMyFilledOrder(order, account)
 			return order
 		})
@@ -312,18 +316,19 @@ export const myOpenOrdersLoadedSelector = createSelector(orderBookLoaded, obl =>
 export const myOpenOrdersSelector = createSelector(
 	account,
 	openOrders,
-	(account, orders) => {
+	token,
+	(account, orders, token) => {
 		orders = orders.filter((o) => o.user === account)
-		orders = decorateMyOpenOrders(orders, account)
+		orders = decorateMyOpenOrders(orders, account, token)
 		orders = orders.sort((a, b) => b.timestamp - a.timestamp)
 		return orders
 	}
 )
 
-const decorateMyOpenOrders = (orders, account) => {
+const decorateMyOpenOrders = (orders, account, token) => {
 	return (
 		orders.map((order) => {
-			order = decorateOrder(order)
+			order = decorateOrder(order, token)
 			order = decorateMyOpenOrder(order, account)
 			return order
 		})
@@ -343,9 +348,10 @@ export const priceChartLoadedSelector = createSelector(filledOrdersLoaded, loade
 
 export const priceChartSelector = createSelector(
 	filledOrders,
-	(orders) => {
+	token,
+	(orders, token) => {
 		orders = orders.sort((a, b) => a.timestamp - b.timestamp)
-		orders = orders.map((o) => decorateOrder(o))
+		orders = orders.map((o) => decorateOrder(o, token))
 
 		// get last two orders for final price
 		let secondLastOrder, lastOrder

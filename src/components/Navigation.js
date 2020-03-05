@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Navbar, Nav, Dropdown, Form, FormControl, Button } from 'react-bootstrap'
+import { Navbar, Nav, Dropdown, Form, FormControl, Button, Container, Row, Col } from 'react-bootstrap'
 import { Link } from "react-router-dom";
 import { connect } from 'react-redux'
 import { 
@@ -109,7 +109,16 @@ class Navigation extends Component {
                   href={`https://etherscan.io/address/${this.props.account}`}
                   target="_blank"
                   rel="noopener noreferrer">
-                  {this.props.account}
+                    <Container>
+                      <Row>
+                        <Col sm={2}>
+                          <img src="https://robohash.org/{this.props.account}.png?size=30x30"/>
+                        </Col>
+                        <Col sm={10}>
+                          {this.props.account}
+                        </Col>
+                      </Row>
+                    </Container>
                 </a>
               </li>
             </ul>

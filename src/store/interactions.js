@@ -25,7 +25,7 @@ import {
 	orderFilling,
 	orderFilled
 } from './actions.js'
-import { ETHER_ADDRESS } from '../helpers'
+import { ETHER_ADDRESS, tokensToWei, etherToWei } from '../helpers'
 
 export const loadWeb3 = (dispatch) => {
 	const web3 = new Web3(window['ethereum'] || Web3.givenProvider || 'http://127.0.0.1:7545');
@@ -198,7 +198,7 @@ export const loadBalances = async (account, exchange, token, web3, dispatch) => 
 }
 
 export const depositEther = (amount, account, web3, exchange, dispatch) => {
-	exchange.methods.depositEther.send({from: account, value: web3.utils.toWei(amount, 'ether')})
+	exchange.methods.depositEther().send({from: account, value: etherToWei(amount)})
 	.on('transactionHash', (hash) => {
 		dispatch(balancesLoading())
 	})
@@ -209,7 +209,7 @@ export const depositEther = (amount, account, web3, exchange, dispatch) => {
 }
 
 export const withdrawEther = (amount, account, web3, exchange, dispatch) => {
-	exchange.methods.withdrawEther(web3.utils.toWei(amount, 'ether')).send({from: account})
+	exchange.methods.withdrawEther(etherToWei(amount)).send({from: account})
 	.on('transactionHash', (hash) => {
 		dispatch(balancesLoading())
 	})
@@ -220,11 +220,11 @@ export const withdrawEther = (amount, account, web3, exchange, dispatch) => {
 }
 
 export const depositToken = (amount, account, web3, token, exchange, dispatch) => {
-	amount = web3.utils.toWei(amount, 'ether')
+	amount = tokensToWei(amount, token.decimals)
 
-	token.methods.approve(exchange.options.address, amount).send({from: account})
+	token.contract.methods.approve(exchange.options.address, amount).send({from: account})
 	.on('transactionHash', (hash) => {
-		exchange.methods.depositToken(token.options.address, amount).send({from: account})
+		exchange.methods.depositToken(token.contract.options.address, amount).send({from: account})
 		.on('transactionHash', (hash) => {
 			dispatch(balancesLoading())
 		})
@@ -236,7 +236,7 @@ export const depositToken = (amount, account, web3, token, exchange, dispatch) =
 }
 
 export const withdrawToken = (amount, account, web3, token, exchange, dispatch) => {
-	exchange.methods.withdrawToken(token.options.address, web3.utils.toWei(amount, 'ether')).send({from: account})
+	exchange.methods.withdrawToken(token.contract.options.address, tokensToWei(amount, token.decimals)).send({from: account})
 	.on('transactionHash', (hash) => {
 		dispatch(balancesLoading())
 	})
@@ -248,9 +248,9 @@ export const withdrawToken = (amount, account, web3, token, exchange, dispatch) 
 
 export const makeBuyOrder = (order, account, web3, token, exchange, dispatch) => {
 	const tokenGet = token.contract.options.address
-	const amountGet = web3.utils.toWei(order.amount, 'ether')
+	const amountGet = tokensToWei(order.amount, token.decimals)
 	const tokenGive = ETHER_ADDRESS
-	const amountGive = web3.utils.toWei((order.amount * order.price).toString(), 'ether')
+	const amountGive = etherToWei((order.amount * order.price).toString())
 
 	exchange.methods.makeOrder(tokenGet, amountGet, tokenGive, amountGive).send({from: account})
 	.on('transactionHash', (hash) => {
@@ -264,9 +264,9 @@ export const makeBuyOrder = (order, account, web3, token, exchange, dispatch) =>
 
 export const makeSellOrder = (order, account, web3, token, exchange, dispatch) => {
 	const tokenGet = ETHER_ADDRESS
-	const amountGet = web3.utils.toWei((order.amount * order.price).toString(), 'ether')
+	const amountGet = etherToWei((order.amount * order.price).toString())
 	const tokenGive = token.contract.options.address
-	const amountGive = web3.utils.toWei(order.amount, 'ether')
+	const amountGive = tokensToWei(order.amount, token.decimals)
 
 	exchange.methods.makeOrder(tokenGet, amountGet, tokenGive, amountGive).send({from: account})
 	.on('transactionHash', (hash) => {
