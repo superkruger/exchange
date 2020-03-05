@@ -9,6 +9,7 @@ import {
   orderBookLoadedSelector,
   exchangeSelector,
   accountSelector,
+  tokenSelector,
   orderFillingSelector,
   depthChartSelector 
 } from '../../store/selectors'
@@ -41,7 +42,7 @@ function showOrderBook(props, buys) {
           <Col sm={12}>
             <div className="card bg-light text-dark">
               <div className="card-body">
-                { showDepthChart(props.depthChart) }
+                { showDepthChart(props) }
               </div>
             </div>
           </Col>
@@ -73,15 +74,15 @@ function showOrderBook(props, buys) {
 }
 
 function showOrders(props, buys) {
-  const { orderBook } = props
+  const { orderBook, token } = props
   const orders = (buys ? orderBook.buyOrders : orderBook.sellOrders)
 
   return (
     <table>
       <thead>
         <tr>
-          <th>DAPP</th>
-          <th>ETH/DAPP</th>
+          <th>{token.symbol}</th>
+          <th>ETH/{token.symbol}</th>
           <th>ETH</th>
         </tr>
       </thead>
@@ -119,11 +120,11 @@ function renderOrder(order, props) {
   )
 }
 
-function showDepthChart(depthChart) {
-    console.log("DepthChart", depthChart.orders)
-    return (
-      <DepthChart data={depthChart.orders} priceTitle="ETH/DAPP" volumeTitle="DAPP" />
-    )
+function showDepthChart(props) {
+  const { token, depthChart } = props
+  return (
+    <DepthChart data={depthChart.orders} priceTitle={`ETH/${token.symbol}`} volumeTitle={token.symbol} />
+  )
 }
 
 function mapStateToProps(state) {
@@ -135,6 +136,7 @@ function mapStateToProps(state) {
     orderBook: orderBookSelector(state),
     exchange: exchangeSelector(state),
     account: accountSelector(state),
+    token: tokenSelector(state),
     depthChart: depthChartSelector(state)
   }
 }

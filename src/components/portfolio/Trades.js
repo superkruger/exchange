@@ -7,6 +7,7 @@ import {
   myFilledOrdersLoadedSelector,
   exchangeSelector,
   accountSelector,
+  tokenSelector,
   orderCancellingSelector
 } from '../../store/selectors'
 import { cancelOrder } from '../../store/interactions'
@@ -22,8 +23,8 @@ class Trades extends Component {
             <thead>
               <tr>
                 <th>Time</th>
-                <th>DAPP</th>
-                <th>ETH/DAPP</th>
+                <th>{this.props.token.symbol}</th>
+                <th>ETH/{this.props.token.symbol}</th>
               </tr>
             </thead>
             { this.props.myFilledOrdersLoaded ? showMyFilledOrders(this.props) : <Spinner type="table" /> }
@@ -59,7 +60,8 @@ function mapStateToProps(state) {
     myFilledOrdersLoaded: myFilledOrdersLoadedSelector(state),
     myFilledOrders: myFilledOrdersSelector(state),
     exchange: exchangeSelector(state),
-    account: accountSelector(state)
+    account: accountSelector(state),
+    token: tokenSelector(state)
   }
 }
 

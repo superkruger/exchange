@@ -5,8 +5,9 @@ import Chart from 'react-apexcharts'
 import Spinner from '../Spinner'
 import { chartOptions } from './PriceChart.config'
 import { 
+  tokenSelector,
   priceChartLoadedSelector,
-  priceChartSelector 
+  priceChartSelector
 } from '../../store/selectors'
 
 class PriceChart extends Component {
@@ -15,18 +16,20 @@ class PriceChart extends Component {
     return (
       <div className="card bg-light text-dark">
         <div className="card-body">
-          { this.props.priceChartLoaded ? showPriceChart(this.props.priceChart) : <Spinner type="div" /> }
+          { this.props.priceChartLoaded ? showPriceChart(this.props) : <Spinner type="div" /> }
         </div>
       </div>
     )
   }
 }
 
-const showPriceChart = (priceChart) => {
+const showPriceChart = (props) => {
+  const {token, priceChart} = props
+
   return (
     <div className="price-chart">
       <div className="price">
-        <h4>ETH/DAPP &nbsp; { priceSymbol(priceChart.lastPriceChange) } &nbsp; { priceChart.lastPrice }</h4>
+        <h4>ETH/{token.symbol} &nbsp; { priceSymbol(priceChart.lastPriceChange) } &nbsp; { priceChart.lastPrice }</h4>
       </div>
       <Chart options={chartOptions} series={priceChart.series} type='candlestick' width='100%' height='200px'/>
     </div>
@@ -45,6 +48,7 @@ const priceSymbol = (priceChange) => {
 
 function mapStateToProps(state) {
   return {
+    token: tokenSelector(state),
     priceChartLoaded: priceChartLoadedSelector(state),
     priceChart: priceChartSelector(state)
   }

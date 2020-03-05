@@ -7,6 +7,7 @@ import {
   myOpenOrdersLoadedSelector,
   exchangeSelector,
   accountSelector,
+  tokenSelector,
   orderCancellingSelector
 } from '../../store/selectors'
 import { cancelOrder } from '../../store/interactions'
@@ -21,7 +22,7 @@ class Orders extends Component {
             <thead>
               <tr>
                 <th>Amount</th>
-                <th>ETH/DAPP</th>
+                <th>ETH/{this.props.token.symbol}</th>
                 <th>Cancel</th>
               </tr>
             </thead>
@@ -62,7 +63,8 @@ function mapStateToProps(state) {
     myOpenOrdersLoaded: myOpenOrdersLoaded && !orderCancelling,
     myOpenOrders: myOpenOrdersSelector(state),
     exchange: exchangeSelector(state),
-    account: accountSelector(state)
+    account: accountSelector(state),
+    token: tokenSelector(state)
   }
 }
 

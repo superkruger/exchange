@@ -4,6 +4,7 @@ import { Container, Row, Col } from 'react-bootstrap'
 import Spinner from '../Spinner'
 import PriceChart from './PriceChart'
 import { 
+  tokenSelector,
   filledOrdersLoadedSelector,
   filledOrdersSelector 
 } from '../../store/selectors'
@@ -32,8 +33,8 @@ class Trades extends Component {
                     <thead>
                       <tr>
                         <th>Time</th>
-                        <th>DAPP</th>
-                        <th>ETH/DAPP</th>
+                        <th>{this.props.token.symbol}</th>
+                        <th>ETH/{this.props.token.symbol}</th>
                       </tr>
                     </thead>
                     { this.props.filledOrdersLoaded ? showFilledOrders(this.props.filledOrders) : <Spinner type="table" /> }
@@ -68,6 +69,7 @@ function showFilledOrders(orders) {
 
 function mapStateToProps(state) {
   return {
+    token: tokenSelector(state),
     filledOrdersLoaded: filledOrdersLoadedSelector(state),
     filledOrders: filledOrdersSelector(state)
   }

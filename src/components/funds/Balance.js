@@ -37,8 +37,6 @@ class Balance extends Component {
   }
 
   async loadBlockchainData(props) {
-    // const { account, exchange, token, web3, dispatch } = props
-    // loadBalances(account, exchange, token, web3, dispatch)
   }
 
   render() {
@@ -113,7 +111,7 @@ function showForm(props) {
           
           <tbody>
             <tr>
-              <td>DAPP</td>
+              <td>{token.symbol}</td>
               <td>{tokenBalance}</td>
               <td>{exchangeTokenBalance}</td>
             </tr>
@@ -127,7 +125,7 @@ function showForm(props) {
           <div className="col-12 col-sm pr-sm-2">
             <input
               type="text"
-              placeholder="DAPP Amount"
+              placeholder={`${token.symbol} Amount`}
               onChange={(e) => {dispatch(tokenDepositAmountChanged(e.target.value))}}
               className="form-control form-control-sm bg-light text-dark"
               required
@@ -181,7 +179,7 @@ function showForm(props) {
         <table className="table table-light table-sm small">
           <tbody>
             <tr>
-              <td>DAPP</td>
+              <td>{token.symbol}</td>
               <td>{tokenBalance}</td>
               <td>{exchangeTokenBalance}</td>
             </tr>
@@ -195,7 +193,7 @@ function showForm(props) {
           <div className="col-12 col-sm pr-sm-2">
             <input
               type="text"
-              placeholder="DAPP Amount"
+              placeholder={`${token.symbol} Amount`}
               onChange={(e) => {
                 console.log('etherWithdrawAmountChanged', e.target.value)
                 dispatch(tokenWithdrawAmountChanged(e.target.value))}}

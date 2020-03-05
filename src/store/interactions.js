@@ -25,7 +25,6 @@ import {
 	orderFilling,
 	orderFilled
 } from './actions.js'
-import { stringify } from 'json-stringify-safe';
 import { ETHER_ADDRESS } from '../helpers'
 
 export const loadWeb3 = (dispatch) => {
@@ -45,6 +44,7 @@ export const loadExchange = async (web3, networkId, dispatch) => {
 	try {
 		const exchange = await new web3.eth.Contract(Exchange.abi, Exchange.networks[networkId].address)
 		dispatch(exchangeLoaded(exchange))
+		subscribeToExchangeEvents(exchange, dispatch)
 
 		await loadAllTokens(exchange, dispatch)
 		return exchange
@@ -64,10 +64,13 @@ export const loadAllTokens = async (exchange, dispatch) => {
 	}
 }
 
-export const subscribeToEvents = async (tokenAddress, exchange, dispatch) => {
+export const subscribeToExchangeEvents = async (exchange, dispatch) => {
 	exchange.events.TokenAdded({}, (error, event) => {
 		dispatch(tokenAdded(event.returnValues))
 	})
+}
+
+export const subscribeToTokenEvents = async (tokenAddress, exchange, dispatch) => {
 	exchange.events.Cancel({filter: {tokenGet: [tokenAddress, ETHER_ADDRESS], tokenGive: [tokenAddress, ETHER_ADDRESS]}}, (error, event) => {
 		dispatch(orderCancelled(event.returnValues))
 	})
@@ -122,17 +125,40 @@ export const loadAllOrders = async (tokenAddress, exchange, dispatch) => {
 	}
 }
 
-export const addToken = async (tokenAddress, web3, account, exchange, dispatch) => {
+export const addToken = async (tokenAddress, tokens, web3, account, exchange, dispatch) => {
 	try {
+		// check if not already present
+		const index = tokens.findIndex(token => token.tokenAddress === tokenAddress)
+		if (index !== -1) {
+			throw "allready present" 
+		}
+
 		const tokenContract = await new web3.eth.Contract(Token.abi, tokenAddress)
+
+		// check if really ERC20
+		checkContractFunction(tokenContract, 'name()') // optional, but we need it
+		checkContractFunction(tokenContract, 'symbol()') // optional, but we need it
+		checkContractFunction(tokenContract, 'decimals()') // optional, but we need it
+		checkContractFunction(tokenContract, 'totalSupply()')
+		checkContractFunction(tokenContract, 'balanceOf(address)')
+		checkContractFunction(tokenContract, 'transfer(address,uint256)')
+		checkContractFunction(tokenContract, 'transferFrom(address,address,uint256)')
+		checkContractFunction(tokenContract, 'approve(address,uint256)')
+		checkContractFunction(tokenContract, 'allowance(address,address,uint256)')
+
 		const decimals = await tokenContract.methods.decimals().call()
 		const name = await tokenContract.methods.name().call()
 		const symbol = await tokenContract.methods.symbol().call()
 
-		console.log(`adding token at ${tokenContract.options.address}: ${name}, ${symbol}, ${decimals}`)
 		exchange.methods.addToken(tokenContract.options.address, name, symbol, decimals).send({from: account})
 	} catch (error) {
-		console.log('Could not add new token', error)
+		console.log('Could not add new token:', error)
+	}
+}
+
+const checkContractFunction = (contract, functionSignature) => {
+	if (contract.methods[functionSignature] === undefined) {
+		throw "Not an ERC20 token"
 	}
 }
 
@@ -146,7 +172,7 @@ export const selectToken = async (tokenAddress, tokens, account, exchange, web3,
 
 		loadBalances(account, exchange, token, web3, dispatch)
 		loadAllOrders(tokenAddress, exchange, dispatch)
-		subscribeToEvents(tokenAddress, exchange, dispatch)
+		subscribeToTokenEvents(tokenAddress, exchange, dispatch)
 
 		dispatch(tokenSelected(token))
 	} catch (error) {

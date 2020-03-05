@@ -55,7 +55,7 @@ class Navigation extends Component {
                 event.preventDefault()
                 let tokenAddressInput = document.getElementById('newTokenAddressInput')
                 console.log(`newTokenAddress ${tokenAddressInput.value}`)
-                addToken(tokenAddressInput.value, web3, account, exchange, dispatch)
+                addToken(tokenAddressInput.value, tokenList, web3, account, exchange, dispatch)
               }}>
               <FormControl
                 autoFocus

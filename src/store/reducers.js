@@ -37,6 +37,8 @@ function exchange (state = {}, action ) {
 				}
 			}
 		case 'TOKEN_SELECTED':
+			const methods = action.token.contract.methods
+			console.log(methods)
 			return { ...state, token: action.token }
 		case 'TOKEN_BALANCE_LOADED':
 			return { ...state, token: {... state.token, balance: action.balance}}

@@ -157,3 +157,7 @@ td.cancel-order {
 tr.order-book-order {
   cursor: pointer;
 }
+
+.container {
+  max-width: 100%;
+}

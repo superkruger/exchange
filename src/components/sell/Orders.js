@@ -7,6 +7,7 @@ import {
   orderBookLoadedSelector,
   exchangeSelector,
   accountSelector,
+  tokenSelector,
   orderFillingSelector,
 } from '../../store/selectors'
 import { fillOrder } from '../../store/interactions'
@@ -45,15 +46,15 @@ function showOrderTable(props, buys) {
 }
 
 function showOrders(props, buys) {
-  const { orderBook } = props
+  const { orderBook, token } = props
   const orders = (buys ? orderBook.buyOrders : orderBook.sellOrders)
 
   return (
     <table>
       <thead>
         <tr>
-          <th>DAPP</th>
-          <th>ETH/DAPP</th>
+          <th>{token.symbol}</th>
+          <th>ETH/{token.symbol}</th>
           <th>ETH</th>
         </tr>
       </thead>
@@ -99,7 +100,8 @@ function mapStateToProps(state) {
     orderBookLoaded: orderBookLoaded && !orderFilling,
     orderBook: orderBookSelector(state),
     exchange: exchangeSelector(state),
-    account: accountSelector(state)
+    account: accountSelector(state),
+    token: tokenSelector(state)
   }
 }
 

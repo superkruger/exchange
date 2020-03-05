@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { OverlayTrigger, Tooltip } from 'react-bootstrap'
+import { OverlayTrigger, Tooltip, Container, Row, Col } from 'react-bootstrap'
 import Spinner from '../Spinner'
 import { 
   orderBookSelector,
@@ -8,6 +8,7 @@ import {
   exchangeSelector,
   accountSelector,
   orderFillingSelector,
+  tokenSelector
 } from '../../store/selectors'
 import { fillOrder } from '../../store/interactions'
 
@@ -33,6 +34,9 @@ function showOrderTable(props, buys) {
   const orders = (buys ? orderBook.buyOrders : orderBook.sellOrders)
 
   return (
+    <Container>
+        <Row>
+          <Col sm={12}>
       <div className="card bg-light text-dark">
         <div className="card-header">
           Sell Orders
@@ -41,19 +45,22 @@ function showOrderTable(props, buys) {
           { showOrders(props, false) }
         </div>
       </div>
+          </Col>
+        </Row>
+      </Container>
   )
 }
 
 function showOrders(props, buys) {
-  const { orderBook } = props
+  const { orderBook, token } = props
   const orders = (buys ? orderBook.buyOrders : orderBook.sellOrders)
 
   return (
     <table>
       <thead>
         <tr>
-          <th>DAPP</th>
-          <th>ETH/DAPP</th>
+          <th>{token.symbol}</th>
+          <th>ETH/{token.symbol}</th>
           <th>ETH</th>
         </tr>
       </thead>
@@ -99,7 +106,8 @@ function mapStateToProps(state) {
     orderBookLoaded: orderBookLoaded && !orderFilling,
     orderBook: orderBookSelector(state),
     exchange: exchangeSelector(state),
-    account: accountSelector(state)
+    account: accountSelector(state),
+    token: tokenSelector(state)
   }
 }
 

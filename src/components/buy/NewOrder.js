@@ -57,7 +57,7 @@ const showForm = (props) => {
           makeBuyOrder(buyOrder, account, web3, token, exchange, dispatch)
         }}>
           <div className="form-group small">
-            <label>Buy Amount (DAPP)</label>
+            <label>Buy Amount ({token.symbol})</label>
             <div className="input-group">
               <input
                 type="text"
