@@ -28,9 +28,16 @@ export const tokensToWei = (t, tokenDecimals) => {
 	}
 }
 
-export const formatBalance = (balance) => {
+export const formatEtherBalance = (balance) => {
 	const precision = 100
 	balance = weiToEther(balance)
+	balance = Math.round(balance * precision) / precision
+	return balance
+}
+
+export const formatTokenBalance = (balance, decimals) => {
+	const precision = 100
+	balance = weiToTokens(balance, decimals)
 	balance = Math.round(balance * precision) / precision
 	return balance
 }

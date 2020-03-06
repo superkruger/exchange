@@ -1,7 +1,7 @@
 import { get, reject, groupBy, minBy, maxBy } from 'lodash'
 import { createSelector } from 'reselect'
 import moment from 'moment'
-import { ETHER_ADDRESS, GREEN, RED, formatBalance, weiToEther, weiToTokens } from '../helpers'
+import { ETHER_ADDRESS, GREEN, RED, formatEtherBalance, formatTokenBalance, weiToEther, weiToTokens } from '../helpers'
 
 const account = (state) => get(state, 'web3.account')
 export const accountSelector = createSelector(account, a => a)
@@ -34,32 +34,30 @@ const etherBalance = state => get(state, 'web3.balance')
 export const etherBalanceSelector = createSelector(
 	etherBalance, 
 	(balance) => {
-		console.log('etherBalance', balance)
-		return formatBalance(balance)
+		return formatEtherBalance(balance)
 	})
 
 const tokenBalance = state => get(state, 'exchange.token.balance')
 export const tokenBalanceSelector = createSelector(
 	tokenBalance, 
-	(balance) => {
-		console.log('tokenBalance', balance)
-		return formatBalance(balance)
+	token,
+	(balance, token) => {
+		return formatTokenBalance(balance, token.decimals)
 	})
 
 const exchangeEtherBalance = state => get(state, 'exchange.etherBalance')
 export const exchangeEtherBalanceSelector = createSelector(
 	exchangeEtherBalance, 
 	(balance) => {
-		console.log('exchangeEtherBalance', balance)
-		return formatBalance(balance)
+		return formatEtherBalance(balance)
 	})
 
 const exchangeTokenBalance = state => get(state, 'exchange.tokenBalance')
 export const exchangeTokenBalanceSelector = createSelector(
-	exchangeTokenBalance, 
-	(balance) => {
-		console.log('exchangeTokenBalance', balance)
-		return formatBalance(balance)
+	exchangeTokenBalance,
+	token, 
+	(balance, token) => {
+		return formatTokenBalance(balance, token.decimals)
 	})
 
 const etherDepositAmount = state => get(state, 'exchange.etherDepositAmount', null)

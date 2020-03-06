@@ -3,7 +3,7 @@ pragma solidity ^0.5.0;
 import "@openzeppelin/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20Detailed.sol";
 
-contract Token is ERC20Detailed {
+contract Token18 is ERC20Detailed {
 	using SafeMath for uint;
 
 	// variables
@@ -16,7 +16,7 @@ contract Token is ERC20Detailed {
 	event Transfer(address indexed from, address indexed to, uint256 value);
 	event Approval(address indexed owner, address indexed spender, uint256 value);
 
-	constructor() public ERC20Detailed("Dummy Token", "DTKN", 18) {
+	constructor() public ERC20Detailed("Demo Token 18", "DT18", 18) {
 		totalSupply = 1000000 * (10 ** 18);
 		balanceOf[msg.sender] = totalSupply;
 	}

@@ -1,6 +1,6 @@
 import Web3 from 'web3'
 import Exchange from '../contracts/abis/Exchange.json'
-import Token from '../contracts/abis/Token.json'
+import Token from '../contracts/abis/Token18.json'
 import { 
 	web3Loaded,
 	web3AccountLoaded,
