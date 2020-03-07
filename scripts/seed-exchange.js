@@ -19,13 +19,9 @@ const tokens18 = (n) => {
 }
 
 const tokens9 = (n) => {
-  let val = new web3.utils.BN(
+  return new web3.utils.BN(
     web3.utils.toWei(n.toString(), 'gwei')
   )
-
-  console.log(`tokens9 from ${n} to ${val}`)
-
-  return val
 }
 
 const wait = (seconds) => {
@@ -161,4 +157,3 @@ module.exports = async function(callback) {
 
   callback()
 }
-

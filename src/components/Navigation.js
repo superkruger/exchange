@@ -112,7 +112,7 @@ class Navigation extends Component {
                     <Container>
                       <Row>
                         <Col sm={2}>
-                          <img src="https://robohash.org/{this.props.account}.png?size=30x30"/>
+                          <img src={`https://robohash.org/${this.props.account}.png?size=30x30`}/>
                         </Col>
                         <Col sm={10}>
                           {this.props.account}

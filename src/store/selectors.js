@@ -131,14 +131,19 @@ const decorateOrder = (order, token) => {
 		tokenAmount = order.amountGive
 	}
 
+	etherAmount = weiToEther(etherAmount)
+	tokenAmount = weiToTokens(tokenAmount, token.decimals)
+
+	console.log(`decorateOrder - etherAmount: ${etherAmount}, tokenAmount: ${tokenAmount}`)
+
 	const precision = 100000
 	let tokenPrice = (etherAmount / tokenAmount)
 	tokenPrice = Math.round(tokenPrice * precision) / precision
 
 	return ({
 		...order,
-		etherAmount: weiToEther(etherAmount),
-		tokenAmount: weiToTokens(tokenAmount, token.decimals),
+		etherAmount: etherAmount,
+		tokenAmount: tokenAmount,
 		tokenPrice,
 		formattedTimestamp: moment.unix(order.timestamp).format('hh:mm:ss D/M/Y')
 	})
