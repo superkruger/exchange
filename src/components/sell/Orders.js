@@ -23,7 +23,7 @@ class Orders extends Component {
   render() {
     return (
       <div>
-      { this.props.orderBookLoaded ? showOrderTable(this.props, false) : <Spinner type='div'/> }
+      { this.props.orderBookLoaded ? showOrderTable(this.props, true) : <Spinner type='div'/> }
       </div>
     )
   }
@@ -35,9 +35,6 @@ function showOrderTable(props, buys) {
 
   return (
       <div className="card bg-light text-dark">
-        <div className="card-header">
-          Sell Orders
-        </div>
         <div className="card-body">
           { showOrders(props, buys) }
         </div>

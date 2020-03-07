@@ -208,7 +208,7 @@ export const orderBookSelector = createSelector(
 		const sellOrders = get(orders, 'sell', [])
 		orders = {
 			...orders,
-			sellOrders: sellOrders.sort((a,b) => b.tokenPrice - a.tokenPrice)
+			sellOrders: sellOrders.sort((a,b) => a.tokenPrice - b.tokenPrice)
 		}
 		return orders
 	}
