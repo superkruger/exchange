@@ -12,7 +12,7 @@ import {
 } from '../../store/selectors'
 import { cancelOrder } from '../../store/interactions'
 
-class Orders extends Component {
+class PortfolioOrders extends Component {
 
   render() {
     return (
@@ -68,6 +68,6 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps)(Orders)
+export default connect(mapStateToProps)(PortfolioOrders)
 
 

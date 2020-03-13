@@ -1,18 +1,18 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { OverlayTrigger, Tooltip, Container, Row, Col } from 'react-bootstrap'
+import { OverlayTrigger, Tooltip } from 'react-bootstrap'
 import Spinner from '../Spinner'
 import { 
   orderBookSelector,
   orderBookLoadedSelector,
   exchangeSelector,
   accountSelector,
+  tokenSelector,
   orderFillingSelector,
-  tokenSelector
 } from '../../store/selectors'
 import { fillOrder } from '../../store/interactions'
 
-class Orders extends Component {
+class SellOrders extends Component {
 	componentDidMount() {
 		this.loadBlockchainData(this.props)
 	}
@@ -23,7 +23,7 @@ class Orders extends Component {
   render() {
     return (
       <div>
-      { this.props.orderBookLoaded ? showOrderTable(this.props, false) : <Spinner type='div'/> }
+      { this.props.orderBookLoaded ? showOrderTable(this.props, true) : <Spinner type='div'/> }
       </div>
     )
   }
@@ -102,6 +102,6 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps)(Orders)
+export default connect(mapStateToProps)(SellOrders)
 
 

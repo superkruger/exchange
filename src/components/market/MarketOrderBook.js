@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { Container, Row, Col } from 'react-bootstrap'
 import { OverlayTrigger, Tooltip } from 'react-bootstrap'
 import Spinner from '../Spinner'
+import DepthChart from './DepthChart'
 import { 
   orderBookSelector,
   orderBookLoadedSelector,
@@ -9,10 +11,11 @@ import {
   accountSelector,
   tokenSelector,
   orderFillingSelector,
+  depthChartSelector 
 } from '../../store/selectors'
 import { fillOrder } from '../../store/interactions'
 
-class Orders extends Component {
+class MarketOrderBook extends Component {
 	componentDidMount() {
 		this.loadBlockchainData(this.props)
 	}
@@ -23,22 +26,50 @@ class Orders extends Component {
   render() {
     return (
       <div>
-      { this.props.orderBookLoaded ? showOrderTable(this.props, true) : <Spinner type='div'/> }
+      { this.props.orderBookLoaded ? showOrderBook(this.props) : <Spinner type='div'/> }
       </div>
     )
   }
 }
 
-function showOrderTable(props, buys) {
+function showOrderBook(props, buys) {
   const { orderBook } = props
   const orders = (buys ? orderBook.buyOrders : orderBook.sellOrders)
 
   return (
-      <div className="card bg-light text-dark">
-        <div className="card-body">
-          { showOrders(props, buys) }
-        </div>
-      </div>
+      <Container>
+        <Row>
+          <Col sm={12}>
+            <div className="card bg-light text-dark">
+              <div className="card-body">
+                { showDepthChart(props) }
+              </div>
+            </div>
+          </Col>
+        </Row>
+        <Row>
+          <Col sm={6}>
+            <div className="card bg-light text-dark">
+              <div className="card-header">
+                Buy Orders
+              </div>
+              <div className="card-body">
+                { showOrders(props, true) }
+              </div>
+            </div>
+          </Col>
+          <Col sm={6}>
+            <div className="card bg-light text-dark">
+              <div className="card-header">
+                Sell Orders
+              </div>
+              <div className="card-body">
+                { showOrders(props, false) }
+              </div>
+            </div>
+          </Col>
+        </Row>
+      </Container>
   )
 }
 
@@ -89,6 +120,13 @@ function renderOrder(order, props) {
   )
 }
 
+function showDepthChart(props) {
+  const { token, depthChart } = props
+  return (
+    <DepthChart data={depthChart.orders} priceTitle={`ETH/${token.symbol}`} volumeTitle={token.symbol} />
+  )
+}
+
 function mapStateToProps(state) {
   const orderBookLoaded = orderBookLoadedSelector(state)
   const orderFilling = orderFillingSelector(state)
@@ -98,10 +136,11 @@ function mapStateToProps(state) {
     orderBook: orderBookSelector(state),
     exchange: exchangeSelector(state),
     account: accountSelector(state),
-    token: tokenSelector(state)
+    token: tokenSelector(state),
+    depthChart: depthChartSelector(state)
   }
 }
 
-export default connect(mapStateToProps)(Orders)
+export default connect(mapStateToProps)(MarketOrderBook)
 
 

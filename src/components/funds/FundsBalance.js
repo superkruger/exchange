@@ -31,7 +31,7 @@ import {
   tokenWithdrawAmountChanged
 } from '../../store/actions'
 
-class Balance extends Component {
+class FundsBalance extends Component {
 	componentWillMount() {
     this.loadBlockchainData(this.props)
   }
@@ -233,6 +233,6 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps)(Balance)
+export default connect(mapStateToProps)(FundsBalance)
 
 

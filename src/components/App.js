@@ -1,17 +1,28 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import './App.css'
-import Navigation from './Navigation'
+import TopNav from './TopNav'
+import SideNav from './SideNav'
 import Routes from "./Routes"
 import { 
   loadWeb3, 
   loadAccount,
-  loadExchange 
+  loadExchange,
+  selectToken
 } from '../store/interactions'
-
-import { contractsLoadedSelector } from '../store/selectors'
+import { 
+  accountSelector, 
+  exchangeSelector,
+  web3Selector,
+  contractsLoadedSelector, 
+  sideNavShowSelector, 
+  tokenSelector, 
+  tokenListSelector
+} from '../store/selectors'
+import { web3AccountLoaded } from '../store/actions'
 
 class App extends Component {
+  state = {};
+
   componentDidMount() {
     this.loadBlockchainData(this.props.dispatch)
   }
@@ -19,6 +30,10 @@ class App extends Component {
   async loadBlockchainData(dispatch) {
       const web3 = loadWeb3(dispatch)
       await window.ethereum.enable();
+
+      window.ethereum.on('accountsChanged', function (accounts) {
+        dispatch(web3AccountLoaded(accounts[0]))
+      })
 
       // Acccounts now exposed
       const account = await loadAccount(web3, dispatch)
@@ -35,11 +50,41 @@ class App extends Component {
         return;
       }
   }
+
+  static getDerivedStateFromProps(props, state) {
+    console.log("props", props)
+    const {
+      token,
+      tokenList,
+      account,
+      exchange,
+      web3,
+      dispatch
+    } = props
+
+    if (token === null && tokenList.length > 0) {
+      selectToken(tokenList[0].tokenAddress, tokenList, account, exchange, web3, dispatch)
+    }
+
+    return state
+  }
+
   render() {
     return (
-      <div>
-        <Navigation/>
-        { this.props.contractsLoaded ? <Routes /> : <h3 className="content">Please select a token</h3>}
+      <div className={`sb-nav-fixed ${this.props.sideNavShow ? "" : "sb-sidenav-toggled"}`}>
+        <TopNav/>
+
+        <div id="layoutSidenav">
+          <SideNav/>
+          <div id="layoutSidenav_content">
+            <main>
+              <div className="container-fluid">
+                <Routes/>
+              </div>
+            </main>
+          </div>
+        </div>
+        
       </div>
     );
   }
@@ -47,7 +92,13 @@ class App extends Component {
 
 function mapStateToProps(state) {
   return {
-    contractsLoaded: contractsLoadedSelector(state)
+    account: accountSelector(state),
+    web3: web3Selector(state),
+    exchange: exchangeSelector(state),
+    contractsLoaded: contractsLoadedSelector(state),
+    sideNavShow: sideNavShowSelector(state),
+    token: tokenSelector(state),
+    tokenList: tokenListSelector(state)
   }
 }
 

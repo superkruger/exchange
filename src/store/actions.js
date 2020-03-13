@@ -196,3 +196,9 @@ export function orderFilled(order) {
 		order
 	}
 }
+
+export function sideNavShowHideToggled() {
+	return {
+		type: 'SIDE_NAV_SHOW_HIDE_TOGGLED'
+	}
+}

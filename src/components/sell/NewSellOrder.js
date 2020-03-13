@@ -1,22 +1,22 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import Spinner from '../Spinner'
-import { 
-  makeBuyOrder
+import {
+  makeSellOrder 
 } from '../../store/interactions'
 import {
   accountSelector, 
   exchangeSelector, 
   tokenSelector, 
   web3Selector,
-  buyOrderSelector
+  sellOrderSelector
 } from '../../store/selectors'
-import { 
-  buyOrderAmountChanged,
-  buyOrderPriceChanged
+import {
+  sellOrderAmountChanged,
+  sellOrderPriceChanged
 } from '../../store/actions'
 
-class NewOrder extends Component {
+class NewSellOrder extends Component {
 	
   render() {
     return (
@@ -38,59 +38,60 @@ const showForm = (props) => {
     exchange,
     token,
     account,
-    buyOrder,
-    showBuyTotal,
+    sellOrder,
+    showSellTotal,
     dispatch
   } = props
   return (
+    
     <form onSubmit={(event) => {
       event.preventDefault()
-      makeBuyOrder(buyOrder, account, web3, token, exchange, dispatch)
+      makeSellOrder(sellOrder, account, web3, token, exchange, dispatch)
     }}>
       <div className="form-group small">
-        <label>Buy Amount ({token.symbol})</label>
+        <label>Sell Amount ({token.symbol})</label>
         <div className="input-group">
           <input
             type="text"
-            placeholder="Buy Amount"
-            onChange={(e) => {dispatch(buyOrderAmountChanged(e.target.value))}}
+            placeholder="Sell Amount"
+            onChange={(e) => {dispatch(sellOrderAmountChanged(e.target.value))}}
             className="form-control form-control-sm bg-light text-dark"
             required
           />
         </div>
       </div>
       <div className="form-group small">
-        <label>Buy Price</label>
+        <label>Sell Price</label>
         <div className="input-group">
           <input
             type="text"
-            placeholder="Buy Price"
-            onChange={(e) => {dispatch(buyOrderPriceChanged(e.target.value))}}
+            placeholder="Sell Price"
+            onChange={(e) => {dispatch(sellOrderPriceChanged(e.target.value))}}
             className="form-control form-control-sm bg-light text-dark"
             required
           />
         </div>
       </div>
-      <button type="Submit" className="btn btn-primary btn-block btn-sm">Buy Order</button>
-      { showBuyTotal ? <small>Total: {buyOrder.amount * buyOrder.price} ETH</small> : null }
+      <button type="Submit" className="btn btn-primary btn-block btn-sm">Sell Order</button>
+      { showSellTotal ? <small>Total: {sellOrder.amount * sellOrder.price} ETH</small> : null }
     </form>
   )
 }
 
 function mapStateToProps(state) {
-  const buyOrder = buyOrderSelector(state)
+  const sellOrder = sellOrderSelector(state)
 
   return {
     account: accountSelector(state),
     exchange: exchangeSelector(state),
     token: tokenSelector(state),
     web3: web3Selector(state),
-    buyOrder,
-    showForm: !buyOrder.making,
-    showBuyTotal: buyOrder.amount && buyOrder.price
+    sellOrder,
+    showForm: !sellOrder.making,
+    showSellTotal: sellOrder.amount && sellOrder.price
   }
 }
 
-export default connect(mapStateToProps)(NewOrder)
+export default connect(mapStateToProps)(NewSellOrder)
 
 

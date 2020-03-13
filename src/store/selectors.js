@@ -2,6 +2,10 @@ import { get, reject, groupBy, minBy, maxBy } from 'lodash'
 import { createSelector } from 'reselect'
 import moment from 'moment'
 import { ETHER_ADDRESS, GREEN, RED, formatEtherBalance, formatTokenBalance, weiToEther, weiToTokens } from '../helpers'
+import { tokenSelected } from './actions'
+
+const sideNavShow = (state) => get(state, 'app.sideNavShow', true)
+export const sideNavShowSelector = createSelector(sideNavShow, s => s)
 
 const account = (state) => get(state, 'web3.account')
 export const accountSelector = createSelector(account, a => a)
@@ -133,8 +137,6 @@ const decorateOrder = (order, token) => {
 
 	etherAmount = weiToEther(etherAmount)
 	tokenAmount = weiToTokens(tokenAmount, token.decimals)
-
-	console.log(`decorateOrder - etherAmount: ${etherAmount}, tokenAmount: ${tokenAmount}`)
 
 	const precision = 100000
 	let tokenPrice = (etherAmount / tokenAmount)

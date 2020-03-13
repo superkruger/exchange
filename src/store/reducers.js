@@ -1,5 +1,17 @@
 import { combineReducers } from 'redux'
 
+function app (state = {}, action) {
+	switch (action.type) {
+		case 'SIDE_NAV_SHOW_HIDE_TOGGLED':
+			let show = state.sideNavShow
+			if (show === null || show === undefined) {
+				show = true
+			}
+			return {...state, sideNavShow: !show}
+		default:
+			return state
+	}
+}
 
 function web3 (state = {}, action ) {
 	switch (action.type) {
@@ -37,8 +49,6 @@ function exchange (state = {}, action ) {
 				}
 			}
 		case 'TOKEN_SELECTED':
-			const methods = action.token.contract.methods
-			console.log(methods)
 			return { ...state, token: action.token }
 		case 'TOKEN_BALANCE_LOADED':
 			return { ...state, token: {... state.token, balance: action.balance}}
@@ -135,6 +145,7 @@ function exchange (state = {}, action ) {
 }
 
 const rootReducer = combineReducers({
+	app,
 	web3,
 	exchange
 })
