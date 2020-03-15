@@ -10,6 +10,7 @@ import {
   exchangeSelector,
   accountSelector,
   tokenSelector,
+  tokenLoadingSelector,
   orderFillingSelector,
   depthChartSelector 
 } from '../../store/selectors'
@@ -78,7 +79,7 @@ function showOrders(props, buys) {
   const orders = (buys ? orderBook.buyOrders : orderBook.sellOrders)
 
   return (
-    <table>
+    <table className="table table-bordered table-light table-sm small" id="dataTable" width="100%" cellspacing="0">
       <thead>
         <tr>
           <th>{token.symbol}</th>
@@ -130,9 +131,10 @@ function showDepthChart(props) {
 function mapStateToProps(state) {
   const orderBookLoaded = orderBookLoadedSelector(state)
   const orderFilling = orderFillingSelector(state)
+  const tokenLoading = tokenLoadingSelector(state)
 
   return {
-    orderBookLoaded: orderBookLoaded && !orderFilling,
+    orderBookLoaded: !tokenLoading && orderBookLoaded && !orderFilling,
     orderBook: orderBookSelector(state),
     exchange: exchangeSelector(state),
     account: accountSelector(state),

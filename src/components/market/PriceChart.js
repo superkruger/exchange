@@ -6,6 +6,7 @@ import Spinner from '../Spinner'
 import { chartOptions } from './PriceChart.config'
 import { 
   tokenSelector,
+  tokenLoadingSelector,
   priceChartLoadedSelector,
   priceChartSelector
 } from '../../store/selectors'
@@ -47,9 +48,12 @@ const priceSymbol = (priceChange) => {
 }
 
 function mapStateToProps(state) {
+  const tokenLoading = tokenLoadingSelector(state)
+  const priceChartLoaded = priceChartLoadedSelector(state)
+    
   return {
     token: tokenSelector(state),
-    priceChartLoaded: priceChartLoadedSelector(state),
+    priceChartLoaded: priceChartLoaded && !tokenLoading,
     priceChart: priceChartSelector(state)
   }
 }

@@ -26,6 +26,12 @@ export function tokenAdded(token) {
 	}
 }
 
+export function selectingToken() {
+	return {
+		type: 'SELECTING_TOKEN'
+	}
+}
+
 export function tokenSelected(token) {
 	return {
 		type: 'TOKEN_SELECTED',

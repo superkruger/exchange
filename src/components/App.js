@@ -72,6 +72,7 @@ class App extends Component {
   render() {
     return (
       <div className={`sb-nav-fixed ${this.props.sideNavShow ? "" : "sb-sidenav-toggled"}`}>
+
         <TopNav/>
 
         <div id="layoutSidenav">
@@ -79,7 +80,7 @@ class App extends Component {
           <div id="layoutSidenav_content">
             <main>
               <div className="container-fluid">
-                <Routes/>
+                <Routes />
               </div>
             </main>
           </div>

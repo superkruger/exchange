@@ -47,7 +47,7 @@ function showOrders(props, buys) {
   const orders = (buys ? orderBook.buyOrders : orderBook.sellOrders)
 
   return (
-    <table>
+    <table className="table table-bordered table-light table-sm small" id="dataTable" width="100%" cellspacing="0">
       <thead>
         <tr>
           <th>{token.symbol}</th>

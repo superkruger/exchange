@@ -8,6 +8,7 @@ import {
   exchangeSelector,
   accountSelector,
   tokenSelector,
+  tokenLoadingSelector,
   orderCancellingSelector
 } from '../../store/selectors'
 import { cancelOrder } from '../../store/interactions'
@@ -18,16 +19,9 @@ class PortfolioOrders extends Component {
     return (
       <div className="card bg-light text-dark">
         <div className="card-body">
-          <table className="table table-light table-sm small">
-            <thead>
-              <tr>
-                <th>Amount</th>
-                <th>ETH/{this.props.token.symbol}</th>
-                <th>Cancel</th>
-              </tr>
-            </thead>
-            { this.props.myOpenOrdersLoaded ? showMyOpenOrders(this.props) : <Spinner type="table" /> }
-          </table>
+          
+            { this.props.myOpenOrdersLoaded ? showMyOpenOrders(this.props) : <Spinner type="div" /> }
+          
         </div>
       </div>
     )
@@ -35,32 +29,43 @@ class PortfolioOrders extends Component {
 }
 
 function showMyOpenOrders(props) {
-  const { myOpenOrders, dispatch, exchange, account } = props
+  const { myOpenOrders, dispatch, exchange, account, token } = props
   return (
-    <tbody>
-    { myOpenOrders.map((order) => {
-        return (
-            <tr key={order.id}>
-              <td className={`text-${order.orderTypeClass}`}>{order.tokenAmount}</td>
-              <td className={`text-${order.orderTypeClass}`}>{order.tokenPrice}</td>
-              <td 
-              className="text-muted cancel-order"
-              onClick={(e) => {
-                cancelOrder(order, account, exchange, dispatch)
-              }}>x</td>
-            </tr>
-        )
-      })
-    }
-    </tbody>
+    <table className="table table-bordered table-light table-sm small" id="dataTable" width="100%" cellspacing="0">
+      <thead>
+        <tr>
+          <th>Amount</th>
+          <th>ETH/{token.symbol}</th>
+          <th>Cancel</th>
+        </tr>
+      </thead>
+      <tbody>
+      { myOpenOrders.map((order) => {
+          return (
+              <tr key={order.id}>
+                <td className={`text-${order.orderTypeClass}`}>{order.tokenAmount}</td>
+                <td className={`text-${order.orderTypeClass}`}>{order.tokenPrice}</td>
+                <td 
+                className="text-muted cancel-order"
+                onClick={(e) => {
+                  cancelOrder(order, account, exchange, dispatch)
+                }}>x</td>
+              </tr>
+          )
+        })
+      }
+      </tbody>
+    </table>
   )
 }
 
 function mapStateToProps(state) {
   const myOpenOrdersLoaded = myOpenOrdersLoadedSelector(state)
   const orderCancelling = orderCancellingSelector(state)
+  const tokenLoading = tokenLoadingSelector(state)
+
   return {
-    myOpenOrdersLoaded: myOpenOrdersLoaded && !orderCancelling,
+    myOpenOrdersLoaded: !tokenLoading && myOpenOrdersLoaded && !orderCancelling,
     myOpenOrders: myOpenOrdersSelector(state),
     exchange: exchangeSelector(state),
     account: accountSelector(state),

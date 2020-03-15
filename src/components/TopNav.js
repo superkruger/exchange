@@ -87,7 +87,7 @@ class TopNav extends Component {
 
     return (
       <div>
-        <nav className="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+        <nav className="sb-topnav navbar navbar-expand navbar-light bg-light">
             <a className="navbar-brand" href="/#">Kouga</a>
             <button className="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#" 
               onClick={
@@ -111,7 +111,7 @@ class TopNav extends Component {
                     <div className="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
                         <div className="dropdown-item">{this.props.account}</div>
                         <div className="dropdown-divider"></div>
-                        <a className="dropdown-item" href="/settings">Settings</a>
+                        <Link className="dropdown-item" to="/settings">Settings</Link>
                     </div>
                 </li>
             </ul>

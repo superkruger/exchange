@@ -13,6 +13,7 @@ import {
   accountSelector, 
   exchangeSelector, 
   tokenSelector, 
+  tokenLoadingSelector, 
   web3Selector,
   balancesLoadingSelector,
   etherBalanceSelector,
@@ -72,7 +73,7 @@ function showForm(props) {
   return(
     <Tabs defaultActiveKey="deposit" className="bg-light text-dark">
       <Tab eventKey="deposit" title="Deposit" className="bg-light">
-        <table className="table table-light table-sm small">
+        <table className="table table-bordered table-light table-sm small" id="dataTable" width="100%" cellspacing="0">
           <thead>
             <tr>
               <th>Token</th>
@@ -213,19 +214,19 @@ function showForm(props) {
 
 function mapStateToProps(state) {
   const balancesLoading = balancesLoadingSelector(state)
-  const token = tokenSelector(state)
+  const tokenLoading = tokenLoadingSelector(state)
 
   return {
     account: accountSelector(state),
     exchange: exchangeSelector(state),
-    token: token,
+    token: tokenSelector(state),
     web3: web3Selector(state),
     etherBalance: etherBalanceSelector(state),
     tokenBalance: tokenBalanceSelector(state),
     exchangeEtherBalance: exchangeEtherBalanceSelector(state),
     exchangeTokenBalance: exchangeTokenBalanceSelector(state),
     balancesLoading,
-    showForm: token && !balancesLoading,
+    showForm: !tokenLoading && !balancesLoading,
     etherDepositAmount: etherDepositAmountSelector(state),
     etherWithdrawAmount: etherWithdrawAmountSelector(state),
     tokenDepositAmount: tokenDepositAmountSelector(state),

@@ -48,8 +48,10 @@ function exchange (state = {}, action ) {
 					data
 				}
 			}
+		case 'SELECTING_TOKEN': 
+			return { ...state, tokenLoading: true }
 		case 'TOKEN_SELECTED':
-			return { ...state, token: action.token }
+			return { ...state, token: action.token, tokenLoading: false }
 		case 'TOKEN_BALANCE_LOADED':
 			return { ...state, token: {... state.token, balance: action.balance}}
 		case 'EXCHANGE_ETHER_BALANCE_LOADED':

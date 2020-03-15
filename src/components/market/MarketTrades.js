@@ -6,6 +6,7 @@ import PriceChart from './PriceChart'
 import {
   contractsLoadedSelector,
   tokenSelector,
+  tokenLoadingSelector,
   filledOrdersLoadedSelector,
   filledOrdersSelector 
 } from '../../store/selectors'
@@ -32,7 +33,7 @@ class MarketTrades extends Component {
               <Col sm={12}>
                 <div className="card bg-light text-dark">
                   <div className="card-body">
-                    <table className="table table-light table-sm small">
+                    <table className="table table-bordered table-light table-sm small" id="dataTable" width="100%" cellspacing="0">
                         <thead>
                           <tr>
                             <th>Time</th>
@@ -73,10 +74,13 @@ function showFilledOrders(orders) {
 }
 
 function mapStateToProps(state) {
+  const tokenLoading = tokenLoadingSelector(state)
+  const filledOrdersLoaded = filledOrdersLoadedSelector(state)
+
   return {
     contractsLoaded: contractsLoadedSelector(state),
     token: tokenSelector(state),
-    filledOrdersLoaded: filledOrdersLoadedSelector(state),
+    filledOrdersLoaded: filledOrdersLoaded && !tokenLoading,
     filledOrders: filledOrdersSelector(state)
   }
 }

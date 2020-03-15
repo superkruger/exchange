@@ -7,6 +7,7 @@ import {
 	exchangeLoaded,
 	networkIdSet,
 	tokenAdded,
+	selectingToken,
 	tokenSelected,
 	etherBalanceLoaded,
 	tokenBalanceLoaded,
@@ -164,14 +165,15 @@ const checkContractFunction = (contract, functionSignature) => {
 
 export const selectToken = async (tokenAddress, tokens, account, exchange, web3, dispatch) => {
 	try {
-		console.log(tokens)
+		dispatch(selectingToken())
+
 		const index = tokens.findIndex(token => token.tokenAddress === tokenAddress)
 		let token = tokens[index]
 		const tokenContract = await new web3.eth.Contract(Token.abi, token.tokenAddress)
 		token.contract = tokenContract
 
-		loadBalances(account, exchange, token, web3, dispatch)
-		loadAllOrders(tokenAddress, exchange, dispatch)
+		await loadBalances(account, exchange, token, web3, dispatch)
+		await loadAllOrders(tokenAddress, exchange, dispatch)
 		subscribeToTokenEvents(tokenAddress, exchange, dispatch)
 
 		dispatch(tokenSelected(token))

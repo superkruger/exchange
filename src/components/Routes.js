@@ -17,15 +17,15 @@ export default function Routes() {
   	<Switch>
       <Route path="/" exact component={Home} />
       <Route path="/settings" component={Settings} />
-      <Route path="/market/orderbook" component={MarketOrderBook} />
-      <Route path="/market/trades" component={MarketTrades} />
-      <Route path="/buy/orders" component={BuyOrders} />
-      <Route path="/buy/neworder" component={NewBuyOrder} />
-      <Route path="/sell/orders" component={SellOrders} />
-      <Route path="/sell/neworder" component={NewSellOrder}/>
-      <Route path="/portfolio/orders" component={PortfolioOrders} />
-      <Route path="/portfolio/trades" component={PortfolioTrades} />
-      <Route path="/funds/balance" component={FundsBalance} />
+      <Route path="/market-orderbook" component={MarketOrderBook} />
+      <Route path="/market-trades" component={MarketTrades} />
+      <Route path="/buy-orders" component={BuyOrders} />
+      <Route path="/buy-neworder" component={NewBuyOrder} />
+      <Route path="/sell-orders" component={SellOrders} />
+      <Route path="/sell-neworder" component={NewSellOrder}/>
+      <Route path="/portfolio-orders" component={PortfolioOrders} />
+      <Route path="/portfolio-trades" component={PortfolioTrades} />
+      <Route path="/funds-balance" component={FundsBalance} />
     </Switch>
   );
 }

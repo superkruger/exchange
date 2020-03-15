@@ -25,6 +25,9 @@ export const tokenListSelector = createSelector(tokenList, t => t)
 const token = state => get(state, 'exchange.token', null)
 export const tokenSelector = createSelector(token, t => t)
 
+const tokenLoading = state => get(state, 'exchange.tokenLoading', true)
+export const tokenLoadingSelector = createSelector(tokenLoading, t => t)
+
 export const contractsLoadedSelector = createSelector(
 	exchangeLoaded,
 	token,
@@ -46,6 +49,9 @@ export const tokenBalanceSelector = createSelector(
 	tokenBalance, 
 	token,
 	(balance, token) => {
+		if (!token) {
+			return null
+		}
 		return formatTokenBalance(balance, token.decimals)
 	})
 
@@ -61,6 +67,9 @@ export const exchangeTokenBalanceSelector = createSelector(
 	exchangeTokenBalance,
 	token, 
 	(balance, token) => {
+		if (!token) {
+			return null
+		}
 		return formatTokenBalance(balance, token.decimals)
 	})
 
