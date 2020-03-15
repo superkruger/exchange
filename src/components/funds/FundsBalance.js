@@ -73,7 +73,7 @@ function showForm(props) {
   return(
     <Tabs defaultActiveKey="deposit" className="bg-light text-dark">
       <Tab eventKey="deposit" title="Deposit" className="bg-light">
-        <table className="table table-bordered table-light table-sm small" id="dataTable" width="100%" cellspacing="0">
+        <table className="table table-bordered table-light table-sm small" id="dataTable" width="100%">
           <thead>
             <tr>
               <th>Token</th>

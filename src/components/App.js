@@ -70,6 +70,13 @@ class App extends Component {
   }
 
   render() {
+
+    if (!this.props.exchange) {
+      return (
+        <h3>Waiting to be connected to the network</h3>
+      )
+    }
+
     return (
       <div className={`sb-nav-fixed ${this.props.sideNavShow ? "" : "sb-sidenav-toggled"}`}>
 

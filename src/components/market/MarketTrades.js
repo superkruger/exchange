@@ -33,7 +33,7 @@ class MarketTrades extends Component {
               <Col sm={12}>
                 <div className="card bg-light text-dark">
                   <div className="card-body">
-                    <table className="table table-bordered table-light table-sm small" id="dataTable" width="100%" cellspacing="0">
+                    <table className="table table-bordered table-light table-sm small" id="dataTable" width="100%">
                         <thead>
                           <tr>
                             <th>Time</th>

@@ -31,7 +31,7 @@ class Navigation extends Component {
 
                         <a className="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseMarket" aria-expanded="false" aria-controls="collapseMarket">
                           <div className="sb-nav-link-icon">
-                            <i className="fas fa-columns"></i>
+                            <i className="fas fa-chart-line"></i>
                           </div>
                           Market
                           <div className="sb-sidenav-collapse-arrow">
@@ -47,7 +47,7 @@ class Navigation extends Component {
 
                         <a className="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseBuy" aria-expanded="false" aria-controls="collapseBuy">
                           <div className="sb-nav-link-icon">
-                            <i className="fas fa-columns"></i>
+                            <i className="fas fa-arrow-alt-circle-down"></i>
                           </div>
                           Buy
                           <div className="sb-sidenav-collapse-arrow">
@@ -63,7 +63,7 @@ class Navigation extends Component {
 
                         <a className="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSell" aria-expanded="false" aria-controls="collapseSell">
                           <div className="sb-nav-link-icon">
-                            <i className="fas fa-columns"></i>
+                            <i className="fas fa-arrow-alt-circle-up"></i>
                           </div>
                           Sell
                           <div className="sb-sidenav-collapse-arrow">
@@ -79,7 +79,7 @@ class Navigation extends Component {
 
                         <a className="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePortfolio" aria-expanded="false" aria-controls="collapsePortfolio">
                           <div className="sb-nav-link-icon">
-                            <i className="fas fa-columns"></i>
+                            <i className="fas fa-list"></i>
                           </div>
                           Portfolio
                           <div className="sb-sidenav-collapse-arrow">
@@ -95,7 +95,7 @@ class Navigation extends Component {
 
                         <a className="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFunds" aria-expanded="false" aria-controls="collapseFunds">
                           <div className="sb-nav-link-icon">
-                            <i className="fas fa-columns"></i>
+                            <i className="fas fa-money-bill"></i>
                           </div>
                           Funds
                           <div className="sb-sidenav-collapse-arrow">

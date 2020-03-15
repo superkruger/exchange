@@ -183,6 +183,7 @@ export const selectToken = async (tokenAddress, tokens, account, exchange, web3,
 }
 
 export const loadBalances = async (account, exchange, token, web3, dispatch) => {
+	dispatch(balancesLoading())
 	
 	const etherBalance = await web3.eth.getBalance(account)
 	dispatch(etherBalanceLoaded(etherBalance))

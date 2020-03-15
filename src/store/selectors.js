@@ -44,30 +44,30 @@ export const etherBalanceSelector = createSelector(
 		return formatEtherBalance(balance)
 	})
 
-const tokenBalance = state => get(state, 'exchange.token.balance')
+const tokenBalance = state => get(state, 'exchange.tokenBalance')
 export const tokenBalanceSelector = createSelector(
 	tokenBalance, 
 	token,
 	(balance, token) => {
-		if (!token) {
+		if (!token || !balance) {
 			return null
 		}
 		return formatTokenBalance(balance, token.decimals)
 	})
 
-const exchangeEtherBalance = state => get(state, 'exchange.etherBalance')
+const exchangeEtherBalance = state => get(state, 'exchange.exchangeEtherBalance')
 export const exchangeEtherBalanceSelector = createSelector(
 	exchangeEtherBalance, 
 	(balance) => {
 		return formatEtherBalance(balance)
 	})
 
-const exchangeTokenBalance = state => get(state, 'exchange.tokenBalance')
+const exchangeTokenBalance = state => get(state, 'exchange.exchangeTokenBalance')
 export const exchangeTokenBalanceSelector = createSelector(
 	exchangeTokenBalance,
 	token, 
 	(balance, token) => {
-		if (!token) {
+		if (!token || !balance) {
 			return null
 		}
 		return formatTokenBalance(balance, token.decimals)
@@ -133,6 +133,7 @@ const decorateFilledOrders = (orders, token) => {
 }
 
 const decorateOrder = (order, token) => {
+
 	let etherAmount
 	let tokenAmount
 
@@ -145,7 +146,7 @@ const decorateOrder = (order, token) => {
 	}
 
 	etherAmount = weiToEther(etherAmount)
-	tokenAmount = weiToTokens(tokenAmount, token.decimals)
+	tokenAmount = weiToTokens(tokenAmount, token ? token.decimals : 18)
 
 	const precision = 100000
 	let tokenPrice = (etherAmount / tokenAmount)

@@ -29,7 +29,7 @@ class PortfolioTrades extends Component {
 function showMyFilledOrders(props) {
   const { myFilledOrders, token } = props
   return (
-    <table className="table table-bordered table-light table-sm small" id="dataTable" width="100%" cellspacing="0">
+    <table className="table table-bordered table-light table-sm small" id="dataTable" width="100%">
       <thead>
         <tr>
           <th>Time</th>
@@ -49,7 +49,7 @@ function showMyFilledOrders(props) {
         })
       }
       </tbody>
-      </table>
+    </table>
   )
 }
 

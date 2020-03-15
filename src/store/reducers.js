@@ -53,11 +53,11 @@ function exchange (state = {}, action ) {
 		case 'TOKEN_SELECTED':
 			return { ...state, token: action.token, tokenLoading: false }
 		case 'TOKEN_BALANCE_LOADED':
-			return { ...state, token: {... state.token, balance: action.balance}}
-		case 'EXCHANGE_ETHER_BALANCE_LOADED':
-			return { ...state, etherBalance: action.balance}
-		case 'EXCHANGE_TOKEN_BALANCE_LOADED':
 			return { ...state, tokenBalance: action.balance}
+		case 'EXCHANGE_ETHER_BALANCE_LOADED':
+			return { ...state, exchangeEtherBalance: action.balance}
+		case 'EXCHANGE_TOKEN_BALANCE_LOADED':
+			return { ...state, exchangeTokenBalance: action.balance}
 		case 'BALANCES_LOADING':
 			return { ...state, balancesLoading: true} 
 		case 'BALANCES_LOADED':
