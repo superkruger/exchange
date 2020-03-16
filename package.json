@@ -2,6 +2,11 @@
   "name": "exchange",
   "version": "0.1.0",
   "private": true,
+  "description": "Decentralized ERC20 Token Exchange",
+  "author": "superkruger@gmail.com",
+  "engines": {
+    "node": "9.10.0"
+  },
   "dependencies": {
     "@amcharts/amcharts4": "^4.9.1",
     "@amcharts/amcharts4-geodata": "^4.1.12",
