@@ -4,9 +4,9 @@ import Settings from "./Settings";
 import Home from "./Home";
 import MarketOrderBook from "./market/MarketOrderBook";
 import MarketTrades from './market/MarketTrades'
-import BuyOrders from './buy/BuyOrders'
+import SellOrders from './buy/SellOrders'
 import NewBuyOrder from './buy/NewBuyOrder'
-import SellOrders from './sell/SellOrders'
+import BuyOrders from './sell/BuyOrders'
 import NewSellOrder from './sell/NewSellOrder'
 import PortfolioOrders from './portfolio/PortfolioOrders'
 import PortfolioTrades from './portfolio/PortfolioTrades'
@@ -19,9 +19,9 @@ export default function Routes() {
       <Route path="/settings" component={Settings} />
       <Route path="/market-orderbook" component={MarketOrderBook} />
       <Route path="/market-trades" component={MarketTrades} />
-      <Route path="/buy-orders" component={BuyOrders} />
+      <Route path="/buy-orders" component={SellOrders} />
       <Route path="/buy-neworder" component={NewBuyOrder} />
-      <Route path="/sell-orders" component={SellOrders} />
+      <Route path="/sell-orders" component={BuyOrders} />
       <Route path="/sell-neworder" component={NewSellOrder}/>
       <Route path="/portfolio-orders" component={PortfolioOrders} />
       <Route path="/portfolio-trades" component={PortfolioTrades} />

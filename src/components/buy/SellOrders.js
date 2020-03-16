@@ -8,11 +8,12 @@ import {
   exchangeSelector,
   accountSelector,
   orderFillingSelector,
-  tokenSelector
+  tokenSelector,
+  tokenLoadingSelector
 } from '../../store/selectors'
 import { fillOrder } from '../../store/interactions'
 
-class BuyOrders extends Component {
+class SellOrders extends Component {
 	componentDidMount() {
 		this.loadBlockchainData(this.props)
 	}
@@ -92,9 +93,10 @@ function renderOrder(order, props) {
 function mapStateToProps(state) {
   const orderBookLoaded = orderBookLoadedSelector(state)
   const orderFilling = orderFillingSelector(state)
+  const tokenLoading = tokenLoadingSelector(state)
 
   return {
-    orderBookLoaded: orderBookLoaded && !orderFilling,
+    orderBookLoaded: !tokenLoading && orderBookLoaded && !orderFilling,
     orderBook: orderBookSelector(state),
     exchange: exchangeSelector(state),
     account: accountSelector(state),
@@ -102,6 +104,6 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps)(BuyOrders)
+export default connect(mapStateToProps)(SellOrders)
 
 

@@ -56,7 +56,7 @@ class Navigation extends Component {
                         </a>
                         <div className="collapse" id="collapseBuy" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
                           <nav className="sb-sidenav-menu-nested nav">
-                            <Link className="nav-link" to="/buy-orders">Buy Orders</Link>
+                            <Link className="nav-link" to="/buy-orders">Sell Orders</Link>
                             <Link className="nav-link" to="/buy-neworder">New Buy Order</Link>
                           </nav>
                         </div>
@@ -72,7 +72,7 @@ class Navigation extends Component {
                         </a>
                         <div className="collapse" id="collapseSell" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
                           <nav className="sb-sidenav-menu-nested nav">
-                            <Link className="nav-link" to="/sell-orders">Sell Orders</Link>
+                            <Link className="nav-link" to="/sell-orders">Buy Orders</Link>
                             <Link className="nav-link" to="/sell-neworder">New Sell Order</Link>
                           </nav>
                         </div>
