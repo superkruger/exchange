@@ -27,7 +27,7 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.4.0",
     "@testing-library/user-event": "^7.2.1",
-    "apexcharts": "3.6.3",
+    "apexcharts": "3.16.1",
     "bootstrap": "4.4.1",
     "chai": "4.2.0",
     "chai-as-promised": "7.1.1",
