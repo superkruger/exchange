@@ -35,7 +35,7 @@ class App extends Component {
         dispatch(web3AccountLoaded(accounts[0]))
       })
 
-      ethereum.on('chainChanged', () => {
+      window.ethereum.on('chainChanged', () => {
         document.location.reload()
       })
 
