@@ -35,6 +35,10 @@ class App extends Component {
         dispatch(web3AccountLoaded(accounts[0]))
       })
 
+      ethereum.on('chainChanged', () => {
+        document.location.reload()
+      })
+
       // Acccounts now exposed
       const account = await loadAccount(web3, dispatch)
       console.log('account', account)
@@ -73,7 +77,7 @@ class App extends Component {
 
     if (!this.props.exchange) {
       return (
-        <h3>Waiting to be connected to the network</h3>
+        <h3>Waiting to be connected to the {process.env.NETWORK_NAME} network</h3>
       )
     }
 
