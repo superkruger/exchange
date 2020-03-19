@@ -50,7 +50,7 @@ class App extends Component {
 
       const exchange = await loadExchange(web3, networkId, dispatch)
       if (!exchange) {
-        window.alert('Exchange smart contract not detected on current network');
+        // window.alert('Exchange smart contract not detected on current network');
         return;
       }
   }
