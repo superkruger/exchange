@@ -40,8 +40,8 @@ class Navigation extends Component {
                         </a>
                         <div className="collapse" id="collapseMarket" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
                           <nav className="sb-sidenav-menu-nested nav">
-                            <Link className="nav-link" to="/market-orderbook">Orderbook</Link>
-                            <Link className="nav-link" to="/market-trades">Trades</Link>
+                            <Link className="nav-link" to='/market-orderbook'>Orderbook</Link>
+                            <Link className="nav-link" to='/market-trades'>Trades</Link>
                           </nav>
                         </div>
 
@@ -56,8 +56,8 @@ class Navigation extends Component {
                         </a>
                         <div className="collapse" id="collapseBuy" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
                           <nav className="sb-sidenav-menu-nested nav">
-                            <Link className="nav-link" to="/buy-orders">Sell Orders</Link>
-                            <Link className="nav-link" to="/buy-neworder">New Buy Order</Link>
+                            <Link className="nav-link" to='/buy-orders'>Sell Orders</Link>
+                            <Link className="nav-link" to='/buy-neworder'>New Buy Order</Link>
                           </nav>
                         </div>
 
@@ -72,8 +72,8 @@ class Navigation extends Component {
                         </a>
                         <div className="collapse" id="collapseSell" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
                           <nav className="sb-sidenav-menu-nested nav">
-                            <Link className="nav-link" to="/sell-orders">Buy Orders</Link>
-                            <Link className="nav-link" to="/sell-neworder">New Sell Order</Link>
+                            <Link className="nav-link" to='/sell-orders'>Buy Orders</Link>
+                            <Link className="nav-link" to='/sell-neworder'>New Sell Order</Link>
                           </nav>
                         </div>
 
@@ -88,8 +88,8 @@ class Navigation extends Component {
                         </a>
                         <div className="collapse" id="collapsePortfolio" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
                           <nav className="sb-sidenav-menu-nested nav">
-                            <Link className="nav-link" to="/portfolio-orders">My Orders</Link>
-                            <Link className="nav-link" to="/portfolio-trades">My Trades</Link>
+                            <Link className="nav-link" to='/portfolio-orders'>My Orders</Link>
+                            <Link className="nav-link" to='/portfolio-trades'>My Trades</Link>
                           </nav>
                         </div>
 
@@ -104,7 +104,7 @@ class Navigation extends Component {
                         </a>
                         <div className="collapse" id="collapseFunds" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
                           <nav className="sb-sidenav-menu-nested nav">
-                            <Link className="nav-link" to="/funds-balance">Balance</Link>
+                            <Link className="nav-link" to='/funds-balance'>Balance</Link>
                           </nav>
                         </div>
 
