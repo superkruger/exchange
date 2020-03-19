@@ -1,28 +1,28 @@
 {
   "files": {
-    "main.js": "https://superkruger.github.io/exchange/static/js/main.8b37b5c4.chunk.js",
-    "main.js.map": "https://superkruger.github.io/exchange/static/js/main.8b37b5c4.chunk.js.map",
-    "runtime-main.js": "https://superkruger.github.io/exchange/static/js/runtime-main.1a543540.js",
-    "runtime-main.js.map": "https://superkruger.github.io/exchange/static/js/runtime-main.1a543540.js.map",
-    "xlsx.js": "https://superkruger.github.io/exchange/static/js/xlsx.9b2e9682.chunk.js",
-    "xlsx.js.map": "https://superkruger.github.io/exchange/static/js/xlsx.9b2e9682.chunk.js.map",
-    "static/js/3.f3ea6388.chunk.js": "https://superkruger.github.io/exchange/static/js/3.f3ea6388.chunk.js",
-    "static/js/3.f3ea6388.chunk.js.map": "https://superkruger.github.io/exchange/static/js/3.f3ea6388.chunk.js.map",
-    "static/js/4.a4cf42fe.chunk.js": "https://superkruger.github.io/exchange/static/js/4.a4cf42fe.chunk.js",
-    "static/js/4.a4cf42fe.chunk.js.map": "https://superkruger.github.io/exchange/static/js/4.a4cf42fe.chunk.js.map",
-    "static/js/5.0eebf803.chunk.js": "https://superkruger.github.io/exchange/static/js/5.0eebf803.chunk.js",
-    "static/js/5.0eebf803.chunk.js.map": "https://superkruger.github.io/exchange/static/js/5.0eebf803.chunk.js.map",
-    "static/js/6.b7dbf34f.chunk.js": "https://superkruger.github.io/exchange/static/js/6.b7dbf34f.chunk.js",
-    "static/js/6.b7dbf34f.chunk.js.map": "https://superkruger.github.io/exchange/static/js/6.b7dbf34f.chunk.js.map",
-    "index.html": "https://superkruger.github.io/exchange/index.html",
-    "precache-manifest.35a201ead9db5be80e00083b10fc5cb3.js": "https://superkruger.github.io/exchange/precache-manifest.35a201ead9db5be80e00083b10fc5cb3.js",
-    "service-worker.js": "https://superkruger.github.io/exchange/service-worker.js",
-    "static/js/3.f3ea6388.chunk.js.LICENSE.txt": "https://superkruger.github.io/exchange/static/js/3.f3ea6388.chunk.js.LICENSE.txt",
-    "static/js/6.b7dbf34f.chunk.js.LICENSE.txt": "https://superkruger.github.io/exchange/static/js/6.b7dbf34f.chunk.js.LICENSE.txt"
+    "main.js": "http://localhost:3000/static/js/main.ef320eb7.chunk.js",
+    "main.js.map": "http://localhost:3000/static/js/main.ef320eb7.chunk.js.map",
+    "runtime-main.js": "http://localhost:3000/static/js/runtime-main.9a5e1a1d.js",
+    "runtime-main.js.map": "http://localhost:3000/static/js/runtime-main.9a5e1a1d.js.map",
+    "xlsx.js": "http://localhost:3000/static/js/xlsx.9b2e9682.chunk.js",
+    "xlsx.js.map": "http://localhost:3000/static/js/xlsx.9b2e9682.chunk.js.map",
+    "static/js/3.6501562a.chunk.js": "http://localhost:3000/static/js/3.6501562a.chunk.js",
+    "static/js/3.6501562a.chunk.js.map": "http://localhost:3000/static/js/3.6501562a.chunk.js.map",
+    "static/js/4.a4cf42fe.chunk.js": "http://localhost:3000/static/js/4.a4cf42fe.chunk.js",
+    "static/js/4.a4cf42fe.chunk.js.map": "http://localhost:3000/static/js/4.a4cf42fe.chunk.js.map",
+    "static/js/5.0eebf803.chunk.js": "http://localhost:3000/static/js/5.0eebf803.chunk.js",
+    "static/js/5.0eebf803.chunk.js.map": "http://localhost:3000/static/js/5.0eebf803.chunk.js.map",
+    "static/js/6.b7dbf34f.chunk.js": "http://localhost:3000/static/js/6.b7dbf34f.chunk.js",
+    "static/js/6.b7dbf34f.chunk.js.map": "http://localhost:3000/static/js/6.b7dbf34f.chunk.js.map",
+    "index.html": "http://localhost:3000/index.html",
+    "precache-manifest.5cb0ea3f4b937aed8c6119340e59741d.js": "http://localhost:3000/precache-manifest.5cb0ea3f4b937aed8c6119340e59741d.js",
+    "service-worker.js": "http://localhost:3000/service-worker.js",
+    "static/js/3.6501562a.chunk.js.LICENSE.txt": "http://localhost:3000/static/js/3.6501562a.chunk.js.LICENSE.txt",
+    "static/js/6.b7dbf34f.chunk.js.LICENSE.txt": "http://localhost:3000/static/js/6.b7dbf34f.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.1a543540.js",
-    "static/js/3.f3ea6388.chunk.js",
-    "static/js/main.8b37b5c4.chunk.js"
+    "static/js/runtime-main.9a5e1a1d.js",
+    "static/js/3.6501562a.chunk.js",
+    "static/js/main.ef320eb7.chunk.js"
   ]
 }
