@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.js": "/exchange/static/js/main.e0951e44.chunk.js",
-    "main.js.map": "/exchange/static/js/main.e0951e44.chunk.js.map",
+    "main.js": "/exchange/static/js/main.077ec3c8.chunk.js",
+    "main.js.map": "/exchange/static/js/main.077ec3c8.chunk.js.map",
     "runtime-main.js": "/exchange/static/js/runtime-main.d532e339.js",
     "runtime-main.js.map": "/exchange/static/js/runtime-main.d532e339.js.map",
     "xlsx.js": "/exchange/static/js/xlsx.9b2e9682.chunk.js",
     "xlsx.js.map": "/exchange/static/js/xlsx.9b2e9682.chunk.js.map",
-    "static/js/3.05f8d5b7.chunk.js": "/exchange/static/js/3.05f8d5b7.chunk.js",
-    "static/js/3.05f8d5b7.chunk.js.map": "/exchange/static/js/3.05f8d5b7.chunk.js.map",
+    "static/js/3.63736317.chunk.js": "/exchange/static/js/3.63736317.chunk.js",
+    "static/js/3.63736317.chunk.js.map": "/exchange/static/js/3.63736317.chunk.js.map",
     "static/js/4.a4cf42fe.chunk.js": "/exchange/static/js/4.a4cf42fe.chunk.js",
     "static/js/4.a4cf42fe.chunk.js.map": "/exchange/static/js/4.a4cf42fe.chunk.js.map",
     "static/js/5.0eebf803.chunk.js": "/exchange/static/js/5.0eebf803.chunk.js",
@@ -15,14 +15,14 @@
     "static/js/6.b7dbf34f.chunk.js": "/exchange/static/js/6.b7dbf34f.chunk.js",
     "static/js/6.b7dbf34f.chunk.js.map": "/exchange/static/js/6.b7dbf34f.chunk.js.map",
     "index.html": "/exchange/index.html",
-    "precache-manifest.595d5643575ae03080c10d1be8ce10b9.js": "/exchange/precache-manifest.595d5643575ae03080c10d1be8ce10b9.js",
+    "precache-manifest.d0c8faa1435436f8653f505b2898dc69.js": "/exchange/precache-manifest.d0c8faa1435436f8653f505b2898dc69.js",
     "service-worker.js": "/exchange/service-worker.js",
-    "static/js/3.05f8d5b7.chunk.js.LICENSE.txt": "/exchange/static/js/3.05f8d5b7.chunk.js.LICENSE.txt",
+    "static/js/3.63736317.chunk.js.LICENSE.txt": "/exchange/static/js/3.63736317.chunk.js.LICENSE.txt",
     "static/js/6.b7dbf34f.chunk.js.LICENSE.txt": "/exchange/static/js/6.b7dbf34f.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.d532e339.js",
-    "static/js/3.05f8d5b7.chunk.js",
-    "static/js/main.e0951e44.chunk.js"
+    "static/js/3.63736317.chunk.js",
+    "static/js/main.077ec3c8.chunk.js"
   ]
 }
