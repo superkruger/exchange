@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "2e68e55193ca1e75a6d681954a9fdb0b",
+    "revision": "5cf0830c004b9fa2990aff8f73dcb115",
     "url": "https://superkruger.github.io/exchange/index.html"
   },
   {
@@ -28,8 +28,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "https://superkruger.github.io/exchange/static/js/6.b7dbf34f.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "aeaa660d70fba47bf3a0",
-    "url": "https://superkruger.github.io/exchange/static/js/main.24510235.chunk.js"
+    "revision": "02468f730132326db0a3",
+    "url": "https://superkruger.github.io/exchange/static/js/main.a0546dd1.chunk.js"
   },
   {
     "revision": "d6d7c0e387e83a0f8c7a",

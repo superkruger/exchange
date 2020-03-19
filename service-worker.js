@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "https://superkruger.github.io/exchange/precache-manifest.dcc003b6c0e7dc87ed3869ea4cd1dbad.js"
+  "https://superkruger.github.io/exchange/precache-manifest.3924bca58dced8ec0a0c67d4953b3259.js"
 );
 
 self.addEventListener('message', (event) => {
