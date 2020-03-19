@@ -1,28 +1,28 @@
 {
   "files": {
-    "main.js": "/exchange/static/js/main.91d7a8ff.chunk.js",
-    "main.js.map": "/exchange/static/js/main.91d7a8ff.chunk.js.map",
-    "runtime-main.js": "/exchange/static/js/runtime-main.d532e339.js",
-    "runtime-main.js.map": "/exchange/static/js/runtime-main.d532e339.js.map",
-    "xlsx.js": "/exchange/static/js/xlsx.9b2e9682.chunk.js",
-    "xlsx.js.map": "/exchange/static/js/xlsx.9b2e9682.chunk.js.map",
-    "static/js/3.8a3dfa53.chunk.js": "/exchange/static/js/3.8a3dfa53.chunk.js",
-    "static/js/3.8a3dfa53.chunk.js.map": "/exchange/static/js/3.8a3dfa53.chunk.js.map",
-    "static/js/4.a4cf42fe.chunk.js": "/exchange/static/js/4.a4cf42fe.chunk.js",
-    "static/js/4.a4cf42fe.chunk.js.map": "/exchange/static/js/4.a4cf42fe.chunk.js.map",
-    "static/js/5.0eebf803.chunk.js": "/exchange/static/js/5.0eebf803.chunk.js",
-    "static/js/5.0eebf803.chunk.js.map": "/exchange/static/js/5.0eebf803.chunk.js.map",
-    "static/js/6.b7dbf34f.chunk.js": "/exchange/static/js/6.b7dbf34f.chunk.js",
-    "static/js/6.b7dbf34f.chunk.js.map": "/exchange/static/js/6.b7dbf34f.chunk.js.map",
-    "index.html": "/exchange/index.html",
-    "precache-manifest.27b8a9ddaeab1ec3b3abbe4e3da8d601.js": "/exchange/precache-manifest.27b8a9ddaeab1ec3b3abbe4e3da8d601.js",
-    "service-worker.js": "/exchange/service-worker.js",
-    "static/js/3.8a3dfa53.chunk.js.LICENSE.txt": "/exchange/static/js/3.8a3dfa53.chunk.js.LICENSE.txt",
-    "static/js/6.b7dbf34f.chunk.js.LICENSE.txt": "/exchange/static/js/6.b7dbf34f.chunk.js.LICENSE.txt"
+    "main.js": "http://superkruger.github.io/exchange/static/js/main.5c00623b.chunk.js",
+    "main.js.map": "http://superkruger.github.io/exchange/static/js/main.5c00623b.chunk.js.map",
+    "runtime-main.js": "http://superkruger.github.io/exchange/static/js/runtime-main.c19ca2a7.js",
+    "runtime-main.js.map": "http://superkruger.github.io/exchange/static/js/runtime-main.c19ca2a7.js.map",
+    "xlsx.js": "http://superkruger.github.io/exchange/static/js/xlsx.9b2e9682.chunk.js",
+    "xlsx.js.map": "http://superkruger.github.io/exchange/static/js/xlsx.9b2e9682.chunk.js.map",
+    "static/js/3.851e718d.chunk.js": "http://superkruger.github.io/exchange/static/js/3.851e718d.chunk.js",
+    "static/js/3.851e718d.chunk.js.map": "http://superkruger.github.io/exchange/static/js/3.851e718d.chunk.js.map",
+    "static/js/4.a4cf42fe.chunk.js": "http://superkruger.github.io/exchange/static/js/4.a4cf42fe.chunk.js",
+    "static/js/4.a4cf42fe.chunk.js.map": "http://superkruger.github.io/exchange/static/js/4.a4cf42fe.chunk.js.map",
+    "static/js/5.0eebf803.chunk.js": "http://superkruger.github.io/exchange/static/js/5.0eebf803.chunk.js",
+    "static/js/5.0eebf803.chunk.js.map": "http://superkruger.github.io/exchange/static/js/5.0eebf803.chunk.js.map",
+    "static/js/6.b7dbf34f.chunk.js": "http://superkruger.github.io/exchange/static/js/6.b7dbf34f.chunk.js",
+    "static/js/6.b7dbf34f.chunk.js.map": "http://superkruger.github.io/exchange/static/js/6.b7dbf34f.chunk.js.map",
+    "index.html": "http://superkruger.github.io/exchange/index.html",
+    "precache-manifest.fc8613839c7a988d3e9aa30bae061a58.js": "http://superkruger.github.io/exchange/precache-manifest.fc8613839c7a988d3e9aa30bae061a58.js",
+    "service-worker.js": "http://superkruger.github.io/exchange/service-worker.js",
+    "static/js/3.851e718d.chunk.js.LICENSE.txt": "http://superkruger.github.io/exchange/static/js/3.851e718d.chunk.js.LICENSE.txt",
+    "static/js/6.b7dbf34f.chunk.js.LICENSE.txt": "http://superkruger.github.io/exchange/static/js/6.b7dbf34f.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.d532e339.js",
-    "static/js/3.8a3dfa53.chunk.js",
-    "static/js/main.91d7a8ff.chunk.js"
+    "static/js/runtime-main.c19ca2a7.js",
+    "static/js/3.851e718d.chunk.js",
+    "static/js/main.5c00623b.chunk.js"
   ]
 }
