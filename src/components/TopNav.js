@@ -3,6 +3,7 @@ import { Navbar, Nav, Dropdown, Form, FormControl, Button, Container, Row, Col }
 import { Link } from "react-router-dom";
 import { connect } from 'react-redux'
 import Routes from "./Routes"
+import Identicon from 'identicon.js';
 import { 
   addToken,
   selectToken
@@ -107,7 +108,20 @@ class TopNav extends Component {
 
             <ul className="navbar-nav ml-auto ml-md-0">
                 <li className="nav-item dropdown">
-                    <a className="nav-link dropdown-toggle" id="userDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src={`https://robohash.org/${this.props.account}.png?size=30x30`}/></a>
+                    { this.props.account
+                      ? <a className="nav-link dropdown-toggle" id="userDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <img
+                            className="ml-2"
+                            width='30'
+                            height='30'
+                            src={`data:image/png;base64,${new Identicon(this.props.account, 30).toString()}`}
+                            alt=""
+                          />
+                        </a>
+                        
+                      : <span></span>
+                    }
+                    
                     <div className="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
                         <div className="dropdown-item">{this.props.account}</div>
                         <div className="dropdown-divider"></div>

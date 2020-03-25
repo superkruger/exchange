@@ -28,6 +28,7 @@ class App extends Component {
   }
 
   async loadBlockchainData(dispatch) {
+    try {
       const web3 = loadWeb3(dispatch)
       await window.ethereum.enable();
 
@@ -50,9 +51,11 @@ class App extends Component {
 
       const exchange = await loadExchange(web3, networkId, dispatch)
       if (!exchange) {
-        // window.alert('Exchange smart contract not detected on current network');
         return;
       }
+    } catch(e) {
+      return;
+    }
   }
 
   static getDerivedStateFromProps(props, state) {
@@ -75,9 +78,11 @@ class App extends Component {
 
   render() {
 
+    
+
     if (!this.props.exchange) {
       return (
-        <h3>Waiting to be connected to the {process.env.NETWORK_NAME} network</h3>
+        <h3>Waiting to be connected to the {process.env.REACT_APP_NETWORK_NAME} network</h3>
       )
     }
 

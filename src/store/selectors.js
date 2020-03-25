@@ -258,7 +258,9 @@ export const depthChartSelector = createSelector(
 		const sellOrders = decorateWithVolume('ask', get(orders, 'sell', []).sort((a,b) => a.tokenPrice - b.tokenPrice))
 
 		orders = {
-			orders: buyOrders.concat(sellOrders).sort((a,b) => a.value - b.value)
+			orders: buyOrders.
+				concat(sellOrders).
+				sort((a,b) =>  a.value - b.value)
 		}
 
 		return orders
@@ -267,20 +269,35 @@ export const depthChartSelector = createSelector(
 
 const decorateWithVolume = (type, orders) => {
 	let res = []
+	let prevPrice
 
 	for(var i = 0; i < orders.length; i++) {
+		orders[i].volume = orders[i].tokenAmount;
+        
         if (i === 0) {
         	orders[i].totalvolume = orders[i].tokenAmount;
         }
         else {
+        	if (prevPrice === orders[i].tokenPrice) {
+        		orders[i].volume = orders[i-1].volume + orders[i].tokenAmount
+        	}
           	orders[i].totalvolume = orders[i-1].totalvolume + orders[i].tokenAmount;
         }
-        let dp = {};
-        dp["value"] = orders[i].tokenPrice;
-        dp[type + "volume"] = orders[i].tokenAmount;
-        dp[type + "totalvolume"] = orders[i].totalvolume;
 
-        res.push(dp);
+        // aggregate orders with the same price
+        if (prevPrice !== orders[i].tokenPrice) {
+        	let dp = {};
+	        dp["value"] = orders[i].tokenPrice;
+	        dp[type + "volume"] = orders[i].volume;
+	        dp[type + "totalvolume"] = orders[i].totalvolume;
+
+        	res.push(dp);
+    	} else {
+    		res[res.length - 1][type + "volume"] = orders[i].volume;
+    		res[res.length - 1][type + "totalvolume"] = orders[i].totalvolume;
+    	}
+
+        prevPrice = orders[i].tokenPrice
      }
 
      return res
