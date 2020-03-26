@@ -19369,7 +19369,7 @@
           "name": "Order",
           "type": "event"
         },
-        "0xf711540f34d729d036431d051198fe18d9fd348ad9aa68dfc8b27d5c5f277107": {
+        "0x86af02581649a58dead45b4dce5cd237cee12c6cb5d9d7e9990bd98d93ba4eb0": {
           "anonymous": false,
           "inputs": [
             {
@@ -19392,9 +19392,9 @@
             },
             {
               "indexed": false,
-              "internalType": "uint256",
+              "internalType": "uint8",
               "name": "decimals",
-              "type": "uint256"
+              "type": "uint8"
             }
           ],
           "name": "TokenAdded",
@@ -19498,37 +19498,6 @@
           ],
           "name": "Withdraw",
           "type": "event"
-        },
-        "0x86af02581649a58dead45b4dce5cd237cee12c6cb5d9d7e9990bd98d93ba4eb0": {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "tokenAddress",
-              "type": "address"
-            },
-            {
-              "indexed": false,
-              "internalType": "string",
-              "name": "name",
-              "type": "string"
-            },
-            {
-              "indexed": false,
-              "internalType": "string",
-              "name": "symbol",
-              "type": "string"
-            },
-            {
-              "indexed": false,
-              "internalType": "uint8",
-              "name": "decimals",
-              "type": "uint8"
-            }
-          ],
-          "name": "TokenAdded",
-          "type": "event"
         }
       },
       "links": {},
@@ -19537,7 +19506,7 @@
     }
   },
   "schemaVersion": "3.0.23",
-  "updatedAt": "2020-03-26T11:52:45.649Z",
+  "updatedAt": "2020-03-26T12:17:07.428Z",
   "networkType": "ethereum",
   "devdoc": {
     "methods": {}
