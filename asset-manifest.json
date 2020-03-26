@@ -1,28 +1,28 @@
 {
   "files": {
-    "main.js": "/exchange/static/js/main.d969ba2c.chunk.js",
-    "main.js.map": "/exchange/static/js/main.d969ba2c.chunk.js.map",
-    "runtime-main.js": "/exchange/static/js/runtime-main.3ca328d4.js",
-    "runtime-main.js.map": "/exchange/static/js/runtime-main.3ca328d4.js.map",
-    "xlsx.js": "/exchange/static/js/xlsx.cc1a5b79.chunk.js",
-    "xlsx.js.map": "/exchange/static/js/xlsx.cc1a5b79.chunk.js.map",
-    "static/js/3.4d3b59d4.chunk.js": "/exchange/static/js/3.4d3b59d4.chunk.js",
-    "static/js/3.4d3b59d4.chunk.js.map": "/exchange/static/js/3.4d3b59d4.chunk.js.map",
-    "static/js/4.517c792e.chunk.js": "/exchange/static/js/4.517c792e.chunk.js",
-    "static/js/4.517c792e.chunk.js.map": "/exchange/static/js/4.517c792e.chunk.js.map",
-    "static/js/5.d6c6d415.chunk.js": "/exchange/static/js/5.d6c6d415.chunk.js",
-    "static/js/5.d6c6d415.chunk.js.map": "/exchange/static/js/5.d6c6d415.chunk.js.map",
-    "static/js/6.502f3110.chunk.js": "/exchange/static/js/6.502f3110.chunk.js",
-    "static/js/6.502f3110.chunk.js.map": "/exchange/static/js/6.502f3110.chunk.js.map",
+    "main.js": "/exchange/static/js/main.e21dc9c9.chunk.js",
+    "main.js.map": "/exchange/static/js/main.e21dc9c9.chunk.js.map",
+    "runtime-main.js": "/exchange/static/js/runtime-main.b66be75c.js",
+    "runtime-main.js.map": "/exchange/static/js/runtime-main.b66be75c.js.map",
+    "xlsx.js": "/exchange/static/js/xlsx.98684818.chunk.js",
+    "xlsx.js.map": "/exchange/static/js/xlsx.98684818.chunk.js.map",
+    "static/js/3.c1613a1e.chunk.js": "/exchange/static/js/3.c1613a1e.chunk.js",
+    "static/js/3.c1613a1e.chunk.js.map": "/exchange/static/js/3.c1613a1e.chunk.js.map",
+    "static/js/4.5f3bfdee.chunk.js": "/exchange/static/js/4.5f3bfdee.chunk.js",
+    "static/js/4.5f3bfdee.chunk.js.map": "/exchange/static/js/4.5f3bfdee.chunk.js.map",
+    "static/js/5.22dd9d66.chunk.js": "/exchange/static/js/5.22dd9d66.chunk.js",
+    "static/js/5.22dd9d66.chunk.js.map": "/exchange/static/js/5.22dd9d66.chunk.js.map",
+    "static/js/6.e997789a.chunk.js": "/exchange/static/js/6.e997789a.chunk.js",
+    "static/js/6.e997789a.chunk.js.map": "/exchange/static/js/6.e997789a.chunk.js.map",
     "index.html": "/exchange/index.html",
-    "precache-manifest.1f82df7dec32f64c26427533c54ded3e.js": "/exchange/precache-manifest.1f82df7dec32f64c26427533c54ded3e.js",
+    "precache-manifest.834d415917396d542d1585ff5dba9f02.js": "/exchange/precache-manifest.834d415917396d542d1585ff5dba9f02.js",
     "service-worker.js": "/exchange/service-worker.js",
-    "static/js/3.4d3b59d4.chunk.js.LICENSE.txt": "/exchange/static/js/3.4d3b59d4.chunk.js.LICENSE.txt",
-    "static/js/6.502f3110.chunk.js.LICENSE.txt": "/exchange/static/js/6.502f3110.chunk.js.LICENSE.txt"
+    "static/js/3.c1613a1e.chunk.js.LICENSE.txt": "/exchange/static/js/3.c1613a1e.chunk.js.LICENSE.txt",
+    "static/js/6.e997789a.chunk.js.LICENSE.txt": "/exchange/static/js/6.e997789a.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.3ca328d4.js",
-    "static/js/3.4d3b59d4.chunk.js",
-    "static/js/main.d969ba2c.chunk.js"
+    "static/js/runtime-main.b66be75c.js",
+    "static/js/3.c1613a1e.chunk.js",
+    "static/js/main.e21dc9c9.chunk.js"
   ]
 }
