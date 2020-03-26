@@ -35,6 +35,14 @@ const seed = async (accounts, token, tokensFunction, exchange) => {
     const receiver = accounts[1]
     let amount = 10000 // 10,000 tokens
 
+    const decimals = await token.decimals({from: sender})
+    const name = await token.name({from: sender})
+    const symbol = await token.symbol({from: sender})
+
+    console.log("addToken", token.address, name, symbol, decimals)
+
+    await exchange.addToken(token.address, name, symbol, decimals, {from: sender})
+
     await token.transfer(receiver, tokensFunction(amount), { from: sender })
     console.log(`Transferred ${amount} tokens from ${sender} to ${receiver}`)
 

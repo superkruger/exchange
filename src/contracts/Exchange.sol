@@ -44,8 +44,9 @@ contract Exchange {
 		revert();
 	}
 
-	function addToken(address _tokenAddress, string memory _name, string memory _symbol, uint8 _decimals) public {
+	function addToken(address _tokenAddress, string memory _name, string memory _symbol, uint8 _decimals) public returns (address tokenAddress) {
 		emit TokenAdded(_tokenAddress, _name, _symbol, _decimals);
+		return _tokenAddress;
 	}
 
 	function removeToken(address _tokenAddress) public {

@@ -151,7 +151,15 @@ export const addToken = async (tokenAddress, tokens, web3, account, exchange, di
 		const name = await tokenContract.methods.name().call()
 		const symbol = await tokenContract.methods.symbol().call()
 
-		exchange.methods.addToken(tokenContract.options.address, name, symbol, decimals).send({from: account})
+		console.log("addToken", tokenAddress, tokenContract.options.address)
+
+		exchange.methods.addToken(tokenAddress, name, symbol, decimals).send({from: account})
+		.on('transactionHash', (hash) => {
+			console.log('addded token with hash', hash)
+		})
+		.on('error', (error) => {
+			console.log('Could not add token', error)
+		})
 	} catch (error) {
 		console.log('Could not add new token:', error)
 	}
@@ -169,6 +177,7 @@ export const selectToken = async (tokenAddress, tokens, account, exchange, web3,
 
 		const index = tokens.findIndex(token => token.tokenAddress === tokenAddress)
 		let token = tokens[index]
+
 		const tokenContract = await new web3.eth.Contract(Token.abi, token.tokenAddress)
 		token.contract = tokenContract
 
@@ -184,7 +193,7 @@ export const selectToken = async (tokenAddress, tokens, account, exchange, web3,
 
 export const loadBalances = async (account, exchange, token, web3, dispatch) => {
 	dispatch(balancesLoading())
-	
+
 	const etherBalance = await web3.eth.getBalance(account)
 	dispatch(etherBalanceLoaded(etherBalance))
 

@@ -1,5 +1,6 @@
 const Exchange = artifacts.require('./Exchange')
-const Token = artifacts.require('./Token')
+const Token18 = artifacts.require('./Token18')
+const Token9 = artifacts.require('./Token9')
 
 import { tokens, ether, EVM_REVERT, ETHER_ADDRESS } from './helpers'
 
@@ -14,7 +15,7 @@ contract('Exchange', ([deployer, feeAccount, user1, user2]) => {
 
 	beforeEach(async () => {
 		// deploy token
-		token = await Token.new()
+		token = await Token18.new()
 		// transfer tokens to user1
 		token.transfer(user1, tokens(100), {from: deployer})
 		// deploy exchange
@@ -36,6 +37,36 @@ contract('Exchange', ([deployer, feeAccount, user1, user2]) => {
 	describe('fallback revert', () => {
 		it('reverts when ether is sent directly to exchange', async () => {
 			await exchange.sendTransaction({value: 1, from: user1}).should.be.rejectedWith(EVM_REVERT)
+		})
+	})
+
+	describe('adding token', () => {
+
+		let result, token9, decimals, name, symbol
+
+		beforeEach(async () => {
+			token9 = await Token9.new()
+			decimals = await token9.decimals({from: user1})
+    		name = await token9.name({from: user1})
+    		symbol = await token9.symbol({from: user1})
+		})
+
+		describe('success', () => {
+
+			beforeEach(async () => {
+
+				result = await exchange.addToken(token9.address, name, symbol, decimals,{from: user1})
+			})
+
+			it('emits a TokenAdded event', async () => {
+				const log = result.logs[0]
+				log.event.should.eq('TokenAdded')
+				const event = log.args
+				event.tokenAddress.toString().should.eq(token9.address, 'address is correct')
+				event.name.should.eq(name, 'name is correct')
+				event.symbol.should.eq(symbol, 'symbol is correct')
+				event.decimals.toString().should.eq(decimals.toString(), 'decimals is correct')
+			})
 		})
 	})
 

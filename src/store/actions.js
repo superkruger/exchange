@@ -20,6 +20,7 @@ export function exchangeLoaded(contract) {
 }
 
 export function tokenAdded(token) {
+	console.log("TOKEN_ADDED", token)
 	return {
 		type: 'TOKEN_ADDED',
 		token
