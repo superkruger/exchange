@@ -53,7 +53,7 @@ class Orders extends Component {
 function showDepthChart(props) {
   const { token, depthChart } = props
   return (
-    <DepthChart data={depthChart.orders} priceTitle={`ETH/${token.symbol}`} volumeTitle={token.symbol} />
+    <DepthChart data={depthChart.orders} />
   )
 }
 

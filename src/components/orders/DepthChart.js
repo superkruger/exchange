@@ -3,14 +3,43 @@ import { connect } from 'react-redux'
 import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
+import {
+  tokenSelector
+} from '../../store/selectors'
 
 am4core.useTheme(am4themes_animated);
 
 class DepthChart extends Component {
   componentDidMount() {
+      this.chart = buildChart(this.props);
+  }
+
+  componentWillUnmount() {
+    if (this.chart) {
+      this.chart.dispose();
+    }
+  }
+
+  componentDidUpdate(oldProps) {
+    if(JSON.stringify(oldProps.data) !== JSON.stringify(this.props.data)
+        || ( oldProps.token === null && this.props.token !== null ) 
+        || ( oldProps.token !== null && this.props.token !== null && JSON.stringify(oldProps.token.symbol) !== JSON.stringify(this.props.token.symbol))) {
+        this.chart.dispose();
+        this.chart = buildChart(this.props);
+    }
+  }
+
+  render() {
+    return (
+      <div id="chartdiv" style={{ width: "100%", height: "300px" }}></div>
+    )
+  }
+}
+
+function buildChart(props) {
     let chart = am4core.create("chartdiv", am4charts.XYChart);
-    chart.data = this.props.data
-    
+    chart.data = props.data;
+
     // Set up precision for numbers
     chart.numberFormatter.numberFormat = "#,###.####";
 
@@ -18,12 +47,12 @@ class DepthChart extends Component {
     let xAxis = chart.xAxes.push(new am4charts.CategoryAxis());
     xAxis.dataFields.category = "value";
     xAxis.renderer.minGridDistance = 50;
-    xAxis.title.text = `Price (${this.props.priceTitle})`;
+    xAxis.title.text = `Price (ETH/${props.token.symbol})`;
     xAxis.renderer.labels.template.fill = am4core.color("#111");
     xAxis.title.fill = am4core.color("#111");
 
     let yAxis = chart.yAxes.push(new am4charts.ValueAxis());
-    yAxis.title.text = `${this.props.volumeTitle} Volume`;
+    yAxis.title.text = `${props.token.symbol} Volume`;
     yAxis.renderer.labels.template.fill = am4core.color("#111");
     yAxis.title.fill = am4core.color("#111");
 
@@ -66,30 +95,12 @@ class DepthChart extends Component {
     // Add cursor
     chart.cursor = new am4charts.XYCursor();
 
-    this.chart = chart;
-  }
-
-  componentWillUnmount() {
-    if (this.chart) {
-      this.chart.dispose();
-    }
-  }
-
-  componentDidUpdate(oldProps) {
-    if(JSON.stringify(oldProps.data) !== JSON.stringify(this.props.data)) {
-      this.chart.data = this.props.data;
-    }
-  }
-
-  render() {
-    return (
-      <div id="chartdiv" style={{ width: "100%", height: "300px" }}></div>
-    )
-  }
+    return chart;
 }
 
 function mapStateToProps(state) {
   return {
+    token: tokenSelector(state)
   }
 }
 
