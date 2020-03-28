@@ -1,7 +1,14 @@
 import React, { Component } from 'react'
-import { Navbar, Nav, Dropdown, Form, FormControl, Button, Container, Row, Col } from 'react-bootstrap'
+import { Form, FormControl, Button, Row, Col } from 'react-bootstrap'
 import { Link } from "react-router-dom";
 import { connect } from 'react-redux'
+import BootstrapTable from 'react-bootstrap-table-next';
+import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit';
+import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
+import { 
+  addToken,
+  selectToken
+} from '../store/interactions'
 import {
   accountSelector, 
   exchangeSelector,
@@ -10,9 +17,9 @@ import {
   tokenSelector
 } from '../store/selectors'
 
-class Navigation extends Component {
+class SideNav extends Component {
 
-  render() {
+  handleOnSelect = (row, isSelect) => {
     const {
       web3,
       exchange,
@@ -22,98 +29,121 @@ class Navigation extends Component {
       dispatch
     } = this.props
 
+    selectToken(row.tokenAddress, tokenList, account, exchange, web3, dispatch)
+  }
+
+  render() {
+    const {
+      web3,
+      exchange,
+      account,
+      tokenList,
+      dispatch
+    } = this.props
+
     return (
           <div id="layoutSidenav_nav">
-            <nav className="sb-sidenav accordion sb-sidenav-light" id="sidenavAccordion">
+            <nav className="sb-sidenav accordion sb-sidenav-light small" id="sidenavAccordion">
                 <div className="sb-sidenav-menu">
                     <div className="nav">
-                        <div className="sb-sidenav-menu-heading">Exchange</div>
-
-                        <a className="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseMarket" aria-expanded="false" aria-controls="collapseMarket">
-                          <div className="sb-nav-link-icon">
-                            <i className="fas fa-chart-line"></i>
-                          </div>
-                          Market
-                          <div className="sb-sidenav-collapse-arrow">
-                            <i className="fas fa-angle-down"></i>
-                          </div>
-                        </a>
-                        <div className="collapse" id="collapseMarket" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
-                          <nav className="sb-sidenav-menu-nested nav">
-                            <Link className="nav-link" to='/market-orderbook'>Orderbook</Link>
-                            <Link className="nav-link" to='/market-trades'>Trades</Link>
-                          </nav>
-                        </div>
-
-                        <a className="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseBuy" aria-expanded="false" aria-controls="collapseBuy">
-                          <div className="sb-nav-link-icon">
-                            <i className="fas fa-arrow-alt-circle-down"></i>
-                          </div>
-                          Buy
-                          <div className="sb-sidenav-collapse-arrow">
-                            <i className="fas fa-angle-down"></i>
-                          </div>
-                        </a>
-                        <div className="collapse" id="collapseBuy" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
-                          <nav className="sb-sidenav-menu-nested nav">
-                            <Link className="nav-link" to='/buy-orders'>Sell Orders</Link>
-                            <Link className="nav-link" to='/buy-neworder'>New Buy Order</Link>
-                          </nav>
-                        </div>
-
-                        <a className="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSell" aria-expanded="false" aria-controls="collapseSell">
-                          <div className="sb-nav-link-icon">
-                            <i className="fas fa-arrow-alt-circle-up"></i>
-                          </div>
-                          Sell
-                          <div className="sb-sidenav-collapse-arrow">
-                            <i className="fas fa-angle-down"></i>
-                          </div>
-                        </a>
-                        <div className="collapse" id="collapseSell" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
-                          <nav className="sb-sidenav-menu-nested nav">
-                            <Link className="nav-link" to='/sell-orders'>Buy Orders</Link>
-                            <Link className="nav-link" to='/sell-neworder'>New Sell Order</Link>
-                          </nav>
-                        </div>
-
-                        <a className="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePortfolio" aria-expanded="false" aria-controls="collapsePortfolio">
-                          <div className="sb-nav-link-icon">
-                            <i className="fas fa-list"></i>
-                          </div>
-                          Portfolio
-                          <div className="sb-sidenav-collapse-arrow">
-                            <i className="fas fa-angle-down"></i>
-                          </div>
-                        </a>
-                        <div className="collapse" id="collapsePortfolio" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
-                          <nav className="sb-sidenav-menu-nested nav">
-                            <Link className="nav-link" to='/portfolio-orders'>My Orders</Link>
-                            <Link className="nav-link" to='/portfolio-trades'>My Trades</Link>
-                          </nav>
-                        </div>
-
-                        <a className="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFunds" aria-expanded="false" aria-controls="collapseFunds">
-                          <div className="sb-nav-link-icon">
-                            <i className="fas fa-money-bill"></i>
-                          </div>
-                          Funds
-                          <div className="sb-sidenav-collapse-arrow">
-                            <i className="fas fa-angle-down"></i>
-                          </div>
-                        </a>
-                        <div className="collapse" id="collapseFunds" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
-                          <nav className="sb-sidenav-menu-nested nav">
-                            <Link className="nav-link" to='/funds-balance'>Balance</Link>
-                          </nav>
-                        </div>
-
+                      { showTokens(this) }
                     </div>
                 </div>
+                <div className="card bg-light text-dark">
+              <div className="card-header">
+                Add new ERC20 Token
+              </div>
+              <div className="card-body">
+                  <Form noValidate onSubmit={(event) => {
+                    event.preventDefault()
+                    let tokenAddressInput = document.getElementById('newTokenAddressInput')
+                    addToken(tokenAddressInput.value, tokenList, web3, account, exchange, dispatch)
+                  }}>
+                  <Form.Row>
+                    <Form.Group as={Col}>
+                      <Form.Control autoFocus name="tokenAddress" placeholder="Token contract address" id="newTokenAddressInput" />
+                    </Form.Group>
+                  </Form.Row>
+                  <Form.Row>
+                    <Form.Group as={Col} controlId="formGridPassword">
+                      <Button variant="primary" type="submit">
+                        Add Token
+                      </Button>
+                    </Form.Group>
+                  </Form.Row>
+                </Form>
+              </div>
+            </div>
             </nav>
           </div>
     )
   }
+}
+
+function showTokens(component) {
+  const { 
+    tokenList,
+    account, 
+    exchange, 
+    web3, 
+    dispatch
+  } = component.props
+
+  const { SearchBar } = Search;
+
+  const tokens = tokenList.map((token) => {
+    return {
+      tokenAddress: token.tokenAddress,
+      symbol: token.symbol,
+      name: token.name,
+      decimals: token.decimals
+    }
+  });
+  const columns = [{
+    dataField: 'symbol',
+    text: 'Symbol',
+    sort: true
+  }, {
+    dataField: 'name',
+    text: 'Name',
+    sort: true
+  }, {
+    dataField: 'decimals',
+    text: 'Decimals'
+  }];
+
+  const selectRow = {
+    mode: 'radio',
+    clickToSelect: true,
+    hideSelectColumn: true,
+    bgColor: '#aaa',
+    onSelect: component.handleOnSelect
+  };
+
+  return (
+    <ToolkitProvider
+      keyField="symbol"
+      data={ tokens }
+      columns={ columns }
+      search
+    >
+      {
+        props => (
+          <div>
+            <SearchBar { ...props.searchProps } placeholder='filter tokens'/>
+            <BootstrapTable
+              { ...props.baseProps }
+              selectRow={ selectRow }
+              classes="table table-sm"
+              hover
+              condensed
+            />
+          </div>
+        )
+      }
+    </ToolkitProvider>
+
+  )
 }
 
 function mapStateToProps(state) {
@@ -126,4 +156,4 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps)(Navigation)
+export default connect(mapStateToProps)(SideNav)

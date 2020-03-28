@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import TopNav from './TopNav'
 import SideNav from './SideNav'
-import Routes from "./Routes"
+import Content from "./Content"
 import { 
   loadWeb3, 
   loadAccount,
@@ -78,11 +78,9 @@ class App extends Component {
 
   render() {
 
-    
-
     if (!this.props.exchange) {
       return (
-        <h3>Waiting to be connected to the {process.env.REACT_APP_NETWORK_NAME} network</h3>
+        <h3>Please connect your wallet</h3>
       )
     }
 
@@ -96,7 +94,7 @@ class App extends Component {
           <div id="layoutSidenav_content">
             <main>
               <div className="container-fluid">
-                <Routes />
+                <Content />
               </div>
             </main>
           </div>

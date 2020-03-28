@@ -5,7 +5,6 @@ import {
 	web3Loaded,
 	web3AccountLoaded,
 	exchangeLoaded,
-	networkIdSet,
 	tokenAdded,
 	selectingToken,
 	tokenSelected,
@@ -58,7 +57,7 @@ export const loadExchange = async (web3, networkId, dispatch) => {
 export const loadAllTokens = async (exchange, dispatch) => {
 	try {
 		const tokenStream = await exchange.getPastEvents('TokenAdded', {fromBlock: 0})
-		const tokens = tokenStream.map((event) => dispatch(tokenAdded(event.returnValues)))
+		tokenStream.map((event) => dispatch(tokenAdded(event.returnValues)))
 	} catch (error) {
 		console.log('Could not get token stream')
 		return null
@@ -71,7 +70,7 @@ export const subscribeToExchangeEvents = async (exchange, dispatch) => {
 	})
 }
 
-export const subscribeToTokenEvents = async (tokenAddress, exchange, dispatch) => {
+export const subscribeToTokenEvents = async (token, tokenAddress, account, exchange, web3, dispatch) => {
 	exchange.events.Cancel({filter: {tokenGet: [tokenAddress, ETHER_ADDRESS], tokenGive: [tokenAddress, ETHER_ADDRESS]}}, (error, event) => {
 		dispatch(orderCancelled(event.returnValues))
 	})
@@ -79,10 +78,10 @@ export const subscribeToTokenEvents = async (tokenAddress, exchange, dispatch) =
 		dispatch(orderFilled(event.returnValues))
 	})
 	exchange.events.Deposit({filter: {token: [tokenAddress, ETHER_ADDRESS]}}, (error, event) => {
-		dispatch(balancesLoaded())
+		loadBalances(account, exchange, token, web3, dispatch)
 	})
 	exchange.events.Withdraw({filter: {token: [tokenAddress, ETHER_ADDRESS]}}, (error, event) => {
-		dispatch(balancesLoaded())
+		loadBalances(account, exchange, token, web3, dispatch)
 	})
 	exchange.events.Order({filter: {tokenGet: [tokenAddress, ETHER_ADDRESS], tokenGive: [tokenAddress, ETHER_ADDRESS]}}, (error, event) => {
 		dispatch(orderMade(event.returnValues))
@@ -183,7 +182,7 @@ export const selectToken = async (tokenAddress, tokens, account, exchange, web3,
 
 		await loadBalances(account, exchange, token, web3, dispatch)
 		await loadAllOrders(tokenAddress, exchange, dispatch)
-		subscribeToTokenEvents(tokenAddress, exchange, dispatch)
+		subscribeToTokenEvents(token, tokenAddress, account, exchange, web3, dispatch)
 
 		dispatch(tokenSelected(token))
 	} catch (error) {

@@ -2,7 +2,6 @@ import { get, reject, groupBy, minBy, maxBy } from 'lodash'
 import { createSelector } from 'reselect'
 import moment from 'moment'
 import { ETHER_ADDRESS, GREEN, RED, formatEtherBalance, formatTokenBalance, weiToEther, weiToTokens } from '../helpers'
-import { tokenSelected } from './actions'
 
 const sideNavShow = (state) => get(state, 'app.sideNavShow', true)
 export const sideNavShowSelector = createSelector(sideNavShow, s => s)
@@ -258,9 +257,9 @@ export const depthChartSelector = createSelector(
 		const sellOrders = decorateWithVolume('ask', get(orders, 'sell', []).sort((a,b) => a.tokenPrice - b.tokenPrice))
 
 		orders = {
-			orders: buyOrders.
-				concat(sellOrders).
-				sort((a,b) =>  a.value - b.value)
+			orders: buyOrders
+				.concat(sellOrders)
+				.sort((a,b) =>  a.value - b.value)
 		}
 
 		return orders
