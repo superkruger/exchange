@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import Spinner from '../Spinner'
-import { Tabs, Tab } from 'react-bootstrap'
 import { 
   myFilledOrdersSelector,
   myFilledOrdersLoadedSelector,
@@ -13,13 +12,16 @@ import {
 } from '../../store/selectors'
 import { cancelOrder } from '../../store/interactions'
 
-class PortfolioTrades extends Component {
+class MyTrades extends Component {
 
   render() {
     return (
       <div className="card bg-light text-dark">
+        <div className="card-header">
+          My Trades
+        </div>
         <div className="card-body">
-            { this.props.myFilledOrdersLoaded ? showMyFilledOrders(this.props) : <Spinner type="div" /> }
+          { this.props.myFilledOrdersLoaded ? showMyFilledOrders(this.props) : <Spinner type="div" /> }
         </div>
       </div>
     )
@@ -29,7 +31,7 @@ class PortfolioTrades extends Component {
 function showMyFilledOrders(props) {
   const { myFilledOrders, token } = props
   return (
-    <table className="table table-bordered table-light table-sm small" id="dataTable" width="100%">
+    <table className="table table-bordered table-light table-sm small" id="dataTable" width="100%" cellSpacing="0">
       <thead>
         <tr>
           <th>Time</th>
@@ -66,6 +68,6 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps)(PortfolioTrades)
+export default connect(mapStateToProps)(MyTrades)
 
 

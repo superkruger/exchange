@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import Spinner from '../Spinner'
-import { Tabs, Tab } from 'react-bootstrap'
 import { 
   myOpenOrdersSelector,
   myOpenOrdersLoadedSelector,
@@ -13,17 +12,18 @@ import {
 } from '../../store/selectors'
 import { cancelOrder } from '../../store/interactions'
 
-class PortfolioOrders extends Component {
+class MyOrders extends Component {
 
   render() {
     return (
-      <div className="card bg-light text-dark">
-        <div className="card-body">
-          
+        <div className="card bg-light text-dark">
+          <div className="card-header">
+            My Orders
+          </div>
+          <div className="card-body">
             { this.props.myOpenOrdersLoaded ? showMyOpenOrders(this.props) : <Spinner type="div" /> }
-          
+          </div>
         </div>
-      </div>
     )
   }
 }
@@ -31,7 +31,7 @@ class PortfolioOrders extends Component {
 function showMyOpenOrders(props) {
   const { myOpenOrders, dispatch, exchange, account, token } = props
   return (
-    <table className="table table-bordered table-light table-sm small" id="dataTable" width="100%" cellspacing="0">
+    <table className="table table-bordered table-light table-sm small" id="dataTable" width="100%" cellSpacing="0">
       <thead>
         <tr>
           <th>Amount</th>
@@ -73,6 +73,6 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps)(PortfolioOrders)
+export default connect(mapStateToProps)(MyOrders)
 
 

@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Container, Row, Col } from 'react-bootstrap'
 import Spinner from '../Spinner'
-import PriceChart from './PriceChart'
 import {
   contractsLoadedSelector,
   tokenSelector,
@@ -23,31 +22,23 @@ class MarketTrades extends Component {
     return (
       <div>
         { this.props.contractsLoaded ?
-          <Container>
-            <Row>
-              <Col sm={12}>
-                <PriceChart />
-              </Col>
-            </Row>
-            <Row>
-              <Col sm={12}>
-                <div className="card bg-light text-dark">
-                  <div className="card-body">
-                    <table className="table table-bordered table-light table-sm small" id="dataTable" width="100%">
-                        <thead>
-                          <tr>
-                            <th>Time</th>
-                            <th>{this.props.token.symbol}</th>
-                            <th>ETH/{this.props.token.symbol}</th>
-                          </tr>
-                        </thead>
-                        { this.props.filledOrdersLoaded ? showFilledOrders(this.props.filledOrders) : <Spinner type="table" /> }
-                      </table>
-                  </div>
-                </div>
-              </Col>
-            </Row>
-          </Container>
+            <div className="card bg-light text-dark">
+              <div className="card-header">
+                Market Trades
+              </div>
+              <div className="card-body">
+                <table className="table table-bordered table-light table-sm small" id="dataTable" width="100%">
+                    <thead>
+                      <tr>
+                        <th>Time</th>
+                        <th>{this.props.token.symbol}</th>
+                        <th>ETH/{this.props.token.symbol}</th>
+                      </tr>
+                    </thead>
+                    { this.props.filledOrdersLoaded ? showFilledOrders(this.props.filledOrders) : <Spinner type="table" /> }
+                  </table>
+              </div>
+            </div>
           :
           <Spinner type="div" />
         }

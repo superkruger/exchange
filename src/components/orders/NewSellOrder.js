@@ -22,7 +22,7 @@ class NewSellOrder extends Component {
     return (
       <div className="card bg-light text-dark">
         <div className="card-header">
-          NewOrder
+          Sell
         </div>
         <div className="card-body">
           { this.props.showForm ? showForm(this.props) : <Spinner type='div' /> }
@@ -80,14 +80,15 @@ const showForm = (props) => {
 
 function mapStateToProps(state) {
   const sellOrder = sellOrderSelector(state)
+  const token = tokenSelector(state)
 
   return {
     account: accountSelector(state),
     exchange: exchangeSelector(state),
-    token: tokenSelector(state),
+    token: token,
     web3: web3Selector(state),
     sellOrder,
-    showForm: !sellOrder.making,
+    showForm: token && !sellOrder.making,
     showSellTotal: sellOrder.amount && sellOrder.price
   }
 }

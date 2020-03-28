@@ -1,19 +1,18 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { Container, Row, Col } from 'react-bootstrap'
 import { OverlayTrigger, Tooltip } from 'react-bootstrap'
+import Identicon from 'identicon.js'
 import Spinner from '../Spinner'
 import { 
-  orderBookSelector,
-  orderBookLoadedSelector,
   exchangeSelector,
   accountSelector,
   tokenSelector,
-  tokenLoadingSelector,
-  orderFillingSelector,
+  tokenLoadingSelector
 } from '../../store/selectors'
 import { fillOrder } from '../../store/interactions'
 
-class BuyOrders extends Component {
+class MarketOrders extends Component {
 	componentDidMount() {
 		this.loadBlockchainData(this.props)
 	}
@@ -23,29 +22,20 @@ class BuyOrders extends Component {
 
   render() {
     return (
-      <div>
-      { this.props.orderBookLoaded ? showOrderTable(this.props, true) : <Spinner type='div'/> }
+      <div className="card bg-light text-dark">
+        <div className="card-header">
+          {this.props.buy ? 'Buy' : 'Sell'} Orders
+        </div>
+        <div className="card-body">
+          { showOrders(this.props) }
+        </div>
       </div>
     )
   }
 }
 
-function showOrderTable(props, buys) {
-  const { orderBook } = props
-  const orders = (buys ? orderBook.buyOrders : orderBook.sellOrders)
-
-  return (
-      <div className="card bg-light text-dark">
-        <div className="card-body">
-          { showOrders(props, buys) }
-        </div>
-      </div>
-  )
-}
-
-function showOrders(props, buys) {
-  const { orderBook, token } = props
-  const orders = (buys ? orderBook.buyOrders : orderBook.sellOrders)
+function showOrders(props) {
+  const { orders, token, buys } = props
 
   return (
     <table className="table table-bordered table-light table-sm small" id="dataTable" width="100%">
@@ -54,6 +44,7 @@ function showOrders(props, buys) {
           <th>{token.symbol}</th>
           <th>ETH/{token.symbol}</th>
           <th>ETH</th>
+          <th>{buys ? 'Buyer' : 'Seller'}</th>
         </tr>
       </thead>
       <tbody>
@@ -85,25 +76,30 @@ function renderOrder(order, props) {
         <td>{order.tokenAmount}</td>
         <td className={`text-${order.orderTypeClass}`}>{order.tokenPrice}</td>
         <td>{order.etherAmount}</td>
+        <td>
+          <img
+            className="ml-2"
+            width='15'
+            height='15'
+            src={`data:image/png;base64,${new Identicon(order.user, 15).toString()}`}
+            alt=""
+          />
+        </td>
       </tr>
     </OverlayTrigger>
   )
 }
 
 function mapStateToProps(state) {
-  const orderBookLoaded = orderBookLoadedSelector(state)
-  const orderFilling = orderFillingSelector(state)
   const tokenLoading = tokenLoadingSelector(state)
 
   return {
-    orderBookLoaded: !tokenLoading && orderBookLoaded && !orderFilling,
-    orderBook: orderBookSelector(state),
     exchange: exchangeSelector(state),
     account: accountSelector(state),
     token: tokenSelector(state)
   }
 }
 
-export default connect(mapStateToProps)(BuyOrders)
+export default connect(mapStateToProps)(MarketOrders)
 
 

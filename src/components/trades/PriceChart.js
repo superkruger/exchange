@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Tabs, Tab } from 'react-bootstrap'
 import Chart from 'react-apexcharts'
 import Spinner from '../Spinner'
 import { chartOptions } from './PriceChart.config'
