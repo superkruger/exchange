@@ -239,7 +239,7 @@ const decorateOrderBookOrder = (order) => {
 		...order,
 		orderType,
 		orderTypeClass: (orderType === 'buy' ? GREEN : RED),
-		orderFillAction: (orderType === 'buy' ? 'sell' : 'buy')
+		orderFillAction: (orderType === 'buy' ? 'sell to' : 'buy from')
 	})
 }
 

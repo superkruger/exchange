@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
-import { Form, FormControl, Button, Row, Col } from 'react-bootstrap'
-import { Link } from "react-router-dom";
+import { Form, Button, Col } from 'react-bootstrap'
 import { connect } from 'react-redux'
 import BootstrapTable from 'react-bootstrap-table-next';
 import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit';
@@ -25,7 +24,6 @@ class SideNav extends Component {
       exchange,
       account,
       tokenList,
-      token,
       dispatch
     } = this.props
 
@@ -82,11 +80,7 @@ class SideNav extends Component {
 
 function showTokens(component) {
   const { 
-    tokenList,
-    account, 
-    exchange, 
-    web3, 
-    dispatch
+    tokenList
   } = component.props
 
   const { SearchBar } = Search;

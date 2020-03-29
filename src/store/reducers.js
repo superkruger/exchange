@@ -1,5 +1,4 @@
 import { combineReducers } from 'redux'
-import { ETHER_ADDRESS, tokensToWei, etherToWei } from '../helpers'
 
 function app (state = {}, action) {
 	switch (action.type) {

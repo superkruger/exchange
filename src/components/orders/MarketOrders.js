@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Container, Row, Col } from 'react-bootstrap'
 import { OverlayTrigger, Tooltip } from 'react-bootstrap'
 import Identicon from 'identicon.js'
 import Spinner from '../Spinner'
@@ -8,7 +7,8 @@ import {
   exchangeSelector,
   accountSelector,
   tokenSelector,
-  tokenLoadingSelector
+  orderBookLoadedSelector,
+  orderBookSelector
 } from '../../store/selectors'
 import { fillOrder } from '../../store/interactions'
 
@@ -24,10 +24,10 @@ class MarketOrders extends Component {
     return (
       <div className="card bg-light text-dark">
         <div className="card-header">
-          {this.props.buy ? 'Buy' : 'Sell'} Orders
+          {this.props.buys ? 'Buy' : 'Sell'} Orders
         </div>
         <div className="card-body">
-          { showOrders(this.props) }
+          { this.props.orderBookLoaded ? showOrders(this.props) : <Spinner type='div'/> }
         </div>
       </div>
     )
@@ -35,7 +35,8 @@ class MarketOrders extends Component {
 }
 
 function showOrders(props) {
-  const { orders, token, buys } = props
+  const { orderBook, token, buys } = props
+  const orders = (buys ? orderBook.buyOrders : orderBook.sellOrders)
 
   return (
     <table className="table table-bordered table-light table-sm small" id="dataTable" width="100%">
@@ -56,22 +57,25 @@ function showOrders(props) {
 
 function renderOrder(order, props) {
   const { account, exchange, dispatch } = props
+  const ownOrder = (account === order.user)
 
   return (
-    <OverlayTrigger
-      key={order.id}
-      placement='auto'
-      overlay={
-        <Tooltip id={order.id}>
-          {`Click here to ${order.orderFillAction}`}
-        </Tooltip>
-      }
-    >
+      <OverlayTrigger
+        key={order.id}
+        placement='auto'
+        overlay={
+          <Tooltip id={order.id}>
+            {!ownOrder ? `Click here to ${order.orderFillAction} ${order.user}` : `Cannot ${order.orderFillAction} yourself`}
+          </Tooltip>
+        }
+      >
       <tr key={order.id}
           className="order-book-order"
-          onClick={(e) => {
-            fillOrder(order, account, exchange, dispatch)
-          }}
+            onClick={(e) => {
+              if (!ownOrder) {
+                fillOrder(order, account, exchange, dispatch)
+              }
+            }}
       >
         <td>{order.tokenAmount}</td>
         <td className={`text-${order.orderTypeClass}`}>{order.tokenPrice}</td>
@@ -91,12 +95,13 @@ function renderOrder(order, props) {
 }
 
 function mapStateToProps(state) {
-  const tokenLoading = tokenLoadingSelector(state)
-
+  const token = tokenSelector(state)
   return {
     exchange: exchangeSelector(state),
     account: accountSelector(state),
-    token: tokenSelector(state)
+    token: token,
+    orderBookLoaded: token && orderBookLoadedSelector(state),
+    orderBook: orderBookSelector(state),
   }
 }
 

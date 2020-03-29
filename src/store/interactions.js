@@ -130,7 +130,7 @@ export const addToken = async (tokenAddress, tokens, web3, account, exchange, di
 		// check if not already present
 		const index = tokens.findIndex(token => token.tokenAddress === tokenAddress)
 		if (index !== -1) {
-			throw "allready present" 
+			throw new Error("allready present")
 		}
 
 		const tokenContract = await new web3.eth.Contract(Token.abi, tokenAddress)
@@ -166,7 +166,7 @@ export const addToken = async (tokenAddress, tokens, web3, account, exchange, di
 
 const checkContractFunction = (contract, functionSignature) => {
 	if (contract.methods[functionSignature] === undefined) {
-		throw "Not an ERC20 token: " + functionSignature
+		throw new Error("Not an ERC20 token: " + functionSignature)
 	}
 }
 

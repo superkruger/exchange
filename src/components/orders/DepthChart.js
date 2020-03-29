@@ -1,17 +1,19 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import Spinner from '../Spinner'
 import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
 import {
-  tokenSelector
+  tokenSelector,
+  depthChartSelector
 } from '../../store/selectors'
 
 am4core.useTheme(am4themes_animated);
 
 class DepthChart extends Component {
   componentDidMount() {
-      this.chart = buildChart(this.props);
+      this.chart = this.props.showChart ? buildChart(this.props) : null;
   }
 
   componentWillUnmount() {
@@ -21,17 +23,30 @@ class DepthChart extends Component {
   }
 
   componentDidUpdate(oldProps) {
-    if(JSON.stringify(oldProps.data) !== JSON.stringify(this.props.data)
-        || ( oldProps.token === null && this.props.token !== null ) 
+    if (!this.props.showChart) {
+        return;
+    }
+
+    if ((oldProps.token === null && this.props.token !== null)
         || ( oldProps.token !== null && this.props.token !== null && JSON.stringify(oldProps.token.symbol) !== JSON.stringify(this.props.token.symbol))) {
-        this.chart.dispose();
+        if (this.chart) {
+          this.chart.dispose();
+        }
         this.chart = buildChart(this.props);
+        return;
+    }
+
+    if(JSON.stringify(oldProps.data) !== JSON.stringify(this.props.data)) {
+        this.chart.data = this.props.data;
+        return;
     }
   }
 
   render() {
     return (
-      <div id="chartdiv" style={{ width: "100%", height: "300px" }}></div>
+        <div>
+            { this.props.showChart ? <div id="chartdiv" style={{ width: "100%", height: "300px" }} /> : <Spinner type="div" /> }
+        </div>
     )
   }
 }
@@ -99,8 +114,14 @@ function buildChart(props) {
 }
 
 function mapStateToProps(state) {
+    const token = tokenSelector(state)
+    const depthChart = depthChartSelector(state)
+    const showChart = token !== null && depthChart !== null && depthChart.orders !== undefined
+
   return {
-    token: tokenSelector(state)
+    showChart: showChart,
+    token: token,
+    data: showChart ? depthChart.orders : []
   }
 }
 

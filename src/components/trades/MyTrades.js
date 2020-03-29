@@ -7,10 +7,8 @@ import {
   exchangeSelector,
   accountSelector,
   tokenSelector,
-  tokenLoadingSelector,
-  orderCancellingSelector
+  tokenLoadingSelector
 } from '../../store/selectors'
-import { cancelOrder } from '../../store/interactions'
 
 class MyTrades extends Component {
 
@@ -56,7 +54,6 @@ function showMyFilledOrders(props) {
 }
 
 function mapStateToProps(state) {
-  const orderCancelling = orderCancellingSelector(state)
   const tokenLoading = tokenLoadingSelector(state)
 
   return {

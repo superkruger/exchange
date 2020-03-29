@@ -1,12 +1,9 @@
 import React, { Component } from 'react'
-import { Navbar, Nav, Dropdown, Form, FormControl, Button, Container, Row, Col , OverlayTrigger, Tooltip} from 'react-bootstrap'
+import { OverlayTrigger, Tooltip } from 'react-bootstrap'
 import { Link } from "react-router-dom"
 import { connect } from 'react-redux'
 import Identicon from 'identicon.js'
-import { 
-  addToken,
-  selectToken
-} from '../store/interactions'
+
 import {
   accountSelector, 
   exchangeSelector,
@@ -34,12 +31,7 @@ class TopNav extends Component {
 
   render() {
     const {
-      web3,
-      exchange,
-      account,
-      tokenList,
-      token,
-      dispatch
+      account
     } = this.props
 
     return (
@@ -57,22 +49,22 @@ class TopNav extends Component {
             </div>
 
             <div className="navbar-nav ml-auto ml-md-0">
-                    { this.props.account
+                    { account
                       ? <OverlayTrigger
-                          key={this.props.account}
+                          key={account}
                           placement='auto'
                           overlay={
-                            <Tooltip id={this.props.account}>
-                              {`${this.props.account}`}
+                            <Tooltip id={account}>
+                              {`${account}`}
                             </Tooltip>
                           }
                         >
-                          <a className="nav-link" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <a className="nav-link" href="/#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <img
                               className="ml-2"
                               width='30'
                               height='30'
-                              src={`data:image/png;base64,${new Identicon(this.props.account, 30).toString()}`}
+                              src={`data:image/png;base64,${new Identicon(account, 30).toString()}`}
                               alt=""
                             />
                           </a>
@@ -87,23 +79,6 @@ class TopNav extends Component {
       
     )
   }
-}
-
-function renderTokenSelect(token, props) {
-  const {
-    tokenList,
-    web3,
-    exchange,
-    account, 
-    dispatch
-  } = props
-
-  return (
-    <Dropdown.Item 
-      key={token.tokenAddress} 
-      eventKey={token.tokenAddress} 
-      onSelect={eKey => selectToken(eKey, tokenList, account, exchange, web3, dispatch)}>{token.symbol}</Dropdown.Item>
-  )
 }
 
 function mapStateToProps(state) {
