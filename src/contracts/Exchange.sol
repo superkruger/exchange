@@ -6,8 +6,8 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 contract Exchange {
 	using SafeMath for uint;
 
-	address public feeAccount;
-	uint256 public feePercent;
+	address public feeAccount; // account that will receive trading fees
+	uint256 public feePercent; // fee percentage in unit of 100, i.e. 100 == 1% and 5 == 0.05% and 10000 == 100%
 	address constant ETHER = address(0); // allows storage of ether in blank address in token mapping
 
 	mapping(address => mapping(address => uint256)) public tokens;
@@ -156,7 +156,7 @@ contract Exchange {
 	}
 
 	function _trade(_Order storage _order) internal {
-		uint256 _feeAmount = _order.amountGet.mul(feePercent).div(100);
+		uint256 _feeAmount = _order.amountGet.mul((feePercent.div(100))).div(100);
 
 		tokens[_order.tokenGet][msg.sender] = tokens[_order.tokenGet][msg.sender].sub(_order.amountGet.add(_feeAmount));
 		tokens[_order.tokenGet][_order.user] = tokens[_order.tokenGet][_order.user].add(_order.amountGet);

@@ -11,7 +11,7 @@ require('chai')
 contract('Exchange', ([deployer, feeAccount, user1, user2]) => {
 	let exchange
 	let token
-	const feePercent = 10
+	const feePercent = 100 // 1%
 
 	beforeEach(async () => {
 		// deploy token
@@ -425,10 +425,10 @@ contract('Exchange', ([deployer, feeAccount, user1, user2]) => {
 					balance = await exchange.balanceOf(ETHER_ADDRESS, user1)
 					balance.toString().should.eq('0', 'user1 ether deducted')
 					balance = await exchange.balanceOf(token.address, user2)
-					balance.toString().should.eq(tokens(0.9).toString(), 'user2 token deducted with fee')
+					balance.toString().should.eq(tokens(0.99).toString(), 'user2 token deducted with fee')
 					const feeAccount = await exchange.feeAccount()
 					balance = await exchange.balanceOf(token.address, feeAccount)
-					balance.toString().should.eq(tokens(0.1).toString(), 'fee received')
+					balance.toString().should.eq(tokens(0.01).toString(), 'fee received')
 				})
 
 				it('updates filled orders', async () => {
