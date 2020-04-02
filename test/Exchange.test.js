@@ -144,6 +144,14 @@ contract('Exchange', ([deployer, feeAccount, user1, user2]) => {
 				invalidAmount = ether(100) // greater than balance
 				await exchange.withdrawEther(invalidAmount, {from: user1}).should.be.rejectedWith(EVM_REVERT)
 			})
+
+			it('rejects withdraws greater than orders', async () => {
+				let buyAmount = tokens(1)
+				let orderAmount = ether(1)
+
+				await exchange.makeOrder(token.address, buyAmount, ETHER_ADDRESS, orderAmount, {from: user1})
+				await exchange.withdrawEther(amount, {from: user1}).should.be.rejectedWith(EVM_REVERT)
+			})
 		})
 	})
 
@@ -241,6 +249,17 @@ contract('Exchange', ([deployer, feeAccount, user1, user2]) => {
 				invalidAmount = tokens(100) // greater than balance
 				await exchange.withdrawToken(token.address, invalidAmount, {from: user1}).should.be.rejectedWith(EVM_REVERT)
 			})
+
+			it('rejects withdraws greater than orders', async () => {
+				let buyAmount = ether(1)
+				let orderAmount = tokens(5)
+				// await exchange.depositEther({from: user1, value: buyAmount})
+
+				await token.approve(exchange.address, amount, {from: user1})
+				await exchange.depositToken(token.address, amount, {from: user1})
+				await exchange.makeOrder(ETHER_ADDRESS, buyAmount, token.address, orderAmount, {from: user1})
+				await exchange.withdrawToken(token.address, amount, {from: user1}).should.be.rejectedWith(EVM_REVERT)
+			})
 		})
 	})
 
@@ -272,15 +291,18 @@ contract('Exchange', ([deployer, feeAccount, user1, user2]) => {
 		let result
 		let tokenAmount
 		let etherAmount
+		let depositAmount
 
 		beforeEach(async () => {
 			tokenAmount = tokens(1)
 			etherAmount = ether(1)
+			depositAmount = ether(2)
 		})
 
 		describe('success', () => {
 
 			beforeEach(async () => {
+				await exchange.depositEther({from: user1, value: depositAmount})
 				result = await exchange.makeOrder(token.address, tokenAmount, ETHER_ADDRESS, etherAmount, {from: user1})
 			})
 
@@ -311,6 +333,18 @@ contract('Exchange', ([deployer, feeAccount, user1, user2]) => {
 				event.tokenGive.should.eq(ETHER_ADDRESS, 'tokenGive is correct')
 				event.amountGive.toString().should.eq(etherAmount.toString(), 'amountGive is correct')
 				event.timestamp.toString().length.should.be.at.least(1, 'timestamp is present')
+			})
+		})
+
+		describe('failure', () => {
+
+			beforeEach(async () => {
+				depositAmount = ether(0.5)
+				await exchange.depositEther({from: user1, value: depositAmount})
+			})
+
+			it('fails if too little deposited', async () => {
+				exchange.makeOrder(token.address, tokenAmount, ETHER_ADDRESS, etherAmount, {from: user1}).should.be.rejectedWith(EVM_REVERT)
 			})
 		})
 	})

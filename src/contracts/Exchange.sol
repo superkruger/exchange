@@ -60,6 +60,7 @@ contract Exchange {
 
 	function withdrawEther(uint256 _amount) public {
 		require(tokens[ETHER][msg.sender] >= _amount);
+		require(balanceOf(ETHER, msg.sender).sub(_amount) >= orderTotal(ETHER, msg.sender));
 		tokens[ETHER][msg.sender] = tokens[ETHER][msg.sender].sub(_amount);
 		msg.sender.transfer(_amount);
 		emit Withdraw(ETHER, msg.sender, _amount, tokens[ETHER][msg.sender]);
@@ -75,6 +76,7 @@ contract Exchange {
 	function withdrawToken(address _token, uint256 _amount) public {
 		require(_token != ETHER);
 		require(tokens[_token][msg.sender] >= _amount);
+		require(balanceOf(_token, msg.sender).sub(_amount) >= orderTotal(_token, msg.sender));
 		tokens[_token][msg.sender] = tokens[_token][msg.sender].sub(_amount);
 		emit Withdraw(_token, msg.sender, _amount, tokens[_token][msg.sender]);
 	}
@@ -83,15 +85,29 @@ contract Exchange {
 		return tokens[_token][_user];
 	}
 
+	function orderTotal(address _token, address _user) public view returns (uint256) {
+
+		uint256 _orderTotal;
+
+		for (uint256 i = 1; i <= orderCount; i++) {
+			if (orders[i].user == _user && orders[i].tokenGive == _token && !orderCancelled[i] && !orderFilled[i]) {
+				_orderTotal = _orderTotal.add(orders[i].amountGive);
+			}
+		}
+
+		return _orderTotal;
+	}
+
 	function makeOrder(
 		address _tokenGet,
 		uint256 _amountGet,
 		address _tokenGive,
 		uint256 _amountGive) public {
 
+		require(orderTotal(_tokenGive, msg.sender).add(_amountGive) <= balanceOf(_tokenGive, msg.sender));
+
 		orderCount = orderCount.add(1);
 		uint256 _timestamp = now;
-		
 
 		orders[orderCount] = _Order(
 			orderCount, 
