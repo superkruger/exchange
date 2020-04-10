@@ -1,5 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import toast from 'toasted-notes' 
+import 'toasted-notes/src/styles.css'
+import Notification from '../Notification'
 import Spinner from '../Spinner'
 import { 
   depositEther,
@@ -60,6 +63,7 @@ function showForm(props) {
     etherDepositAmount,
     etherWithdrawAmount
   } = props
+
   return(
     <table className="table table-bordered table-light table-sm small" id="dataTable" width="100%">
       <thead>
@@ -77,7 +81,11 @@ function showForm(props) {
           <td>
             <form onSubmit={(event) => {
               event.preventDefault()
-              depositEther(etherDepositAmount, account, web3, exchange, dispatch)
+              depositEther(etherDepositAmount, account, web3, exchange, dispatch, (success) => {
+                if (!success) {
+                  toast.notify(() => <Notification title="Could not deposit ETH" type="danger" />)
+                }
+              })
             }}>
               <div className="row">
                 <div className="col-12 col-sm pr-sm-2">
@@ -100,7 +108,12 @@ function showForm(props) {
           <td>
             <form onSubmit={(event) => {
               event.preventDefault()
-              withdrawEther(etherWithdrawAmount, account, web3, exchange, dispatch)
+              
+              withdrawEther(etherWithdrawAmount, account, web3, exchange, dispatch, (success) => {
+                if (!success) {
+                  toast.notify(() => <Notification title="Could not withdraw ETH" type="danger" />)
+                }
+              })
             }}>
               <div className="row">
                 <div className="col-12 col-sm pr-sm-2">

@@ -28,7 +28,8 @@ import {
 import { ETHER_ADDRESS, tokensToWei, etherToWei } from '../helpers'
 
 export const loadWeb3 = (dispatch) => {
-	const web3 = new Web3(window['ethereum'] || Web3.givenProvider || 'http://127.0.0.1:7545');
+	let web3 = new Web3(window['ethereum'] || Web3.givenProvider || 'http://127.0.0.1:7545')
+	web3.eth.handleRevert = true
 	dispatch(web3Loaded(web3))
 	return web3
 }
@@ -42,7 +43,7 @@ export const loadAccount = async (web3, dispatch) => {
 
 export const loadExchange = async (web3, networkId, dispatch) => {
 	try {
-		const exchange = await new web3.eth.Contract(Exchange.abi, Exchange.networks[networkId].address)
+		const exchange = await new web3.eth.Contract(Exchange.abi, Exchange.networks[networkId].address, {handleRevert: true})
 		dispatch(exchangeLoaded(exchange))
 		subscribeToExchangeEvents(exchange, dispatch)
 
@@ -125,7 +126,7 @@ export const loadAllOrders = async (tokenAddress, exchange, dispatch) => {
 	}
 }
 
-export const addToken = async (tokenAddress, tokens, web3, account, exchange, dispatch) => {
+export const addToken = async (tokenAddress, tokens, web3, account, exchange, dispatch, callback) => {
 	try {
 		// check if not already present
 		const index = tokens.findIndex(token => token.tokenAddress === tokenAddress)
@@ -150,17 +151,18 @@ export const addToken = async (tokenAddress, tokens, web3, account, exchange, di
 		const name = await tokenContract.methods.name().call()
 		const symbol = await tokenContract.methods.symbol().call()
 
-		console.log("addToken", tokenAddress, tokenContract.options.address)
-
 		exchange.methods.addToken(tokenAddress, name, symbol, decimals).send({from: account})
 		.on('transactionHash', (hash) => {
 			console.log('addded token with hash', hash)
+			callback(true)
 		})
 		.on('error', (error) => {
 			console.log('Could not add token', error)
+			callback(false)
 		})
 	} catch (error) {
 		console.log('Could not add new token:', error)
+		callback(false)
 	}
 }
 
@@ -170,7 +172,7 @@ const checkContractFunction = (contract, functionSignature) => {
 	}
 }
 
-export const selectToken = async (tokenAddress, tokens, account, exchange, web3, dispatch) => {
+export const selectToken = async (tokenAddress, tokens, account, exchange, web3, dispatch, callback) => {
 	try {
 		dispatch(selectingToken())
 
@@ -185,8 +187,10 @@ export const selectToken = async (tokenAddress, tokens, account, exchange, web3,
 		subscribeToTokenEvents(token, tokenAddress, account, exchange, web3, dispatch)
 
 		dispatch(tokenSelected(token))
+		callback(true)
 	} catch (error) {
 		console.log('Could not add new token', error)
+		callback(false)
 	}
 }
 
@@ -208,29 +212,31 @@ export const loadBalances = async (account, exchange, token, web3, dispatch) => 
 	dispatch(balancesLoaded())
 }
 
-export const depositEther = (amount, account, web3, exchange, dispatch) => {
+export const depositEther = (amount, account, web3, exchange, dispatch, callback) => {
 	exchange.methods.depositEther().send({from: account, value: etherToWei(amount)})
 	.on('transactionHash', (hash) => {
 		dispatch(balancesLoading())
+		callback(true)
 	})
 	.on('error', (error) => {
 		console.log('Could not deposit ether', error)
-		window.alert('Could not deposit ether')
+		callback(false)
 	})
 }
 
-export const withdrawEther = (amount, account, web3, exchange, dispatch) => {
+export const withdrawEther = (amount, account, web3, exchange, dispatch, callback) => {
 	exchange.methods.withdrawEther(etherToWei(amount)).send({from: account})
 	.on('transactionHash', (hash) => {
 		dispatch(balancesLoading())
+		callback(true)
 	})
 	.on('error', (error) => {
 		console.log('Could not withdraw ether', error)
-		window.alert('Could not withdraw ether')
+		callback(false)
 	})
 }
 
-export const depositToken = (amount, account, web3, token, exchange, dispatch) => {
+export const depositToken = (amount, account, web3, token, exchange, dispatch, callback) => {
 	amount = tokensToWei(amount, token.decimals)
 
 	token.contract.methods.approve(exchange.options.address, amount).send({from: account})
@@ -238,26 +244,28 @@ export const depositToken = (amount, account, web3, token, exchange, dispatch) =
 		exchange.methods.depositToken(token.contract.options.address, amount).send({from: account})
 		.on('transactionHash', (hash) => {
 			dispatch(balancesLoading())
+			callback(true)
 		})
 	})
 	.on('error', (error) => {
 		console.log('Could not approve token deposit', error)
-		window.alert('Could not approve token deposit')
+		callback(false)
 	})
 }
 
-export const withdrawToken = (amount, account, web3, token, exchange, dispatch) => {
+export const withdrawToken = (amount, account, web3, token, exchange, dispatch, callback) => {
 	exchange.methods.withdrawToken(token.contract.options.address, tokensToWei(amount, token.decimals)).send({from: account})
 	.on('transactionHash', (hash) => {
 		dispatch(balancesLoading())
+		callback(true)
 	})
 	.on('error', (error) => {
 		console.log('Could not withdraw token', error)
-		window.alert('Could not withdraw token')
+		callback(false)
 	})
 }
 
-export const makeBuyOrder = (order, account, web3, token, exchange, dispatch) => {
+export const makeBuyOrder = (order, account, web3, token, exchange, dispatch, callback) => {
 	const tokenGet = token.contract.options.address
 	const amountGet = tokensToWei(order.amount, token.decimals)
 	const tokenGive = ETHER_ADDRESS
@@ -266,14 +274,15 @@ export const makeBuyOrder = (order, account, web3, token, exchange, dispatch) =>
 	exchange.methods.makeOrder(tokenGet, amountGet, tokenGive, amountGive).send({from: account})
 	.on('transactionHash', (hash) => {
 		dispatch(buyOrderMaking())
+		callback(true)
 	})
 	.on('error', (error) => {
 		console.log('Could not make buy order', error)
-		window.alert('Could not make buy order')
+		callback(false)
 	})
 }
 
-export const makeSellOrder = (order, account, web3, token, exchange, dispatch) => {
+export const makeSellOrder = (order, account, web3, token, exchange, dispatch, callback) => {
 	const tokenGet = ETHER_ADDRESS
 	const amountGet = etherToWei((order.amount * order.price).toString())
 	const tokenGive = token.contract.options.address
@@ -282,31 +291,34 @@ export const makeSellOrder = (order, account, web3, token, exchange, dispatch) =
 	exchange.methods.makeOrder(tokenGet, amountGet, tokenGive, amountGive).send({from: account})
 	.on('transactionHash', (hash) => {
 		dispatch(sellOrderMaking())
+		callback(true)
 	})
 	.on('error', (error) => {
 		console.log('Could not make sell order', error)
-		window.alert('Could not make sell order')
+		callback(false)
 	})
 }
 
-export const cancelOrder = (order, account, exchange, dispatch) => {
+export const cancelOrder = (order, account, exchange, dispatch, callback) => {
 	exchange.methods.cancelOrder(order.id).send({from: account})
 	.on('transactionHash', (hash) => {
 		dispatch(orderCancelling())
+		callback(true)
 	})
 	.on('error', (error) => {
 		console.log('Could not cancel order', error)
-		window.alert('Could not cancel order')
+		callback(false)
 	})
 }
 
-export const fillOrder = (order, account, exchange, dispatch) => {
+export const fillOrder = (order, account, exchange, dispatch, callback) => {
 	exchange.methods.fillOrder(order.id).send({from: account})
 	.on('transactionHash', (hash) => {
 		dispatch(orderFilling())
+		callback(true)
 	})
 	.on('error', (error) => {
 		console.log('Could not fill order', error)
-		window.alert('Could not fill order')
+		callback(false)
 	})
 }

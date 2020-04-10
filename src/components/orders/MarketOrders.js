@@ -2,6 +2,9 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { OverlayTrigger, Tooltip } from 'react-bootstrap'
 import Identicon from 'identicon.js'
+import toast from 'toasted-notes' 
+import 'toasted-notes/src/styles.css'
+import Notification from '../Notification'
 import Spinner from '../Spinner'
 import { 
   exchangeSelector,
@@ -73,7 +76,11 @@ function renderOrder(order, props) {
           className="order-book-order"
             onClick={(e) => {
               if (!ownOrder) {
-                fillOrder(order, account, exchange, dispatch)
+                fillOrder(order, account, exchange, dispatch, (success) => {
+                  if (!success) {
+                    toast.notify(() => <Notification title="Could not fill order" type="danger" />)
+                  }
+                })
               }
             }}
       >

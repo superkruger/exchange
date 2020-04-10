@@ -4,6 +4,9 @@ import { connect } from 'react-redux'
 import BootstrapTable from 'react-bootstrap-table-next';
 import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit';
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
+import toast from 'toasted-notes' 
+import 'toasted-notes/src/styles.css'
+import Notification from './Notification'
 import { 
   addToken,
   selectToken
@@ -27,7 +30,11 @@ class SideNav extends Component {
       dispatch
     } = this.props
 
-    selectToken(row.tokenAddress, tokenList, account, exchange, web3, dispatch)
+    selectToken(row.tokenAddress, tokenList, account, exchange, web3, dispatch, (success) => {
+      if (!success) {
+        toast.notify(() => <Notification title="Could not select token" type="danger" />)
+      }
+    })
   }
 
   render() {
@@ -55,7 +62,11 @@ class SideNav extends Component {
                   <Form noValidate onSubmit={(event) => {
                     event.preventDefault()
                     let tokenAddressInput = document.getElementById('newTokenAddressInput')
-                    addToken(tokenAddressInput.value, tokenList, web3, account, exchange, dispatch)
+                    addToken(tokenAddressInput.value, tokenList, web3, account, exchange, dispatch, (success) => {
+                      if (!success) {
+                        toast.notify(() => <Notification title="Could not add new token" type="danger" />)
+                      }
+                    })
                   }}>
                   <Form.Row>
                     <Form.Group as={Col}>

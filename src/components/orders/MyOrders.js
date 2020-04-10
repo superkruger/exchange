@@ -1,5 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import toast from 'toasted-notes' 
+import 'toasted-notes/src/styles.css'
+import Notification from '../Notification'
 import Spinner from '../Spinner'
 import { 
   myOpenOrdersSelector,
@@ -48,7 +51,11 @@ function showMyOpenOrders(props) {
                 <td 
                 className="text-muted cancel-order"
                 onClick={(e) => {
-                  cancelOrder(order, account, exchange, dispatch)
+                  cancelOrder(order, account, exchange, dispatch, (success) => {
+                    if (!success) {
+                      toast.notify(() => <Notification title="Could not cancel order" type="danger" />)
+                    }
+                  })
                 }}>x</td>
               </tr>
           )

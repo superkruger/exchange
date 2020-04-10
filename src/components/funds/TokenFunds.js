@@ -1,5 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import toast from 'toasted-notes' 
+import 'toasted-notes/src/styles.css'
+import Notification from '../Notification'
 import Spinner from '../Spinner'
 import { 
   depositToken,
@@ -73,7 +76,11 @@ function showForm(props) {
           <td>
             <form onSubmit={(event) => {
               event.preventDefault()
-              depositToken(tokenDepositAmount, account, web3, token, exchange, dispatch)
+              depositToken(tokenDepositAmount, account, web3, token, exchange, dispatch, (success) => {
+                if (!success) {
+                  toast.notify(() => <Notification title={`Could not deposit ${token.symbol}`} type="danger" />)
+                }
+              })
             }}>
               <div className="row">
                 <div className="col-12 col-sm pr-sm-2">
@@ -96,7 +103,11 @@ function showForm(props) {
           <td>
             <form onSubmit={(event) => {
               event.preventDefault()
-              withdrawToken(tokenWithdrawAmount, account, web3, token, exchange, dispatch)
+              withdrawToken(tokenWithdrawAmount, account, web3, token, exchange, dispatch, (success) => {
+                if (!success) {
+                  toast.notify(() => <Notification title={`Could not withdraw ${token.symbol}`} type="danger" />)
+                }
+              })
             }}>
               <div className="row">
                 <div className="col-12 col-sm pr-sm-2">

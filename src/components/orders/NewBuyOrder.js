@@ -1,5 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import toast from 'toasted-notes' 
+import 'toasted-notes/src/styles.css'
+import Notification from '../Notification'
 import Spinner from '../Spinner'
 import { 
   makeBuyOrder
@@ -45,7 +48,11 @@ const showForm = (props) => {
   return (
     <form onSubmit={(event) => {
       event.preventDefault()
-      makeBuyOrder(buyOrder, account, web3, token, exchange, dispatch)
+      makeBuyOrder(buyOrder, account, web3, token, exchange, dispatch, (success) => {
+        if (!success) {
+          toast.notify(() => <Notification title="Could not make buy-order" type="danger" />)
+        }
+      })
     }}>
       <div className="form-group small">
         <label>Buy Amount ({token.symbol})</label>
