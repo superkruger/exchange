@@ -36,15 +36,19 @@ const seed = async (accounts, token, tokensFunction, exchange) => {
     let amount = 10000 // 10,000 tokens
 
     const decimals = await token.decimals({from: sender})
+    await wait(1)
     const name = await token.name({from: sender})
+    await wait(1)
     const symbol = await token.symbol({from: sender})
 
     console.log("addToken", token.address, name, symbol, decimals)
 
     await exchange.addToken(token.address, name, symbol, decimals, {from: sender})
+    await wait(1)
 
     await token.transfer(receiver, tokensFunction(amount), { from: sender })
     console.log(`Transferred ${amount} tokens from ${sender} to ${receiver}`)
+    await wait(1)
 
     // Set up exchange users
     const user1 = accounts[0]
@@ -54,15 +58,18 @@ const seed = async (accounts, token, tokensFunction, exchange) => {
     amount = 1
     await exchange.depositEther({ from: user1, value: ether(amount) })
     console.log(`Deposited ${amount} Ether from ${user1}`)
+    await wait(1)
 
     // User 2 Approves Tokens
     amount = 10000
     await token.approve(exchange.address, tokensFunction(amount), { from: user2 })
     console.log(`Approved ${amount} tokens from ${user2}`)
+    await wait(1)
 
     // User 2 Deposits Tokens
     await exchange.depositToken(token.address, tokensFunction(amount), { from: user2 })
     console.log(`Deposited ${amount} tokens from ${user2}`)
+    await wait(1)
 
     /////////////////////////////////////////////////////////////
     // Seed a Cancelled Order
@@ -73,11 +80,13 @@ const seed = async (accounts, token, tokensFunction, exchange) => {
     let orderId
     result = await exchange.makeOrder(token.address, tokensFunction(100), ETHER_ADDRESS, ether(0.1), { from: user1 })
     console.log(`Made order from ${user1}`)
+    await wait(1)
 
     // User 1 cancells order
     orderId = result.logs[0].args.id
     await exchange.cancelOrder(orderId, { from: user1 })
     console.log(`Cancelled order from ${user1}`)
+    await wait(1)
 
     /////////////////////////////////////////////////////////////
     // Seed Filled Orders
@@ -86,6 +95,7 @@ const seed = async (accounts, token, tokensFunction, exchange) => {
     // User 1 makes order
     result = await exchange.makeOrder(token.address, tokensFunction(100), ETHER_ADDRESS, ether(0.1), { from: user1 })
     console.log(`Made order from ${user1}`)
+    await wait(1)
 
     // User 2 fills order
     orderId = result.logs[0].args.id
@@ -98,6 +108,7 @@ const seed = async (accounts, token, tokensFunction, exchange) => {
     // User 1 makes another order
     result = await exchange.makeOrder(token.address, tokensFunction(50), ETHER_ADDRESS, ether(0.01), { from: user1 })
     console.log(`Made order from ${user1}`)
+    await wait(1)
 
     // User 2 fills another order
     orderId = result.logs[0].args.id
@@ -110,6 +121,7 @@ const seed = async (accounts, token, tokensFunction, exchange) => {
     // User 1 makes final order
     result = await exchange.makeOrder(token.address, tokensFunction(200), ETHER_ADDRESS, ether(0.15), { from: user1 })
     console.log(`Made order from ${user1}`)
+    await wait(1)
 
     // User 2 fills final order
     orderId = result.logs[0].args.id
@@ -148,8 +160,10 @@ module.exports = async function(callback) {
     // Fetch the deployed tokens
     const token18 = await Token18.deployed()
     console.log('Token18 fetched', token18.address)
+    await wait(1)
     const token9 = await Token9.deployed()
     console.log('Token9 fetched', token9.address)
+    await wait(1)
 
     // Fetch the deployed exchange
     const exchange = await Exchange.deployed()

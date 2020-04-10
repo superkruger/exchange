@@ -35,7 +35,8 @@ module.exports = {
       },
       gas: 5000000,
       gasPrice: 25000000000,
-      network_id: 3
+      network_id: 3,
+      networkCheckTimeout: 6000000
     },
     rinkeby: {
       provider: function() {
@@ -46,7 +47,8 @@ module.exports = {
       },
       gas: 5000000,
       gasPrice: 25000000000,
-      network_id: 4
+      network_id: 4,
+      networkCheckTimeout: 6000000
     }
   },
 
