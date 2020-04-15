@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.js": "/exchange/static/js/main.441ce32b.chunk.js",
-    "main.js.map": "/exchange/static/js/main.441ce32b.chunk.js.map",
+    "main.js": "/exchange/static/js/main.6d648db3.chunk.js",
+    "main.js.map": "/exchange/static/js/main.6d648db3.chunk.js.map",
     "runtime-main.js": "/exchange/static/js/runtime-main.fab6d395.js",
     "runtime-main.js.map": "/exchange/static/js/runtime-main.fab6d395.js.map",
     "xlsx.js": "/exchange/static/js/xlsx.ab7acfff.chunk.js",
@@ -16,7 +16,7 @@
     "static/js/6.3f356518.chunk.js": "/exchange/static/js/6.3f356518.chunk.js",
     "static/js/6.3f356518.chunk.js.map": "/exchange/static/js/6.3f356518.chunk.js.map",
     "index.html": "/exchange/index.html",
-    "precache-manifest.90d1d119d7101517e3d637ef4a9782c2.js": "/exchange/precache-manifest.90d1d119d7101517e3d637ef4a9782c2.js",
+    "precache-manifest.3cab325ba6220c7a145663d8f61af1e4.js": "/exchange/precache-manifest.3cab325ba6220c7a145663d8f61af1e4.js",
     "service-worker.js": "/exchange/service-worker.js",
     "static/css/3.06fdc99e.chunk.css.map": "/exchange/static/css/3.06fdc99e.chunk.css.map",
     "static/js/3.2cf5f8f4.chunk.js.LICENSE.txt": "/exchange/static/js/3.2cf5f8f4.chunk.js.LICENSE.txt",
@@ -26,6 +26,6 @@
     "static/js/runtime-main.fab6d395.js",
     "static/css/3.06fdc99e.chunk.css",
     "static/js/3.2cf5f8f4.chunk.js",
-    "static/js/main.441ce32b.chunk.js"
+    "static/js/main.6d648db3.chunk.js"
   ]
 }
